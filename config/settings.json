@@ -1,5 +1,5 @@
 {
   "gemini_model": "gemini-3.1-flash-lite",
-  "max_page_chars": 60000,
-  "min_page_chars": 500
+  "max_page_chars": 100000,
+  "min_page_chars": 1500
 }

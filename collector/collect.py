@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
-"""Toplayici: her servisin ucretsiz plan sayfasini indirir, duz metne cevirir,
-tarihli olarak data/snapshots/<servis>/<tarih>.txt dosyasina kaydeder.
+"""Toplayici: her servisin RESMI sayfalarini (birden fazla olabilir) indirir, duz metne cevirir,
+tek bir dosyada birlestirip data/snapshots/<servis>/<tarih>.txt olarak kaydeder.
+Her sayfanin basina "=== SOURCE: <adres> ===" satiri konur ki bilginin hangi sayfadan geldigi bilinsin.
 Sadece Python'un kendi kutuphanelerini kullanir (kurulum gerekmez)."""
 import datetime
+import http.client
 import json
 import pathlib
 import re
+import time
 import urllib.error
 import urllib.request
 from html.parser import HTMLParser
@@ -13,6 +16,7 @@ from html.parser import HTMLParser
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 DATA = ROOT / "data"
 USER_AGENT = "FreeTierWatchBot/0.1 (+https://freetierwatch.com; weekly public pricing-page check)"
+PAUSE_SECONDS = 2  # sitelere nazik davran: istekler arasi bekleme
 
 
 class _Text(HTMLParser):
@@ -72,18 +76,35 @@ def main():
     results = {}
 
     for svc in services:
-        sid, url = svc["id"], svc["url"]
-        try:
-            text = html_to_text(fetch(url))
+        sid = svc["id"]
+        sections, details = [], []
+        for url in svc["urls"]:
+            try:
+                text = html_to_text(fetch(url))
+                sections.append(f"=== SOURCE: {url} ===\n{text}")
+                details.append({"url": url, "ok": True, "chars": len(text), "error": None})
+                print(f"{svc['name']} | {url}: {len(text)} karakter")
+            except (urllib.error.URLError, TimeoutError, OSError, ValueError, http.client.HTTPException) as exc:
+                details.append({"url": url, "ok": False, "chars": 0, "error": str(exc)})
+                print(f"{svc['name']} | {url}: HATA - {exc}")
+            time.sleep(PAUSE_SECONDS)
+
+        ok = bool(sections)
+        total = sum(d["chars"] for d in details)
+        thin = ok and total < settings["min_page_chars"]
+        failed = [d["url"] for d in details if not d["ok"]]
+        if ok:
             folder = DATA / "snapshots" / sid
             folder.mkdir(parents=True, exist_ok=True)
-            (folder / f"{today}.txt").write_text(text, encoding="utf-8")
-            thin = len(text) < settings["min_page_chars"]
-            results[sid] = {"ok": True, "chars": len(text), "thin": thin, "url": url, "error": None}
-            print(f"{svc['name']}: {len(text)} karakter" + ("  [UYARI: cok az metin, sayfa JavaScript ile olusuyor olabilir]" if thin else ""))
-        except (urllib.error.URLError, TimeoutError, OSError) as exc:
-            results[sid] = {"ok": False, "chars": 0, "thin": False, "url": url, "error": str(exc)}
-            print(f"{svc['name']}: HATA - {exc}")
+            (folder / f"{today}.txt").write_text("\n\n".join(sections), encoding="utf-8")
+        results[sid] = {
+            "ok": ok, "chars": total, "thin": thin,
+            "partial": ok and bool(failed), "failed_sources": failed,
+            "sources": details,
+            "error": None if ok else "; ".join(f"{d['url']} -> {d['error']}" for d in details),
+        }
+        if thin:
+            print(f"  [UYARI] {svc['name']}: toplam cok az metin ({total}); bu servis hakkinda iddia uretilmeyecek.")
 
     DATA.mkdir(exist_ok=True)
     (DATA / "collect_log.json").write_text(
