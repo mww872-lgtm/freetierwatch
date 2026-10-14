@@ -3,7 +3,7 @@
   "services": {
     "chatgpt": {
       "status": "error",
-      "error": "HTTP Error 403: Forbidden",
+      "error": "https://help.openai.com/en/articles/9275245-chatgpt-free-tier-faq -> HTTP Error 403: Forbidden; https://openai.com/chatgpt/pricing/ -> HTTP Error 403: Forbidden",
       "added": [],
       "removed": []
     },
@@ -21,7 +21,7 @@
     },
     "grok": {
       "status": "first",
-      "thin": true,
+      "thin": false,
       "added": [],
       "removed": []
     },
@@ -33,13 +33,13 @@
     },
     "deepseek": {
       "status": "first",
-      "thin": false,
+      "thin": true,
       "added": [],
       "removed": []
     },
     "perplexity": {
       "status": "error",
-      "error": "HTTP Error 403: Forbidden",
+      "error": "https://www.perplexity.ai/help-center/en/articles/11187416-which-perplexity-subscription-plan-is-right-for-you -> HTTP Error 403: Forbidden; https://www.perplexity.ai/help-center/en/articles/10352901-what-is-perplexity-pro -> HTTP Error 403: Forbidden",
       "added": [],
       "removed": []
     }

@@ -5,50 +5,169 @@
       "ok": false,
       "chars": 0,
       "thin": false,
-      "url": "https://openai.com/chatgpt/pricing/",
-      "error": "HTTP Error 403: Forbidden"
+      "partial": false,
+      "failed_sources": [
+        "https://help.openai.com/en/articles/9275245-chatgpt-free-tier-faq",
+        "https://openai.com/chatgpt/pricing/"
+      ],
+      "sources": [
+        {
+          "url": "https://help.openai.com/en/articles/9275245-chatgpt-free-tier-faq",
+          "ok": false,
+          "chars": 0,
+          "error": "HTTP Error 403: Forbidden"
+        },
+        {
+          "url": "https://openai.com/chatgpt/pricing/",
+          "ok": false,
+          "chars": 0,
+          "error": "HTTP Error 403: Forbidden"
+        }
+      ],
+      "error": "https://help.openai.com/en/articles/9275245-chatgpt-free-tier-faq -> HTTP Error 403: Forbidden; https://openai.com/chatgpt/pricing/ -> HTTP Error 403: Forbidden"
     },
     "claude": {
       "ok": true,
-      "chars": 20999,
+      "chars": 27905,
       "thin": false,
-      "url": "https://claude.com/pricing",
+      "partial": true,
+      "failed_sources": [
+        "https://support.claude.com/en/articles/8602283-about-free-claude-usage"
+      ],
+      "sources": [
+        {
+          "url": "https://support.claude.com/en/articles/8602283-about-free-claude-usage",
+          "ok": false,
+          "chars": 0,
+          "error": "HTTP Error 404: Not Found"
+        },
+        {
+          "url": "https://support.claude.com/en/articles/11647753-understanding-usage-and-length-limits",
+          "ok": true,
+          "chars": 6896,
+          "error": null
+        },
+        {
+          "url": "https://claude.com/pricing",
+          "ok": true,
+          "chars": 21009,
+          "error": null
+        }
+      ],
       "error": null
     },
     "gemini": {
       "ok": true,
-      "chars": 21576,
+      "chars": 37160,
       "thin": false,
-      "url": "https://gemini.google/subscriptions/",
+      "partial": false,
+      "failed_sources": [],
+      "sources": [
+        {
+          "url": "https://support.google.com/gemini/answer/16275805",
+          "ok": true,
+          "chars": 11696,
+          "error": null
+        },
+        {
+          "url": "https://support.google.com/gemini/answer/17004136",
+          "ok": true,
+          "chars": 3888,
+          "error": null
+        },
+        {
+          "url": "https://gemini.google/subscriptions/",
+          "ok": true,
+          "chars": 21576,
+          "error": null
+        }
+      ],
       "error": null
     },
     "grok": {
       "ok": true,
-      "chars": 33,
-      "thin": true,
-      "url": "https://grok.com/plans",
+      "chars": 6462,
+      "thin": false,
+      "partial": false,
+      "failed_sources": [],
+      "sources": [
+        {
+          "url": "https://docs.x.ai/grok/overview",
+          "ok": true,
+          "chars": 2423,
+          "error": null
+        },
+        {
+          "url": "https://x.ai/grok",
+          "ok": true,
+          "chars": 4039,
+          "error": null
+        }
+      ],
       "error": null
     },
     "copilot": {
       "ok": true,
-      "chars": 22199,
+      "chars": 32818,
       "thin": false,
-      "url": "https://www.microsoft.com/en-us/microsoft-copilot/for-individuals",
+      "partial": false,
+      "failed_sources": [],
+      "sources": [
+        {
+          "url": "https://support.microsoft.com/topic/understanding-the-different-microsoft-copilot-experiences-cfff4791-694a-4d90-9c9c-1eb3fb28e842",
+          "ok": true,
+          "chars": 10619,
+          "error": null
+        },
+        {
+          "url": "https://www.microsoft.com/en-us/microsoft-copilot/for-individuals",
+          "ok": true,
+          "chars": 22199,
+          "error": null
+        }
+      ],
       "error": null
     },
     "deepseek": {
       "ok": true,
       "chars": 507,
-      "thin": false,
-      "url": "https://www.deepseek.com/",
+      "thin": true,
+      "partial": false,
+      "failed_sources": [],
+      "sources": [
+        {
+          "url": "https://www.deepseek.com/",
+          "ok": true,
+          "chars": 507,
+          "error": null
+        }
+      ],
       "error": null
     },
     "perplexity": {
       "ok": false,
       "chars": 0,
       "thin": false,
-      "url": "https://www.perplexity.ai/pro",
-      "error": "HTTP Error 403: Forbidden"
+      "partial": false,
+      "failed_sources": [
+        "https://www.perplexity.ai/help-center/en/articles/11187416-which-perplexity-subscription-plan-is-right-for-you",
+        "https://www.perplexity.ai/help-center/en/articles/10352901-what-is-perplexity-pro"
+      ],
+      "sources": [
+        {
+          "url": "https://www.perplexity.ai/help-center/en/articles/11187416-which-perplexity-subscription-plan-is-right-for-you",
+          "ok": false,
+          "chars": 0,
+          "error": "HTTP Error 403: Forbidden"
+        },
+        {
+          "url": "https://www.perplexity.ai/help-center/en/articles/10352901-what-is-perplexity-pro",
+          "ok": false,
+          "chars": 0,
+          "error": "HTTP Error 403: Forbidden"
+        }
+      ],
+      "error": "https://www.perplexity.ai/help-center/en/articles/11187416-which-perplexity-subscription-plan-is-right-for-you -> HTTP Error 403: Forbidden; https://www.perplexity.ai/help-center/en/articles/10352901-what-is-perplexity-pro -> HTTP Error 403: Forbidden"
     }
   }
 }

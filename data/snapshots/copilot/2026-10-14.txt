@@ -1,5 +1,272 @@
+=== SOURCE: https://support.microsoft.com/topic/understanding-the-different-microsoft-copilot-experiences-cfff4791-694a-4d90-9c9c-1eb3fb28e842 ===
+What's the difference between Microsoft Copilot (free) and Copilot in Microsoft 365 | Microsoft Support
+Skip to main content
+Microsoft
+Support
+Home
+Microsoft 365
+Office
+Products
+Microsoft 365
+Outlook
+Microsoft Teams
+OneDrive
+Microsoft Copilot
+OneNote
+Windows
+more ...
+Devices
+Surface
+PC Accessories
+Xbox
+PC Gaming
+HoloLens
+Surface Hub
+Hardware warranties
+Account & billing
+Resources
+Community forums
+Microsoft 365 Admins
+Developer
+Education
+Report a support scam
+Product safety
+More
+Buy Microsoft 365
+All Microsoft
+Global
+Microsoft 365
+Azure
+Copilot
+Windows
+Surface
+XBOX
+Deals
+Small Business
+Support
+Software
+Windows Apps
+Outlook
+OneDrive
+Microsoft Teams
+OneNote
+Microsoft Edge
+Moving from Skype to Teams
+PCs & Devices
+Computers
+Shop XBOX
+Accessories
+VR & mixed reality
+Certified Refurbished
+Trade-in for cash
+Entertainment
+XBOX Game Pass Ultimate
+PC Game Pass
+XBOX games
+PC games
+Business
+Microsoft AI
+Microsoft Security
+Dynamics 365
+Microsoft 365 for business
+Microsoft Power Platform
+Windows 365
+Small Business
+Digital Sovereignty
+Developer & IT
+Azure
+Microsoft Developer
+Microsoft Learn
+Support for AI marketplace apps
+Microsoft Tech Community
+Microsoft Marketplace
+Software companies
+Visual Studio
+Other
+Microsoft Rewards
+Free downloads & security
+Education
+Gift cards
+Licensing
+Unlocked stories
+View Sitemap
+Search
+Search for help
+No results
+Cancel
+Sign in
+Sign in with Microsoft
+Sign in or create an account.
+Hello,
+Select a different account.
+You have multiple accounts
+Choose the account you want to sign in with.
+What's the difference between Microsoft Copilot (free) and Copilot in Microsoft 365
+Get help with Copilot
+How can I use what's the difference?
+Tell me how Copilot Chat works
+Copilot is an AI assistant designed to help you complete tasks faster and more efficiently. It uses large language models (LLMs) to respond to your questions or prompts. Copilot is integrated into many different Microsoft apps and services including Microsoft 365 subscriptions, and you might need help understanding what works best for your needs and what you might already have access to.
+This article describes the differences between the free version of Copilot, and the version of Copilot included in individual and business Microsoft 365 subscriptions.
+Microsoft Copilot (free) - This version of Copilot is available free of cost and is ideal for general questions and answers, people trying AI for the first time, and web-based tasks. You can access Copilot in your web browser at copilot.cloud.microsoft, download as an app on your desktop or mobile device, or use directly in Copilot in Edge.
+Copilot in eligible individual Microsoft 365 plans - Copilot is available in individual subscriptions such as Microsoft 365 Personal, Family, or Premium and subscribers can access Copilot Chat in their web browser at microsoft365.com or download the app to your mobile device. The subscription owner has access to Copilot in the desktop apps which includes deep integration with documents, emails, spreadsheets, calendars and more. Usage limits apply (AI credits and limits for Microsoft 365 Personal, Family, Premium, and Pro).
+Copilot in Microsoft 365 business plans - Access to Copilot in eligible Microsoft 365 business plans depends on your type of license. Users with a business subscription have access to AI chat grounded on the web, pay-as-you-go agents, built-in IT controls, enterprise data protection, and agent management. Depending on how your organization is configured you might also have access to Copilot directly in Microsoft 365 apps like Word, Excel, PowerPoint, OneNote.
+Learn more about each of these versions in the sections below.
+In this article
+Microsoft Copilot (free)
+Individual Microsoft 365 plans: Copilot in Microsoft 365 Personal, Family, Premium, and Pro
+Copilot in Microsoft 365 business plans
+Microsoft Copilot (free)
+Microsoft Copilot is available at no cost at copilot.cloud.microsoft.
+Microsoft Copilot is your AI companion and understands your questions and requests, provides direct answers, assists with writing, and even creates images. Sign in isn't required, but signing in with your personal account gives you access to chat history, image creation, longer conversations, voice interactions, and other Copilot features.
+Access Copilot on Windows, macOS, mobile devices (iOS and Android), and Microsoft Edge header.
+Microsoft Copilot (free) allows you to:
+Chat with AI for help with writing, brainstorming, summarizing, and more.
+Get real-time answers based on web search.
+Use Copilot in Edge for webpage summarization and insights.
+Learn more at Getting started with Microsoft Copilot.
+Tip
+Copilot features, functionality, and availability may vary by region. Learn more in Supported regions and languages in Microsoft Copilot.
+Back to top
+Individual Microsoft 365 plans: Copilot in Microsoft 365 Personal, Family, Premium, and Pro
+The Copilot features available in individual plans such as Microsoft 365 Personal, Family, or Premium depend on which subscription you have and if you're the subscription owner.
+To access Copilot in Microsoft 365, sign in with your Microsoft account at microsoft365.com or download the app to your mobile device. Subscription owners can also access Copilot within the Microsoft 365 desktop apps.
+Tip
+If Microsoft 365 Family or Premium is shared with you, you can access Chat at microsoft365.com by signing in with the Microsoft account associated with your subscription. Other AI benefits, such as Copilot in the desktop apps are limited to the subscription owner.
+Subscription owners of Microsoft 365 Personal, Family, or Premium have access to Copilot in the Microsoft 365 desktop apps like Word, Excel, PowerPoint, Outlook, and OneNote. AI usage limits apply. Learn more at Understanding AI Credits.
+Microsoft 365 Premium users also have exclusive access to:
+Advanced AI features
+Agents like Tasks, Analyst, and Researcher.
+Extended usage allowance (see Understanding AI Credits)
+Learn more about Microsoft 365 Premium.
+If your version of Microsoft 365 Family or Premium is through sharing, AI benefits such as Copilot in the desktop apps are limited to the subscription owner, but you can still access Chat at microsoft365.com by signing in with the Microsoft account associated with your subscription.
+Not sure what subscription you have? Learn more in What Copilot license do I have.
+Important
+Copilot features in Microsoft 365 Personal, Family, Premium, and Pro subscriptions are subject to limits and can be used by subscription owner only. See Understanding AI Credits.
+Learn more about Microsoft 365 Personal, Family, Premium, and Pro features and pricing.
+Back to top
+Microsoft 365 business plans: Copilot Chat and Microsoft Copilot
+What you can do and what you have access to with Copilot in Microsoft 365 business plans depends on how your organization is configured and the type of license your admin assigned you. Those with an eligible Microsoft 365 license will have access to Microsoft Copilot Chat which gives you secure, enterprise-ready AI Chat. Your admin might also choose to assign you a Microsoft Copilot add-on license which can help to increase employee productivity and streamline processes.
+Microsoft Copilot Chat
+Copilot Chat is automatically included and available to organizations with an eligible Microsoft 365 license. With Copilot Chat, you have:
+AI chat grounded on the web and powered by the latest models
+Ask questions and do research
+Summarize documents and web pages
+Create images
+Use pay-as-you-go agents for task automation
+Copilot Chat includes standard access to capabilities like file upload, image generation, and LLMs.
+Microsoft Copilot
+Microsoft Copilot is an add-on license which includes all the features in Copilot Chat along with advanced AI benefits such as:
+AI-powered Chat that can respond using your work data like files, emails, chats, people, and more.
+Included access to agents based on your work data and to reasoning agents like Researcher and Analyst
+Advanced features both in-app and in Copilot Chat in Microsoft 365 apps
+Meeting summaries and recaps in Microsoft Teams (if available)
+Premium AI search and creation functionality
+More security, privacy, and compliance features for IT admins
+The Microsoft Copilot license includes priority access for faster response times and more consistent availability.
+Learn more in How Copilot Chat works with and without a Microsoft Copilot license.
+For details about features and pricing see Microsoft Copilot.
+For privacy information see:
+Data, privacy, and security for web search in Microsoft Copilot and Microsoft Copilot Chat
+Enterprise data protection in Microsoft Copilot and Microsoft Copilot Chat
+Learn more about Microsoft Copilot
+What Copilot license do I have
+Switch between Microsoft 365 subscriptions
+Copilot+ PCs and Windows 11 PCs from Surface
+Was this information helpful?
+Yes
+No
+Thank you! Any more feedback for Microsoft?
+Can you help us improve? (Send feedback to Microsoft so we can help.)
+What affected your experience?
+Resolved my issue
+Clear instructions
+Easy to follow
+No jargon
+Pictures helped
+Other
+Didn't match my screen
+Incorrect instructions
+Too technical
+Not enough information
+Not enough pictures
+Other
+Any additional feedback? (Optional)
+Submit feedback
+By pressing submit, your feedback will be used to improve Microsoft products and services.
+Your IT admin will be able to collect this data.
+Privacy Statement.
+Thank you for your feedback!
+×
+What's new
+Surface Laptop Ultra
+Surface Pro
+Surface Laptop
+Surface RTX Spark Dev Box
+Explore Copilot
+Explore Microsoft products
+Windows 11 apps
+Microsoft Store
+Account profile
+Download Center
+Microsoft Store support
+Returns
+Order tracking
+Certified Refurbished
+Why buy from Microsoft Store
+Flexible Payments
+Education
+Microsoft in education
+Devices for education
+Microsoft Teams for Education
+Microsoft 365 Education
+How to buy for your school
+Educator training and development
+Deals for students and parents
+AI for education
+Business
+Microsoft AI
+Microsoft Security
+Dynamics 365
+Microsoft 365
+Microsoft Power Platform
+Microsoft Teams
+Microsoft Copilot
+Small Business
+Developer & IT
+Azure
+Microsoft Developer
+Microsoft Learn
+Support for AI marketplace apps
+Microsoft Tech Community
+Microsoft Marketplace
+Software companies
+Visual Studio
+Company
+Careers
+About Microsoft
+Company news
+Privacy at Microsoft
+Investors
+Diversity and inclusion
+Accessibility
+Sustainability
+English (United States)
+Your Privacy Choices
+Consumer Health Privacy
+Sitemap
+Contact Microsoft
+Privacy
+Manage cookies
+Terms of use
+Trademarks
+Safety & eco
+Recycling
+About our ads
+© Microsoft 2026
+
+=== SOURCE: https://www.microsoft.com/en-us/microsoft-copilot/for-individuals ===
 Microsoft Copilot Plans for Individuals | Microsoft 365
-This is the Trace Id: 7a5a1e78ab209b1e186a35e630df9be6
+This is the Trace Id: f4784e763d115523133aa98fb68188de
 Skip to main content
 Copilot
 Word

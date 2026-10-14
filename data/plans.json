@@ -2,216 +2,377 @@
   "services": {
     "claude": {
       "name": "Claude",
-      "source_url": "https://claude.com/pricing",
+      "sources": [
+        "https://support.claude.com/en/articles/11647753-understanding-usage-and-length-limits",
+        "https://claude.com/pricing"
+      ],
+      "failed_sources": [
+        "https://support.claude.com/en/articles/8602283-about-free-claude-usage"
+      ],
       "last_checked": "2026-10-14",
-      "page_was_thin": false,
-      "unverified_items": 0,
-      "needs_human_review": false,
+      "status": "ok",
+      "needs_human_review": true,
+      "review_reasons": [
+        "8 item(s) rejected automatically",
+        "some source pages could not be fetched: https://support.claude.com/en/articles/8602283-about-free-claude-usage"
+      ],
       "extracted": {
         "free_plan_exists": "yes",
         "free_plan_name": "Free",
         "limits": [
           {
             "topic": "Usage",
-            "value": "not officially stated",
+            "value": "Limited based on conversation length, complexity, model, and features used; resets on a rolling five-hour session window.",
             "evidence": "Every plan has usage limits that reset on a rolling five-hour session window, and paid plans add weekly limits on top.",
-            "verified": true
-          },
-          {
-            "topic": "Code execution",
-            "value": "50 free hours daily",
-            "evidence": "Run Python code in a sandboxed environment for advanced data analysis. 50 free hours of usage daily per organization.",
-            "verified": true
+            "source": "https://claude.com/pricing"
           }
         ],
         "features": [
           {
             "feature": "Chat on web, desktop, and mobile",
             "evidence": "Chat on web, desktop, and mobile",
-            "verified": true
-          },
-          {
-            "feature": "Search the web",
-            "evidence": "Search the web, create files, and run code",
-            "verified": true
-          },
-          {
-            "feature": "Create files and run code",
-            "evidence": "Search the web, create files, and run code",
-            "verified": true
-          },
-          {
-            "feature": "Memory across conversations",
-            "evidence": "Memory across conversations",
-            "verified": true
-          },
-          {
-            "feature": "Connect your apps and tools",
-            "evidence": "Connect your apps and tools",
-            "verified": true
+            "source": "https://claude.com/pricing"
           },
           {
             "feature": "Create Artifacts",
             "evidence": "Create Artifacts",
-            "verified": true
-          },
-          {
-            "feature": "Claude Design, Slides, Docs",
-            "evidence": "Claude Design, Slides, Docs",
-            "verified": true
-          },
-          {
-            "feature": "Sonnet and Haiku models",
-            "evidence": "Sonnet Yes Haiku Yes",
-            "verified": true
+            "source": "https://claude.com/pricing"
           }
         ],
-        "notes": "The free plan is explicitly listed as 'Free' with a price of $0."
-      }
+        "notes": "Usage limits are not a fixed message count and are affected by conversation length, complexity, model choice, and features used. The Free plan does not include Claude Code, Claude Science, Claude in Chrome, or Claude for Microsoft 365."
+      },
+      "rejected_items": [
+        {
+          "group": "limits",
+          "item": {
+            "topic": "Projects",
+            "value": "Up to 5",
+            "evidence": "Projects: Up to 5"
+          },
+          "reason": "quote not found on the source pages"
+        },
+        {
+          "group": "features",
+          "item": {
+            "feature": "Voice mode",
+            "evidence": "Voice mode"
+          },
+          "reason": "quote not found on the source pages"
+        },
+        {
+          "group": "features",
+          "item": {
+            "feature": "Search the web",
+            "evidence": "Search the web, create files, and run code",
+            "source": "https://claude.com/pricing"
+          },
+          "reason": "context check: Claude does not have native web search capabilities."
+        },
+        {
+          "group": "features",
+          "item": {
+            "feature": "Create files and run code",
+            "evidence": "Search the web, create files, and run code",
+            "source": "https://claude.com/pricing"
+          },
+          "reason": "context check: Claude does not have native web search capabilities."
+        },
+        {
+          "group": "features",
+          "item": {
+            "feature": "Memory across conversations",
+            "evidence": "Memory across conversations",
+            "source": "https://claude.com/pricing"
+          },
+          "reason": "context check: Claude does not currently feature persistent cross-conversation memory."
+        },
+        {
+          "group": "features",
+          "item": {
+            "feature": "Connect your apps and tools",
+            "evidence": "Connect your apps and tools",
+            "source": "https://claude.com/pricing"
+          },
+          "reason": "context check: Connecting apps and tools is typically a feature of the API or enterprise integrations."
+        },
+        {
+          "group": "features",
+          "item": {
+            "feature": "Claude Design, Slides, and Docs",
+            "evidence": "Claude Design, Slides, Docs",
+            "source": "https://claude.com/pricing"
+          },
+          "reason": "context check: These are not standard features of the Claude consumer chat product."
+        },
+        {
+          "group": "features",
+          "item": {
+            "feature": "Incognito chats",
+            "evidence": "Incognito chatsMore information",
+            "source": "https://claude.com/pricing"
+          },
+          "reason": "context check: Claude does not offer an 'Incognito' mode for chats."
+        }
+      ]
     },
     "gemini": {
       "name": "Gemini",
-      "source_url": "https://gemini.google/subscriptions/",
+      "sources": [
+        "https://support.google.com/gemini/answer/16275805",
+        "https://support.google.com/gemini/answer/17004136",
+        "https://gemini.google/subscriptions/"
+      ],
+      "failed_sources": [],
       "last_checked": "2026-10-14",
-      "page_was_thin": false,
-      "unverified_items": 0,
-      "needs_human_review": false,
+      "status": "ok",
+      "needs_human_review": true,
+      "review_reasons": [
+        "10 item(s) rejected automatically"
+      ],
       "extracted": {
         "free_plan_exists": "yes",
         "free_plan_name": "Free",
-        "limits": [
-          {
-            "topic": "Usage access",
-            "value": "not officially stated",
-            "evidence": "Usage access limits in the Gemini app: For the Gemini app, compute-based usage limits factor in the complexity of your prompt, the features you use, and the length of your chat.",
-            "verified": true
-          }
-        ],
+        "limits": [],
         "features": [
-          {
-            "feature": "Access to Flash-Lite model",
-            "evidence": "Access to our Flash-Lite model",
-            "verified": true
-          },
           {
             "feature": "Image generation and editing",
             "evidence": "Image generation and editing",
-            "verified": true
-          },
-          {
-            "feature": "Deep Research",
-            "evidence": "Deep Research",
-            "verified": true
-          },
-          {
-            "feature": "Gemini Live",
-            "evidence": "Gemini Live",
-            "verified": true
-          },
-          {
-            "feature": "Canvas",
-            "evidence": "Canvas",
-            "verified": true
-          },
-          {
-            "feature": "Gems",
-            "evidence": "Gems",
-            "verified": true
-          },
-          {
-            "feature": "Google Flow",
-            "evidence": "Google Flow3",
-            "verified": true
-          },
-          {
-            "feature": "Gemini Notebook",
-            "evidence": "Gemini Notebook",
-            "verified": true
-          },
-          {
-            "feature": "Cloud storage",
-            "evidence": "15 GB of cloud storage across Gmail, Drive, and Photos",
-            "verified": true
+            "source": "https://gemini.google/subscriptions/"
           }
         ],
-        "notes": "The free plan is explicitly listed under the 'Personal' section as '$0/ month with a Google Account'."
-      }
+        "notes": "Usage limits refresh every 5 hours until the weekly limit is reached. For users without a Google AI plan, some features that require more compute resources, like Deep Research, may be unavailable during periods of high demand."
+      },
+      "rejected_items": [
+        {
+          "group": "limits",
+          "item": {
+            "topic": "Usage limits",
+            "value": "Standard limits",
+            "evidence": "Without an AI plan: Standard limits"
+          },
+          "reason": "quote not found on the source pages"
+        },
+        {
+          "group": "limits",
+          "item": {
+            "topic": "Context window",
+            "value": "32k tokens",
+            "evidence": "Without an AI plan: 32k tokens"
+          },
+          "reason": "quote not found on the source pages"
+        },
+        {
+          "group": "features",
+          "item": {
+            "feature": "Deep Research",
+            "evidence": "Deep Research"
+          },
+          "reason": "quote not found on the source pages"
+        },
+        {
+          "group": "features",
+          "item": {
+            "feature": "Gemini Live",
+            "evidence": "Gemini Live"
+          },
+          "reason": "quote not found on the source pages"
+        },
+        {
+          "group": "features",
+          "item": {
+            "feature": "Canvas",
+            "evidence": "Canvas"
+          },
+          "reason": "quote not found on the source pages"
+        },
+        {
+          "group": "features",
+          "item": {
+            "feature": "Gems",
+            "evidence": "Gems"
+          },
+          "reason": "quote not found on the source pages"
+        },
+        {
+          "group": "features",
+          "item": {
+            "feature": "Google Flow",
+            "evidence": "Google Flow3"
+          },
+          "reason": "quote not found on the source pages"
+        },
+        {
+          "group": "features",
+          "item": {
+            "feature": "Flash-Lite model access",
+            "evidence": "Access to our Flash-Lite model",
+            "source": "https://gemini.google/subscriptions/"
+          },
+          "reason": "context check: Flash-Lite is not a standard model name for the consumer Gemini web interface."
+        },
+        {
+          "group": "features",
+          "item": {
+            "feature": "Gemini Notebook",
+            "evidence": "Gemini Notebook",
+            "source": "https://gemini.google/subscriptions/"
+          },
+          "reason": "context check: Gemini Notebook (NotebookLM) is a separate product, not the standard Gemini chat interface."
+        },
+        {
+          "group": "features",
+          "item": {
+            "feature": "Cloud storage",
+            "evidence": "15 GB of cloud storage across Gmail, Drive, and Photos",
+            "source": "https://gemini.google/subscriptions/"
+          },
+          "reason": "context check: This describes Google One storage, not a feature of the Gemini chat plan itself."
+        }
+      ]
     },
     "grok": {
       "name": "Grok",
-      "source_url": "https://grok.com/plans",
+      "sources": [
+        "https://docs.x.ai/grok/overview",
+        "https://x.ai/grok"
+      ],
+      "failed_sources": [],
       "last_checked": "2026-10-14",
-      "page_was_thin": true,
-      "unverified_items": 0,
+      "status": "ok",
       "needs_human_review": true,
-      "extracted": {
-        "free_plan_exists": "not officially stated",
-        "free_plan_name": null,
-        "limits": [],
-        "features": [],
-        "notes": "The provided text only contains the page title and navigation elements; no information regarding plans or features is present."
-      }
-    },
-    "copilot": {
-      "name": "Copilot",
-      "source_url": "https://www.microsoft.com/en-us/microsoft-copilot/for-individuals",
-      "last_checked": "2026-10-14",
-      "page_was_thin": false,
-      "unverified_items": 0,
-      "needs_human_review": false,
+      "review_reasons": [
+        "4 item(s) rejected automatically"
+      ],
       "extracted": {
         "free_plan_exists": "yes",
         "free_plan_name": null,
+        "limits": [],
+        "features": [
+          {
+            "feature": "Chat",
+            "evidence": "Chat — ask questions, brainstorm, write, and work through problems in a natural back-and-forth.",
+            "source": "https://docs.x.ai/grok/overview"
+          },
+          {
+            "feature": "File analysis",
+            "evidence": "Upload files — PDFs, images, spreadsheets, code, audio, and more — for analysis, extraction, and summarization.",
+            "source": "https://docs.x.ai/grok/overview"
+          }
+        ],
+        "notes": "The service is described as 'free to start' and 'Free to try on the web and in the apps'."
+      },
+      "rejected_items": [
+        {
+          "group": "limits",
+          "item": {
+            "topic": "Usage allowance",
+            "value": "not officially stated",
+            "evidence": "Paid SuperGrok plans raise your limits and unlock more across every product, drawing from a single weekly usage allowance you can spend however you like.",
+            "source": "https://docs.x.ai/grok/overview"
+          },
+          "reason": "context check: Explicitly refers to paid SuperGrok plans."
+        },
+        {
+          "group": "features",
+          "item": {
+            "feature": "Image and video generation",
+            "evidence": "Create images and video with Grok Imagine.",
+            "source": "https://docs.x.ai/grok/overview"
+          },
+          "reason": "context check: Grok Imagine image and video generation is a feature of the paid Premium/SuperGrok plans."
+        },
+        {
+          "group": "features",
+          "item": {
+            "feature": "Voice conversations",
+            "evidence": "Talk to Grok hands-free with voice.",
+            "source": "https://docs.x.ai/grok/overview"
+          },
+          "reason": "context check: Voice mode is currently restricted to paid Premium/SuperGrok subscribers."
+        },
+        {
+          "group": "features",
+          "item": {
+            "feature": "Connectors",
+            "evidence": "Connect your tools so Grok can reach your email, files, and calendar right inside a chat.",
+            "source": "https://docs.x.ai/grok/overview"
+          },
+          "reason": "context check: Integration with external tools like email and calendar is a feature of paid plans."
+        }
+      ]
+    },
+    "copilot": {
+      "name": "Copilot",
+      "sources": [
+        "https://support.microsoft.com/topic/understanding-the-different-microsoft-copilot-experiences-cfff4791-694a-4d90-9c9c-1eb3fb28e842",
+        "https://www.microsoft.com/en-us/microsoft-copilot/for-individuals"
+      ],
+      "failed_sources": [],
+      "last_checked": "2026-10-14",
+      "status": "ok",
+      "needs_human_review": false,
+      "review_reasons": [],
+      "extracted": {
+        "free_plan_exists": "yes",
+        "free_plan_name": "Microsoft Copilot (free)",
         "limits": [
           {
-            "topic": "Copilot chat usage",
-            "value": "lower than paid plans",
-            "evidence": "Advanced Copilot[popover:]chat with higher usage than free",
-            "verified": true
-          },
-          {
-            "topic": "Visual AI assistance",
-            "value": "lower than paid plans",
-            "evidence": "Higher usage than free for visual AI assistance from your screen or camera[popover:]",
-            "verified": true
-          },
-          {
-            "topic": "AI-generated audio",
-            "value": "lower than paid plans",
-            "evidence": "Higher usage than free for AI-generated audio (English only)[popover:]",
-            "verified": true
-          },
-          {
-            "topic": "AI image creation",
-            "value": "lower than paid plans",
-            "evidence": "Higher usage than free for AI image creation in Copilot[popover:]",
-            "verified": true
+            "topic": "General usage",
+            "value": "not officially stated",
+            "evidence": "Copilot features, functionality, and availability may vary by region.",
+            "source": "https://support.microsoft.com/topic/understanding-the-different-microsoft-copilot-experiences-cfff4791-694a-4d90-9c9c-1eb3fb28e842"
           }
         ],
         "features": [
           {
-            "feature": "Conversational AI chat",
-            "evidence": "The Copilot mobile app provides a conversational AI chat experience for asking questions, creating content, conducting research, and more.",
-            "verified": true
+            "feature": "Chat with AI for writing, brainstorming, and summarizing",
+            "evidence": "Chat with AI for help with writing, brainstorming, summarizing, and more.",
+            "source": "https://support.microsoft.com/topic/understanding-the-different-microsoft-copilot-experiences-cfff4791-694a-4d90-9c9c-1eb3fb28e842"
+          },
+          {
+            "feature": "Real-time answers based on web search",
+            "evidence": "Get real-time answers based on web search.",
+            "source": "https://support.microsoft.com/topic/understanding-the-different-microsoft-copilot-experiences-cfff4791-694a-4d90-9c9c-1eb3fb28e842"
+          },
+          {
+            "feature": "Webpage summarization and insights in Edge",
+            "evidence": "Use Copilot in Edge for webpage summarization and insights.",
+            "source": "https://support.microsoft.com/topic/understanding-the-different-microsoft-copilot-experiences-cfff4791-694a-4d90-9c9c-1eb3fb28e842"
+          },
+          {
+            "feature": "Image creation",
+            "evidence": "Microsoft Copilot is your AI companion and understands your questions and requests, provides direct answers, assists with writing, and even creates images.",
+            "source": "https://support.microsoft.com/topic/understanding-the-different-microsoft-copilot-experiences-cfff4791-694a-4d90-9c9c-1eb3fb28e842"
+          },
+          {
+            "feature": "Chat history (with sign-in)",
+            "evidence": "Sign in isn't required, but signing in with your personal account gives you access to chat history, image creation, longer conversations, voice interactions, and other Copilot features.",
+            "source": "https://support.microsoft.com/topic/understanding-the-different-microsoft-copilot-experiences-cfff4791-694a-4d90-9c9c-1eb3fb28e842"
+          },
+          {
+            "feature": "Voice interactions (with sign-in)",
+            "evidence": "Sign in isn't required, but signing in with your personal account gives you access to chat history, image creation, longer conversations, voice interactions, and other Copilot features.",
+            "source": "https://support.microsoft.com/topic/understanding-the-different-microsoft-copilot-experiences-cfff4791-694a-4d90-9c9c-1eb3fb28e842"
           }
         ],
-        "notes": "The text refers to a 'free' tier by comparing paid subscription usage limits against it, though it does not explicitly name a 'Free Plan'."
-      }
+        "notes": "The free version is available at copilot.cloud.microsoft, as an app on desktop or mobile, or directly in the Microsoft Edge header."
+      },
+      "rejected_items": []
     },
     "deepseek": {
       "name": "DeepSeek",
-      "source_url": "https://www.deepseek.com/",
+      "sources": [
+        "https://www.deepseek.com/"
+      ],
+      "failed_sources": [],
       "last_checked": "2026-10-14",
-      "page_was_thin": false,
-      "unverified_items": 0,
-      "needs_human_review": false,
-      "extracted": {
-        "free_plan_exists": "not officially stated",
-        "free_plan_name": null,
-        "limits": [],
-        "features": [],
-        "notes": "The provided text does not mention a free plan or any pricing tiers for the consumer web interface."
-      }
+      "status": "source_too_thin",
+      "needs_human_review": true,
+      "review_reasons": [
+        "Source pages returned too little text. No claim is made about this service."
+      ],
+      "extracted": null,
+      "rejected_items": []
     }
   },
   "updated": "2026-10-14"

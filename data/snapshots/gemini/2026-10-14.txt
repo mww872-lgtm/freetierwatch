@@ -1,3 +1,608 @@
+=== SOURCE: https://support.google.com/gemini/answer/16275805 ===
+Gemini Apps limits & feature availability - Gemini Apps Help Skip to main content
+Gemini Apps Help
+Sign in
+Google Help
+Help Center
+Community
+Gemini Apps
+Privacy Policy
+Terms of Service
+Submit feedback
+Send feedback on...
+This help content & information
+General Help Center experience
+CloseNext
+Help Center
+Community
+Privacy Hub
+Gemini Apps
+Gemini Apps limits & feature availability
+Gemini Apps have compute-based usage limits that determine how much you can interact with Gemini tools and features. These limits factor in the complexity of your prompt, the models and features you use, and the length of your chat. Your limit refreshes every 5 hours until you reach your weekly limit.
+You can upgrade to a Google AI plan for expanded access to features and models in Gemini Apps. Gemini Apps upgrades are part of select Google One paid plans for personal accounts. Learn more about available subscriptions.
+Important: This article is for users managing Gemini Apps for a personal Google Account. If you’re using a work or school Google Account, learn more about using Gemini Apps with a work or school account.
+What you need
+To use Gemini Apps with a Google AI plan in most countries, you must be 13 (or the applicable age in your country) or over.
+To use Gemini Apps with a Google AI plan in the European Economic Area, Switzerland, or the United Kingdom, you must be 18 years of age or older.
+Some features may not be available for users under the age of 18 or 13 (or the applicable age in your country). In the help center, you will find additional information about age requirements.
+Where Google AI Plus is available
+Åland Islands
+Albania
+Algeria
+American Samoa
+Angola
+Antigua and Barbuda
+Argentina
+Armenia
+Aruba
+Australia
+Austria
+Azerbaijan
+Bahamas
+Bahrain
+Bangladesh
+Belgium
+Belize
+Benin
+Bermuda
+Bolivia
+Bosnia and Herzegovina
+Botswana
+Brazil
+British Virgin Islands
+Bulgaria
+Burkina Faso
+Cabo Verde
+Cambodia
+Cameroon
+Canada
+Cayman Islands
+Chile
+Colombia
+Costa Rica
+Côte d'Ivoire
+Croatia
+Cyprus
+Czech Republic
+Denmark
+Dominican Republic
+Ecuador
+Egypt
+El Salvador
+Estonia
+Faroe Islands
+Fiji
+Finland
+France
+French Guiana
+French Polynesia
+Gabon
+Georgia
+Germany
+Ghana
+Gibraltar
+Greece
+Greenland
+Guadeloupe
+Guam
+Guatemala
+Guinea-Bissau
+Haiti
+Honduras
+Hong Kong
+Hungary
+Iceland
+India
+Indonesia
+Iraq
+Ireland
+Israel
+Italy
+Jamaica
+Japan
+Jordan
+Kazakhstan
+Kenya
+Kuwait
+Kyrgyzstan
+Laos
+Latvia
+Lebanon
+Liechtenstein
+Lithuania
+Luxembourg
+Macau
+Malaysia
+Maldives
+Mali
+Malta
+Marshall Islands
+Martinique
+Mauritius
+Mayotte
+Mexico
+Moldova
+Monaco
+Morocco
+Mozambique
+Namibia
+Nepal
+Netherlands
+New Caledonia
+New Zealand
+Nicaragua
+Niger
+Nigeria
+North Macedonia
+Northern Mariana Islands
+Norway
+Oman
+Pakistan
+Palau
+Panama
+Papua New Guinea
+Paraguay
+Peru
+Philippines
+Poland
+Portugal
+Puerto Rico
+Qatar
+Réunion
+Romania
+Rwanda
+Saint Barthélemy
+Saint Martin
+Saint Pierre and Miquelon
+San Marino
+Saudi Arabia
+Senegal
+Serbia
+Seychelles
+Sierra Leone
+Singapore
+Slovakia
+Slovenia
+South Africa
+South Korea
+Spain
+Sri Lanka
+Svalbard and Jan Mayen
+Sweden
+Switzerland
+Taiwan
+Tajikistan
+Tanzania
+Thailand
+Togo
+Tonga
+Trinidad and Tobago
+Tunisia
+Türkiye
+Turkmenistan
+Uganda
+Ukraine
+United Arab Emirates
+United Kingdom
+United States
+Uruguay
+US Virgin Islands
+Uzbekistan
+Venezuela
+Vietnam
+Wallis and Futuna
+Yemen
+Zambia
+Zimbabwe
+Where Google AI Pro & Google AI Ultra are available
+Albania
+Algeria
+American Samoa
+Angola
+Antigua and Barbuda
+Argentina
+Armenia
+Aruba
+Australia
+Austria
+Azerbaijan
+Bahamas
+Bahrain
+Bangladesh
+Belgium
+Belize
+Benin
+Bermuda
+Bolivia
+Bosnia and Herzegovina
+Botswana
+Brazil
+British Virgin Islands
+Bulgaria
+Burkina Faso
+Cabo Verde
+Cambodia
+Cameroon
+Canada
+Caribbean Netherlands
+Cayman Islands
+Chile
+Colombia
+Costa Rica
+Côte d'Ivoire
+Croatia
+Cyprus
+Czech Republic
+Denmark
+Dominican Republic
+Ecuador
+Egypt
+El Salvador
+Estonia
+Faroe Islands
+Fiji
+Finland
+France
+French Polynesia
+Gabon
+Georgia
+Germany
+Ghana
+Gibraltar
+Greece
+Greenland
+Guadeloupe
+Guam
+Guatemala
+Guinea-Bissau
+Haiti
+Honduras
+Hong Kong
+Hungary
+Iceland
+India
+Indonesia
+Iraq
+Ireland
+Israel
+Italy
+Jamaica
+Japan
+Jordan
+Kazakhstan
+Kenya
+Kuwait
+Kyrgyzstan
+Laos
+Latvia
+Lebanon
+Liechtenstein
+Lithuania
+Luxembourg
+Macau
+Malaysia
+Maldives
+Mali
+Malta
+Marshall Islands
+Martinique
+Mauritius
+Mayotte
+Mexico
+Moldova
+Monaco
+Morocco
+Mozambique
+Namibia
+Nepal
+Netherlands
+New Zealand
+Nicaragua
+Niger
+Nigeria
+North Macedonia
+Northern Mariana Islands
+Norway
+Oman
+Pakistan
+Palau
+Panama
+Papua New Guinea
+Paraguay
+Peru
+Philippines
+Poland
+Portugal
+Puerto Rico
+Qatar
+Réunion
+Romania
+Rwanda
+San Marino
+Saudi Arabia
+Senegal
+Serbia
+Seychelles
+Sierra Leone
+Singapore
+Slovakia
+Slovenia
+South Africa
+South Korea
+Spain
+Sri Lanka
+Sweden
+Switzerland
+Taiwan
+Tajikistan
+Tanzania
+Thailand
+Togo
+Tonga
+Trinidad and Tobago
+Tunisia
+Türkiye
+Turkmenistan
+Uganda
+Ukraine
+United Arab Emirates
+United Kingdom
+United States
+Uruguay
+US Virgin Islands
+Uzbekistan
+Venezuela
+Vietnam
+Yemen
+Zambia
+Zimbabwe
+Tip: If you travel from a country where Google AI Ultra is available to a country where it is not available, you may still find notifications in Gemini Apps about Ultra, but you won’t be able to upgrade or use Ultra until you return to a country where Ultra is supported.
+Gemini app access and limits
+Important:
+Gemini Apps limits may change. Access is subject to change or may be limited based on testing, experimentation, or availability.
+Gemini Apps usage limits are designed to ensure an optimal experience for everyone. This means we may at times have to cap the number of prompts and conversations you can have, or how much you can use some features, within a specific timeframe.
+Usage limits
+Plan
+Limit
+Without an AI plan
+Standard limits
+AI Plus
+2x higher than standard limits
+AI Pro
+4x higher than standard limits
+AI Ultra
+5x or 20x higher than AI Pro limits depending on your subscription
+Context windows
+When you upload files to Gemini Apps, it needs to "read" the content to provide useful insights or answers. The context window is like the reading capacity. It determines how much content can be understood together at one time. A larger context window allows Gemini Apps to work with longer prompts and chats.
+Plan
+Context window
+Without an AI plan
+32k tokens
+AI Plus
+128k tokens
+AI Pro & AI Ultra
+1 million tokens
+Understanding usage
+Prompt type
+Relative usage cost
+Explanation
+Example Prompt
+Simple conversation in chat
+Very low
+Short text prompts without followup questions don’t require a lot of thinking power from Gemini.
+"Write a subject line for my email."
+Ongoing Conversations
+Medium
+These require Gemini to re-read the previous conversation history to maintain context. As the chat gets longer, this requires more thinking power.
+Long chats with dynamic editing.
+A programming project with a lot of revisions.
+Large File Analysis
+Medium
+Long documents, codebases, or spreadsheets require that Gemini reads large blocks of data to create a response.
+"Analyze this 100-page PDF financial report."
+Deep Research
+High
+This requires Gemini to use multiple, multi-step search queries and several rounds of reasoning sweeps to create a comprehensive report.
+"Perform a deep competitive analysis on clean energy technology."
+Video Generation
+High
+Multimedia requests (including images, music, and video) require a lot of thinking power from Gemini. Video generally requires the most usage.
+"Create a dramatic video of a flight over Rome."
+Tip: Start a new chat when you move to a new topic. This will help save usage because Gemini won’t have to re-read a long conversation history before creating a response.
+Feature availability
+Some features are only available with Google AI subscription plans. Some features (like media generation or Deep Research) will consume more of your usage.
+Feature
+Without a Google AI plan
+Google AI Plus
+Google AI Pro
+Google AI Ultra
+Canvas
+Skills
+Storybook
+Connected apps
+Quizzes & flashcards
+Audio overviews
+Screen automation
+Slide generation
+Deep Research
+Daily brief
+Tasks in Gemini
+Image generation with Nano Banana 2
+Redo images with Nano Banana Pro
+Video generation
+Music generation
+Scheduled actions
+Early access to features
+Priority access to some new features
+More info about limits
+What you can do when you reach a usage limit
+If you have a Google AI subscription and reach your limit, you can continue your conversation with Flash-Lite.
+If you reach your five hour or weekly usage limits you can upgrade to a Google AI subscription with higher limits or wait until your model limit is refreshed. Learn how to upgrade.
+Usage limit changes
+Limits may change without notice, including due to capacity constraints. When there’s a large increase in activity in Gemini Apps, we may change limits to maintain a high standard of quality.
+Important:
+For users without a Google AI plan, some features that require more compute resources, like Deep Research, may be unavailable during periods of high demand.
+If capacity changes, limits for users without a Google AI plan may be limited before users with a plan.
+How to tell if you’re close to a limit & when it refreshes
+Gemini Apps will notify you when you're close to your limit based on your plan's level. When you reach your limit, Gemini Apps gives you another notification that tells you when your limit will refresh.
+To view your usage limits:
+Visit gemini.google.com.
+At the bottom left, select Settings Usage Limits .
+Why you might want a larger context window
+A larger context window allows Gemini to read and comprehend more. For example, with a 1M token context window, Gemini can understand up to 1,500 pages of text or 30,000 lines of code.
+If you exceed the context window, this could lead to responses that don’t take into account all the content provided or miss connections or details throughout the content. This is most relevant for prompts that require attention to many details scattered throughout large files.
+Need more help?
+Try these next steps:
+Post to the help community Get answers from community members
+true
+Help
+1 of 19
+Use Gemini Apps
+2 of 19
+What you need to sign in to Gemini Apps
+3 of 19
+About Gemini models
+4 of 19
+Gemini Apps limits & feature availability
+5 of 19
+Find & manage your recent chats in Gemini Apps
+6 of 19
+Use & manage Connected Apps in Gemini
+7 of 19
+Manage your Google AI plan from Gemini Apps
+8 of 19
+Where you can use the Gemini web app
+9 of 19
+Upload & analyze files in Gemini Apps
+10 of 19
+Organize your projects with notebooks in Gemini Apps
+11 of 19
+Schedules in Gemini Apps
+12 of 19
+Use Deep Think in Gemini Apps
+13 of 19
+Verify AI-generated images, videos, and audio
+14 of 19
+Import from other AI platforms to Gemini Apps
+15 of 19
+Learn about generative AI
+16 of 19
+Learn in creative ways with generative AI
+17 of 19
+Guide your child's Gemini Apps experience
+18 of 19
+Use the Gemini app on Mac
+19 of 19
+Use the Gemini app for Windows
+©2026 Google
+Privacy Policy
+Terms of Service
+Language Afrikaans‎azərbaycan‎bosanski‎català‎dansk‎Deutsch‎eesti‎English (United Kingdom)‎español‎español (Latinoamérica)‎euskara‎Filipino‎français‎français (Canada)‎galego‎hrvatski‎Indonesia‎isiZulu‎italiano‎Kiswahili‎latviešu‎lietuvių‎magyar‎Melayu‎Nederlands‎norsk‎o‘zbek‎polski‎português‎português (Brasil)‎română‎shqip‎slovenčina‎slovenščina‎suomi‎svenska‎Tiếng Việt‎Türkçe‎íslenska‎čeština‎Ελληνικά‎беларуская‎български‎македонски‎монгол‎русский‎српски‎українська‎қазақ тілі‎հայերեն‎‏עברית‏اردو‏العربية‏فارسیनेपाली‎मराठी‎हिन्दी‎অসমীয়া‎বাংলা‎ਪੰਜਾਬੀ‎ଓଡ଼ିଆ‎தமிழ்‎తెలుగు‎ไทย‎ລາວ‎ქართული‎አማርኛ‎ខ្មែរ‎中文（简体）‎中文（繁體）‎中文（香港）‎日本語‎한국어‎ English‎
+Enable Dark Mode
+Send feedback on...
+This help content & information General Help Center experience
+Search
+Clear search
+Close search
+Google apps
+Main menu
+920988371911966876
+true
+Search Help Center
+false
+true
+5295044
+false
+
+=== SOURCE: https://support.google.com/gemini/answer/17004136 ===
+Changes to Gemini model access and limits - Gemini Apps Help Skip to main content
+Gemini Apps Help
+Sign in
+Google Help
+Help Center
+Community
+Gemini Apps
+Privacy Policy
+Terms of Service
+Submit feedback
+Send feedback on...
+This help content & information
+General Help Center experience
+CloseNext
+Help Center
+Community
+Privacy Hub
+Gemini Apps
+Changes to Gemini model access and limits
+Important:
+For the best experience, make sure you've updated to the latest version of the Gemini mobile app.
+Learn how to update Google Play apps for Android
+Learn how to update App Store apps for iOS
+Starting in October 2026, there will be changes to model availability for Gemini Apps when you use a personal account.
+These changes will start to take effect for users without an AI subscription on October 9th. For users with an AI Plus subscription, you should receive an email that explains when these changes will take effect for you.
+Model availability after these changes take effect:
+Gemini Model
+Google AI Plan
+Flash-Lite
+Flash
+Pro
+Without a plan
+Auto
+AI Plus
+AI Pro
+AI Ultra
+Auto will be the default setting for users without a Google AI plan. Gemini will use auto model selection to send each prompt to the Gemini model that suits it best. Most prompts will go to Flash-Lite, our fastest model. Prompts that need deeper reasoning may go to Flash or Pro.
+If smart model selection is turned off, chats for users without an AI plan will use Flash-Lite for all responses.
+Tips:
+For each available model, you can also select the model’s effort level from low, medium, and high. This will increase the model’s ability to complete tasks and provide more thorough answers to queries, but will also use more of your limit.
+Manage your Google AI plan
+You can subscribe to a Google AI plan, upgrade your current plan, change your plan, or cancel your plan at any time. Learn how to manage your Google AI plan from Gemini Apps.
+Previous changes
+Starting on May 17, 2026 there were changes to usage limits and model availability for Gemini Apps for users over 18. These changes took effect for users under 18 on July 24, 2026.
+Usage limits for Gemini Apps
+Gemini will move to compute-based usage limits that will refresh every 5 hours until you reach your weekly limit. Calculation of your usage will factor in the complexity of your prompt, the features you use, and the length of your chat. Paid users have higher limits than users without a Google AI subscription.
+Premium models and features require more usage and may cause you to reach your limit faster. This would include things like:
+Media generation
+Images, videos and music
+Deep Research
+Pro Model
+Extended thinking and Deep Think
+Usage limits
+Plan
+Limit
+Without a plan
+Standard limits
+AI Plus
+2x higher than standard limits
+AI Pro
+4x higher than standard limits
+AI Ultra
+5x or 20x higher than AI Pro depending on your subscription
+Need more help?
+Try these next steps:
+Post to the help community Get answers from community members
+false
+©2026 Google
+Privacy Policy
+Terms of Service
+Language Afrikaans‎azərbaycan‎bosanski‎català‎dansk‎Deutsch‎eesti‎English (United Kingdom)‎español‎español (Latinoamérica)‎euskara‎Filipino‎français‎français (Canada)‎galego‎hrvatski‎Indonesia‎isiZulu‎italiano‎Kiswahili‎latviešu‎lietuvių‎magyar‎Melayu‎Nederlands‎norsk‎o‘zbek‎polski‎português‎português (Brasil)‎română‎shqip‎slovenčina‎slovenščina‎suomi‎svenska‎Tiếng Việt‎Türkçe‎íslenska‎čeština‎Ελληνικά‎беларуская‎български‎македонски‎монгол‎русский‎српски‎українська‎қазақ тілі‎հայերեն‎‏עברית‏اردو‏العربية‏فارسیनेपाली‎मराठी‎हिन्दी‎অসমীয়া‎বাংলা‎ਪੰਜਾਬੀ‎ଓଡ଼ିଆ‎தமிழ்‎తెలుగు‎ไทย‎ລາວ‎ქართული‎አማርኛ‎ខ្មែរ‎中文（简体）‎中文（繁體）‎中文（香港）‎日本語‎한국어‎ English‎
+Enable Dark Mode
+Send feedback on...
+This help content & information General Help Center experience
+Search
+Clear search
+Close search
+Google apps
+Main menu
+5274053145413926174
+true
+Search Help Center
+false
+true
+5295044
+false
+
+=== SOURCE: https://gemini.google/subscriptions/ ===
 Google AI Pro & Ultra — get access to Gemini 3.1 Pro & more
 Looking for Gemini 4 Argon? Select AI Pro or AI Ultra below to get access starting today. Upgrade now.
 Close
@@ -81,7 +686,7 @@ Google Flow3
 Get 1,000 Google Flow Credits to use across our AI creative studio to create cinematic scenes and stories with access to Gemini Omni Flash and custom tool creation.
 Google Search4
 Higher access to Gemini 4 Argon, Nano Banana, agentic capabilities, and more.
-Jules5
+Jules9
 Higher limits to our asynchronous coding agent for software developers
 Google Antigravity
 Entry rate limits to agent model in Google Antigravity, our agentic development platform
@@ -89,11 +694,11 @@ Gemini Notebook
 Research and writing assistant with 5x more Audio Overviews, notebooks, and more
 Gemini in Gmail, Docs, Vids, and more
 Access Gemini directly in Google apps
-Google Home Premium (Standard plan)6
+Google Home Premium (Standard plan)5
 30 days of event history and Gemini features
 Gemini in Chrome
 Access Chrome auto browse to help complete tasks for you
-YouTube Premium Lite plan7
+YouTube Premium Lite plan6
 Most videos ad-free, offline, and in the background
 Storage
 5 TB of cloud storage across Gmail, Drive, and Photos
@@ -116,7 +721,7 @@ Google Flow3
 Get 10,000 or 25,000 Google Flow Credits to use across our AI creative studio to create cinematic scenes and stories with access to Gemini Omni Flash and custom tool creation.
 Google Search4
 Highest access to Gemini 4 Argon, Nano Banana, agentic capabilities, and more.
-Jules5
+Jules9
 Highest limits to our asynchronous coding agent for software developers
 Google Antigravity
 Ultra 5x: Higher rate limits to agent model in Google Antigravity, our agentic development platform
@@ -125,13 +730,13 @@ Gemini Notebook
 Highest limits and best model capabilities
 Gemini in Gmail, Docs, Vids, and more
 Highest limits to Gemini directly in Google apps
-Google Home Premium (Advanced plan)6
+Google Home Premium (Advanced plan)5
 24/7 video history, event descriptions, and more
 Gemini in Chrome
 Highest access to Chrome auto browse to help complete tasks for you
-Project Genie8
+Project Genie7
 Create and explore interactive worlds in realtime with our breakthrough Genie 3 world model
-YouTube Premium individual plan9
+YouTube Premium individual plan8
 YouTube ad-free, offline, and in the background
 Storage
 Cloud storage starting at 20 TB across Gmail, Drive, and Photos
@@ -329,16 +934,16 @@ Google Flow features may vary by Google AI subscription tier, platform (web vs. 
 4.
 Gemini 3 Pro model, Nano Banana Pro, and Deep Search in AI Mode are available in select countries — see full list of countries with Gemini 3 Pro in AI Mode and full list of countries with Nano Banana Pro in AI Mode.
 5.
-Jules is an asynchronous coding agent that is currently in beta. To use Jules, you must be 18 years old or older. Only English is officially supported at this time. Capacity is subject to availability and not guaranteed.
-6.
 Requires Google Home app, Wi-Fi, and internet connection. Features subject to change; available in select countries and languages. Gemini features work independently of Gemini apps. Check responses for accuracy; results may vary.
-7.
+6.
 The YouTube Premium Lite plan included in this bundle won’t activate if you already have an equivalent or YouTube Premium subscription. Learn more. Already have a YouTube membership?
 Learn more about managing memberships.
-8.
+7.
 Project Genie is available in more than 140 countries — see full list of countries. Only available with a Google AI Ultra plan.
-9.
+8.
 YouTube Premium individual plan is available in over 40 countries — see full list of countries.
+9.
+Jules is an asynchronous coding agent that is currently in beta. To use Jules, you must be 18 years old or older. Only English is officially supported at this time. Capacity is subject to availability and not guaranteed.
 What Gemini Can Do
 Gemini Live
 Image Generation
