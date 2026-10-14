@@ -1,0 +1,33 @@
+name: weekly-check
+
+on:
+  schedule:
+    - cron: "0 6 * * 1"   # her Pazartesi 06:00 UTC
+  workflow_dispatch:       # elle de calistirilabilir
+
+permissions:
+  contents: write
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Sayfalari topla
+        run: python collector/collect.py
+      - name: Farki bul
+        run: python collector/diff.py
+      - name: Okut (anahtar varsa)
+        run: python reader/read.py
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      - name: Sonuclari depoya kaydet
+        run: |
+          git config user.name "freetierwatch-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add data
+          git diff --cached --quiet || git commit -m "Weekly data update"
+          git push
