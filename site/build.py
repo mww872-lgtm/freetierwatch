@@ -7,6 +7,7 @@ from html import escape as e
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 OUT = ROOT / "_site"
 REPO = "https://github.com/mww872-lgtm/freetierwatch"
+ICON = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230a1114'/%3E%3Ccircle cx='16' cy='16' r='7' fill='%233ddbb0'/%3E%3C/svg%3E"
 LABEL = {"verified": "Verified", "partial": "Partly stated", "none": "Couldn't verify"}
 
 
@@ -32,6 +33,7 @@ def host(url):
 def collect_services():
     plans = load(ROOT / "data" / "plans.json", {"services": {}}).get("services", {})
     site = load(ROOT / "config" / "site.json")
+    hide = site.get("hide", {})
     result = []
     for sid in site["order"]:
         cfg = site["services"][sid]
@@ -43,8 +45,8 @@ def collect_services():
             "id": sid,
             "name": src.get("name") or sid.title(),
             "cfg": cfg,
-            "features": ext.get("features", []),
-            "limits": ext.get("limits", []),
+            "features": [f for f in ext.get("features", []) if f.get("feature") not in hide.get(sid, [])],
+            "limits": [l for l in ext.get("limits", []) if l.get("topic") not in hide.get(sid, [])],
             "checked": src.get("last_checked"),
             "sources": src.get("sources", []),
             "manual": bool(manual),
@@ -156,7 +158,9 @@ def shell(title, desc, body, page=False):
     return (
         '<!doctype html><html lang="en"><head><meta charset="utf-8">'
         '<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">'
-        f"<title>{e(title)}</title><meta name=\"description\" content=\"{e(desc)}\">{FONTS}<style>{CSS}</style></head>"
+        f"<title>{e(title)}</title><meta name=\"description\" content=\"{e(desc)}\">"
+        f'<meta property="og:title" content="{e(title)}"><meta property="og:description" content="{e(desc)}"><meta property="og:type" content="website"><meta name="twitter:card" content="summary">'
+        f'<link rel="icon" href="{ICON}">{FONTS}<style>{CSS}</style></head>"
         f'<body><div class="in{" page" if page else ""}"><header class="top"><a class="logo" href="index.html">Free Tier Watch</a>'
         f'<nav><a href="index.html#services">Services</a><a href="index.html#this-week">This week</a>'
         f'<a href="how-we-check.html">How we check</a><a href="{err}" rel="noopener">Report an error</a></nav></header>'
@@ -177,7 +181,7 @@ def this_week(services):
         txt = f"Pages changed since the last check: {lst}. We compare the new text with the old one and update the cards above after review."
     else:
         txt = "This is our first full check. From next Monday this section lists what changed on the free plans."
-    return f'<section id="this-week"><h2>This week</h2><div class="panel"><p>{e(txt)}</p><p>A weekly email is coming soon.</p></div></section>'
+    return f'<section id="this-week"><h2>This week</h2><div class="panel"><p>{e(txt)}</p></div></section>'
 
 
 def index(services):

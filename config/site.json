@@ -1,12 +1,62 @@
 {
-  "order": ["chatgpt", "claude", "gemini", "grok", "copilot", "perplexity", "deepseek"],
+  "order": [
+    "chatgpt",
+    "claude",
+    "gemini",
+    "grok",
+    "copilot",
+    "perplexity",
+    "deepseek"
+  ],
   "services": {
-    "chatgpt":    {"big": "Unlimited*", "label": "everyday text chats", "summary": "GPT-5.6 Luna model. Files, images, voice and data analysis have separate limits that are not published.", "status": "verified"},
-    "claude":     {"big": "5 h", "label": "rolling usage window", "summary": "No fixed message count is published. Limits depend on conversation length and features used.", "status": "verified"},
-    "gemini":     {"big": "32k", "label": "tokens of context", "summary": "Flash-Lite model. The usage limit refreshes every 5 hours.", "status": "partial", "note": "Two official pages describe some features (Deep Research, Gemini Live, Canvas) differently, so we list only what is clear."},
-    "grok":       {"big": "n/a", "label": "limits not stated", "summary": "Chat, image and video, voice and file analysis. The official page gives no usage numbers.", "status": "partial"},
-    "copilot":    {"big": "Free", "label": "no sign-in needed", "summary": "Chat, web answers and image creation. Signing in adds chat history and voice.", "status": "partial"},
-    "perplexity": {"big": "3/day", "label": "Pro searches", "summary": "1 research query a month. Basic searches are practically unlimited.", "status": "verified"},
-    "deepseek":   {"big": "?", "label": "could not verify", "summary": "The official site publishes no free plan limits, so we make no claims.", "status": "none"}
+    "chatgpt": {
+      "big": "Unlimited",
+      "label": "everyday text chats, with safeguards",
+      "summary": "GPT-5.6 Luna model. Files, images, voice and data analysis have separate limits that are not published.",
+      "status": "verified"
+    },
+    "claude": {
+      "big": "5 h",
+      "label": "rolling usage window",
+      "summary": "No fixed message count is published. Limits depend on conversation length and features used.",
+      "status": "verified"
+    },
+    "gemini": {
+      "big": "32k",
+      "label": "tokens of context",
+      "summary": "Flash-Lite model. The usage limit refreshes every 5 hours.",
+      "status": "partial",
+      "note": "Two official pages describe some features (Deep Research, Gemini Live, Canvas) differently, so we list only what is clear."
+    },
+    "grok": {
+      "big": "n/a",
+      "label": "limits not stated",
+      "summary": "Chat, image and video, voice and file analysis. The official page gives no usage numbers.",
+      "status": "partial"
+    },
+    "copilot": {
+      "big": "Free",
+      "label": "no sign-in needed",
+      "summary": "Chat, web answers and image creation. Signing in adds chat history and voice.",
+      "status": "partial"
+    },
+    "perplexity": {
+      "big": "3/day",
+      "label": "Pro searches",
+      "summary": "1 research query a month. Basic searches are practically unlimited.",
+      "status": "verified"
+    },
+    "deepseek": {
+      "big": "?",
+      "label": "could not verify",
+      "summary": "The official site publishes no free plan limits, so we make no claims.",
+      "status": "none"
+    }
+  },
+  "hide": {
+    "gemini": [
+      "Gemini app",
+      "Usage limits"
+    ]
   }
 }
