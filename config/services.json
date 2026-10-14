@@ -1,0 +1,12 @@
+{
+  "_not": "Adresler BASLANGIC tahminidir. Ilk calistirmada hangisi bos/hatali donerse duzeltilecek.",
+  "services": [
+    {"id": "chatgpt",    "name": "ChatGPT",    "url": "https://openai.com/chatgpt/pricing/"},
+    {"id": "claude",     "name": "Claude",     "url": "https://claude.com/pricing"},
+    {"id": "gemini",     "name": "Gemini",     "url": "https://gemini.google/subscriptions/"},
+    {"id": "grok",       "name": "Grok",       "url": "https://grok.com/plans"},
+    {"id": "copilot",    "name": "Copilot",    "url": "https://www.microsoft.com/en-us/microsoft-copilot/for-individuals"},
+    {"id": "deepseek",   "name": "DeepSeek",   "url": "https://www.deepseek.com/"},
+    {"id": "perplexity", "name": "Perplexity", "url": "https://www.perplexity.ai/pro"}
+  ]
+}
