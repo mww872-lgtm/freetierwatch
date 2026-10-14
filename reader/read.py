@@ -4,11 +4,13 @@
 Uc katmanli guvenlik vardir:
  1) Kapsam: sadece servisin SOHBET UYGULAMASININ UCRETSIZ plani. API/gelistirici, kurumsal ve ucretli plan
     bolumleri yok sayilir.
- 2) Alinti kontrolu: model her bilgi icin sayfadan BIREBIR alinti vermek zorunda. Alinti sayfada yoksa
-    o bilgi atilir. Bilginin hangi sayfadan geldigini model degil, kod belirler.
- 3) Baglam kontrolu: ikinci bir model cagrisi "bu cumle gercekten bu servisin ucretsiz sohbet planiyla mi
-    ilgili?" diye sorar. Hayir denen bilgi atilir.
-Atilan bilgiler "rejected_items" altinda saklanir (gozden gecirmek icin), yayina girmez.
+ 2) Alinti kontrolu: model her bilgi icin sayfadan BIREBIR alinti vermek zorunda (bosluk/noktalama farki
+    onemsenmez, kelimeler birebir olmali). Alinti sayfada yoksa bilgi atilir. Bilginin hangi sayfadan
+    geldigini model degil, kod belirler.
+ 3) Baglam kontrolu: ikinci bir model cagrisi, alintinin sayfadaki CEVRESINE bakarak "bu cumle gercekten
+    ucretsiz sohbet planiyla mi ilgili?" diye sorar. Model kendi hafizasini DEGIL, sadece sayfa metnini
+    kullanir. Sayfa ucretsiz kullanicilari acikca gostermiyorsa bilgi atilir.
+Atilan bilgiler "rejected_items" altinda nedeniyle saklanir (gozden gecirmek icin), yayina girmez.
 Sayfa metni cok azsa (ornegin JavaScript ile olusan sayfa) servis hakkinda HICBIR iddia uretilmez.
 
 Kullanim:
@@ -25,7 +27,7 @@ import urllib.request
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 DATA = ROOT / "data"
-MIN_EVIDENCE_CHARS = 15
+MIN_EVIDENCE_CHARS = 20
 SOURCE_RE = re.compile(r"^=== SOURCE: (.+?) ===$", re.M)
 
 PROMPT = """You extract facts about the FREE plan of the consumer chat product of an AI service, from text copied from its official web pages.
@@ -55,20 +57,28 @@ Page text (several pages, each starts with a SOURCE line):
 \"\"\"
 """
 
-CONTEXT_PROMPT = """For each numbered quote below, decide whether it describes the FREE plan of the consumer chat app/website of "{name}" (the product ordinary people use in a browser or phone app).
-Answer false if the quote is about: the developer API or platform, enterprise/team/business/education plans, paid plans only, or a different product or company.
-Answer true only if the quote really applies to the free consumer chat plan of {name}.
+CONTEXT_PROMPT = """You check whether quotes taken from official web pages describe the FREE plan of the consumer chat app/website of "{name}" (the product ordinary people use in a browser or phone app).
+
+Judge ONLY from the CONTEXT text given with each quote. Do NOT use anything you believe about the product from memory; your memory may be outdated.
+Answer true only if the context itself shows that the quote applies to free users of the consumer chat product: for example it mentions free users, the free plan, no cost, or "without a plan", or it sits under a heading about the free plan, or the page is clearly about free usage.
+Answer false if the context shows the quote belongs to the developer API or platform, enterprise/team/business/education plans, or a paid plan only, OR if the context gives no clear sign that it applies to free users (for example a plain list of features that does not say which plan has them).
+In "reason", say in one short sentence what in the context made you decide.
 
 Return JSON: a list of {{"id": number, "about_free_consumer_plan": true or false, "reason": short string}}
 
-Quotes:
-{quotes}
+{items}
 """
 
 
-def norm(s: str) -> str:
-    s = s.replace("’", "'").replace("‘", "'").replace("“", '"').replace("”", '"')
-    return re.sub(r"\s+", " ", s).strip().lower()
+def locate(evidence: str, text: str):
+    """Alintiyi metinde bulur. Bosluk, satir sonu ve noktalama farklari onemsenmez; kelimeler ayni sirada
+    ve birebir olmali. Bulursa (bas, son) dondurur, bulamazsa None."""
+    words = re.findall(r"[a-z0-9]+", evidence.lower())
+    if len(" ".join(words)) < MIN_EVIDENCE_CHARS:
+        return None
+    pattern = r"(?<![a-z0-9])" + r"[^a-z0-9]+".join(re.escape(w) for w in words) + r"(?![a-z0-9])"
+    m = re.search(pattern, text, re.I)
+    return (m.start(), m.end()) if m else None
 
 
 def split_sources(text: str) -> dict:
@@ -100,37 +110,46 @@ def build_prompt_text(sections: dict, max_chars: int) -> str:
 
 
 def verify_and_filter(extracted: dict, sections: dict, model: str, key: str, name: str):
-    """Alinti kontrolu + baglam kontrolu. (kabul edilenler yerinde guncellenir) -> (rejected, reasons)"""
-    normed = {u: norm(t) for u, t in sections.items()}
+    """Alinti kontrolu + baglam kontrolu. Kabul edilenler `extracted` icinde kalir, digerleri atilir.
+    Doner: (atilanlar, inceleme_nedenleri)"""
     rejected, reasons = [], []
-    candidates = []  # (group, item)
+    candidates = []  # (group, item, baglam)
 
     for group in ("limits", "features"):
         kept = []
         for item in extracted.get(group) or []:
-            ev = norm(item.get("evidence", ""))
-            src = next((u for u, t in normed.items() if len(ev) >= MIN_EVIDENCE_CHARS and ev in t), None)
-            if src is None:
+            found = None
+            for url, text in sections.items():
+                span = locate(item.get("evidence", ""), text)
+                if span:
+                    found = (url, text, span)
+                    break
+            if found is None:
                 rejected.append({"group": group, "item": item, "reason": "quote not found on the source pages"})
                 continue
-            item["source"] = src
+            url, text, (s, e) = found
+            item["source"] = url
             kept.append(item)
-            candidates.append((group, item))
+            context = re.sub(r"\s+", " ", text[max(0, s - 700): e + 300]).strip()
+            candidates.append((group, item, context))
         extracted[group] = kept
 
     if candidates:
-        quotes = "\n".join(f"{i}. {it['evidence']}" for i, (_, it) in enumerate(candidates))
+        items_txt = "\n".join(
+            f"[{i}] QUOTE: {it['evidence']}\nCONTEXT: {ctx}\n" for i, (_, it, ctx) in enumerate(candidates))
         try:
-            answer = ask_gemini(model, key, CONTEXT_PROMPT.format(name=name, quotes=quotes))
+            answer = ask_gemini(model, key, CONTEXT_PROMPT.format(name=name, items=items_txt))
             if isinstance(answer, dict):
                 answer = answer.get("results") or answer.get("items") or []
             verdict = {int(a["id"]): a for a in answer}
-            for i, (group, item) in enumerate(candidates):
+            for i, (group, item, _) in enumerate(candidates):
                 v = verdict.get(i)
                 if v is None or v.get("about_free_consumer_plan") is not True:
                     extracted[group].remove(item)
-                    reason = (v or {}).get("reason", "no context verdict returned")
-                    rejected.append({"group": group, "item": item, "reason": "context check: " + str(reason)})
+                    why = (v or {}).get("reason", "no context verdict returned")
+                    rejected.append({"group": group, "item": item, "reason": "context check: " + str(why)})
+                else:
+                    item["context_note"] = v.get("reason", "")
         except (urllib.error.URLError, KeyError, ValueError, TypeError, TimeoutError, OSError) as exc:
             reasons.append(f"context check failed ({exc}); items kept but NOT context-checked")
 

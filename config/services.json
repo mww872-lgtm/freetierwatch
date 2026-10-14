@@ -6,7 +6,6 @@
       "https://openai.com/chatgpt/pricing/"
     ]},
     {"id": "claude", "name": "Claude", "urls": [
-      "https://support.claude.com/en/articles/8602283-about-free-claude-usage",
       "https://support.claude.com/en/articles/11647753-understanding-usage-and-length-limits",
       "https://claude.com/pricing"
     ]},
