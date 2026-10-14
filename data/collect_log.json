@@ -1,0 +1,54 @@
+{
+  "date": "2026-10-14",
+  "results": {
+    "chatgpt": {
+      "ok": false,
+      "chars": 0,
+      "thin": false,
+      "url": "https://openai.com/chatgpt/pricing/",
+      "error": "HTTP Error 403: Forbidden"
+    },
+    "claude": {
+      "ok": true,
+      "chars": 21029,
+      "thin": false,
+      "url": "https://claude.com/pricing",
+      "error": null
+    },
+    "gemini": {
+      "ok": true,
+      "chars": 21576,
+      "thin": false,
+      "url": "https://gemini.google/subscriptions/",
+      "error": null
+    },
+    "grok": {
+      "ok": true,
+      "chars": 33,
+      "thin": true,
+      "url": "https://grok.com/plans",
+      "error": null
+    },
+    "copilot": {
+      "ok": true,
+      "chars": 22199,
+      "thin": false,
+      "url": "https://www.microsoft.com/en-us/microsoft-copilot/for-individuals",
+      "error": null
+    },
+    "deepseek": {
+      "ok": true,
+      "chars": 507,
+      "thin": false,
+      "url": "https://www.deepseek.com/",
+      "error": null
+    },
+    "perplexity": {
+      "ok": false,
+      "chars": 0,
+      "thin": false,
+      "url": "https://www.perplexity.ai/pro",
+      "error": "HTTP Error 403: Forbidden"
+    }
+  }
+}

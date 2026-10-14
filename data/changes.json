@@ -1,0 +1,47 @@
+{
+  "date": "2026-10-14",
+  "services": {
+    "chatgpt": {
+      "status": "error",
+      "error": "HTTP Error 403: Forbidden",
+      "added": [],
+      "removed": []
+    },
+    "claude": {
+      "status": "first",
+      "thin": false,
+      "added": [],
+      "removed": []
+    },
+    "gemini": {
+      "status": "first",
+      "thin": false,
+      "added": [],
+      "removed": []
+    },
+    "grok": {
+      "status": "first",
+      "thin": true,
+      "added": [],
+      "removed": []
+    },
+    "copilot": {
+      "status": "first",
+      "thin": false,
+      "added": [],
+      "removed": []
+    },
+    "deepseek": {
+      "status": "first",
+      "thin": false,
+      "added": [],
+      "removed": []
+    },
+    "perplexity": {
+      "status": "error",
+      "error": "HTTP Error 403: Forbidden",
+      "added": [],
+      "removed": []
+    }
+  }
+}
