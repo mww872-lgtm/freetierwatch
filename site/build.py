@@ -160,7 +160,7 @@ def shell(title, desc, body, page=False):
         '<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">'
         f"<title>{e(title)}</title><meta name=\"description\" content=\"{e(desc)}\">"
         f'<meta property="og:title" content="{e(title)}"><meta property="og:description" content="{e(desc)}"><meta property="og:type" content="website"><meta name="twitter:card" content="summary">'
-        f'<link rel="icon" href="{ICON}">{FONTS}<style>{CSS}</style></head>"
+        f'<link rel="icon" href="{ICON}">{FONTS}<style>{CSS}</style></head>'
         f'<body><div class="in{" page" if page else ""}"><header class="top"><a class="logo" href="index.html">Free Tier Watch</a>'
         f'<nav><a href="index.html#services">Services</a><a href="index.html#this-week">This week</a>'
         f'<a href="how-we-check.html">How we check</a><a href="{err}" rel="noopener">Report an error</a></nav></header>'
