@@ -1,4 +1,218 @@
 {
-  "services": {},
+  "services": {
+    "claude": {
+      "name": "Claude",
+      "source_url": "https://claude.com/pricing",
+      "last_checked": "2026-10-14",
+      "page_was_thin": false,
+      "unverified_items": 0,
+      "needs_human_review": false,
+      "extracted": {
+        "free_plan_exists": "yes",
+        "free_plan_name": "Free",
+        "limits": [
+          {
+            "topic": "Usage",
+            "value": "not officially stated",
+            "evidence": "Every plan has usage limits that reset on a rolling five-hour session window, and paid plans add weekly limits on top.",
+            "verified": true
+          },
+          {
+            "topic": "Code execution",
+            "value": "50 free hours daily",
+            "evidence": "Run Python code in a sandboxed environment for advanced data analysis. 50 free hours of usage daily per organization.",
+            "verified": true
+          }
+        ],
+        "features": [
+          {
+            "feature": "Chat on web, desktop, and mobile",
+            "evidence": "Chat on web, desktop, and mobile",
+            "verified": true
+          },
+          {
+            "feature": "Search the web",
+            "evidence": "Search the web, create files, and run code",
+            "verified": true
+          },
+          {
+            "feature": "Create files and run code",
+            "evidence": "Search the web, create files, and run code",
+            "verified": true
+          },
+          {
+            "feature": "Memory across conversations",
+            "evidence": "Memory across conversations",
+            "verified": true
+          },
+          {
+            "feature": "Connect your apps and tools",
+            "evidence": "Connect your apps and tools",
+            "verified": true
+          },
+          {
+            "feature": "Create Artifacts",
+            "evidence": "Create Artifacts",
+            "verified": true
+          },
+          {
+            "feature": "Claude Design, Slides, Docs",
+            "evidence": "Claude Design, Slides, Docs",
+            "verified": true
+          },
+          {
+            "feature": "Sonnet and Haiku models",
+            "evidence": "Sonnet Yes Haiku Yes",
+            "verified": true
+          }
+        ],
+        "notes": "The free plan is explicitly listed as 'Free' with a price of $0."
+      }
+    },
+    "gemini": {
+      "name": "Gemini",
+      "source_url": "https://gemini.google/subscriptions/",
+      "last_checked": "2026-10-14",
+      "page_was_thin": false,
+      "unverified_items": 0,
+      "needs_human_review": false,
+      "extracted": {
+        "free_plan_exists": "yes",
+        "free_plan_name": "Free",
+        "limits": [
+          {
+            "topic": "Usage access",
+            "value": "not officially stated",
+            "evidence": "Usage access limits in the Gemini app: For the Gemini app, compute-based usage limits factor in the complexity of your prompt, the features you use, and the length of your chat.",
+            "verified": true
+          }
+        ],
+        "features": [
+          {
+            "feature": "Access to Flash-Lite model",
+            "evidence": "Access to our Flash-Lite model",
+            "verified": true
+          },
+          {
+            "feature": "Image generation and editing",
+            "evidence": "Image generation and editing",
+            "verified": true
+          },
+          {
+            "feature": "Deep Research",
+            "evidence": "Deep Research",
+            "verified": true
+          },
+          {
+            "feature": "Gemini Live",
+            "evidence": "Gemini Live",
+            "verified": true
+          },
+          {
+            "feature": "Canvas",
+            "evidence": "Canvas",
+            "verified": true
+          },
+          {
+            "feature": "Gems",
+            "evidence": "Gems",
+            "verified": true
+          },
+          {
+            "feature": "Google Flow",
+            "evidence": "Google Flow3",
+            "verified": true
+          },
+          {
+            "feature": "Gemini Notebook",
+            "evidence": "Gemini Notebook",
+            "verified": true
+          },
+          {
+            "feature": "Cloud storage",
+            "evidence": "15 GB of cloud storage across Gmail, Drive, and Photos",
+            "verified": true
+          }
+        ],
+        "notes": "The free plan is explicitly listed under the 'Personal' section as '$0/ month with a Google Account'."
+      }
+    },
+    "grok": {
+      "name": "Grok",
+      "source_url": "https://grok.com/plans",
+      "last_checked": "2026-10-14",
+      "page_was_thin": true,
+      "unverified_items": 0,
+      "needs_human_review": true,
+      "extracted": {
+        "free_plan_exists": "not officially stated",
+        "free_plan_name": null,
+        "limits": [],
+        "features": [],
+        "notes": "The provided text only contains the page title and navigation elements; no information regarding plans or features is present."
+      }
+    },
+    "copilot": {
+      "name": "Copilot",
+      "source_url": "https://www.microsoft.com/en-us/microsoft-copilot/for-individuals",
+      "last_checked": "2026-10-14",
+      "page_was_thin": false,
+      "unverified_items": 0,
+      "needs_human_review": false,
+      "extracted": {
+        "free_plan_exists": "yes",
+        "free_plan_name": null,
+        "limits": [
+          {
+            "topic": "Copilot chat usage",
+            "value": "lower than paid plans",
+            "evidence": "Advanced Copilot[popover:]chat with higher usage than free",
+            "verified": true
+          },
+          {
+            "topic": "Visual AI assistance",
+            "value": "lower than paid plans",
+            "evidence": "Higher usage than free for visual AI assistance from your screen or camera[popover:]",
+            "verified": true
+          },
+          {
+            "topic": "AI-generated audio",
+            "value": "lower than paid plans",
+            "evidence": "Higher usage than free for AI-generated audio (English only)[popover:]",
+            "verified": true
+          },
+          {
+            "topic": "AI image creation",
+            "value": "lower than paid plans",
+            "evidence": "Higher usage than free for AI image creation in Copilot[popover:]",
+            "verified": true
+          }
+        ],
+        "features": [
+          {
+            "feature": "Conversational AI chat",
+            "evidence": "The Copilot mobile app provides a conversational AI chat experience for asking questions, creating content, conducting research, and more.",
+            "verified": true
+          }
+        ],
+        "notes": "The text refers to a 'free' tier by comparing paid subscription usage limits against it, though it does not explicitly name a 'Free Plan'."
+      }
+    },
+    "deepseek": {
+      "name": "DeepSeek",
+      "source_url": "https://www.deepseek.com/",
+      "last_checked": "2026-10-14",
+      "page_was_thin": false,
+      "unverified_items": 0,
+      "needs_human_review": false,
+      "extracted": {
+        "free_plan_exists": "not officially stated",
+        "free_plan_name": null,
+        "limits": [],
+        "features": [],
+        "notes": "The provided text does not mention a free plan or any pricing tiers for the consumer web interface."
+      }
+    }
+  },
   "updated": "2026-10-14"
 }
