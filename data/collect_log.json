@@ -10,7 +10,7 @@
     },
     "claude": {
       "ok": true,
-      "chars": 21029,
+      "chars": 20979,
       "thin": false,
       "url": "https://claude.com/pricing",
       "error": null
