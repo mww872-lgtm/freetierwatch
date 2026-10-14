@@ -31,11 +31,3 @@ jobs:
           git add data
           git diff --cached --quiet || git commit -m "Weekly data update"
           git push
-
-  publish:
-    needs: run
-    permissions:
-      contents: read
-      pages: write
-      id-token: write
-    uses: ./.github/workflows/pages.yml
