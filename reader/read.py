@@ -74,7 +74,15 @@ def locate(evidence: str, text: str):
     """Alintiyi metinde bulur. Bosluk, satir sonu ve noktalama farklari onemsenmez; kelimeler ayni sirada
     ve birebir olmali. Bulursa (bas, son) dondurur, bulamazsa None."""
     words = re.findall(r"[a-z0-9]+", evidence.lower())
+    if not words:
+        return None
     if len(" ".join(words)) < MIN_EVIDENCE_CHARS:
+        # Kisa alinti sadece sayfada tek basina bir satirsa kabul edilir (ornek: tablodaki "Create Artifacts").
+        pos = 0
+        for line in text.splitlines(keepends=True):
+            if re.findall(r"[a-z0-9]+", line.lower()) == words:
+                return (pos, pos + len(line))
+            pos += len(line)
         return None
     pattern = r"(?<![a-z0-9])" + r"[^a-z0-9]+".join(re.escape(w) for w in words) + r"(?![a-z0-9])"
     m = re.search(pattern, text, re.I)
