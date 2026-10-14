@@ -64,7 +64,7 @@ def card(s):
             continue
         lines.append(limit_line(l))
     lines += [f["feature"] for f in s["features"]]
-    shown, more = lines[:5], lines[5:]
+    shown, more = lines[:3], lines[3:]
     bullets = "".join(f"<li>{e(x)}</li>" for x in shown)
     detail_rows = ""
     for l in s["limits"]:
@@ -83,12 +83,13 @@ def card(s):
         details = '<details><summary>Why no data?</summary><p class="how">The only official page we found has too little information about a free plan. We do not guess.</p></details>'
     checked = pretty_date(s["checked"]) if s["checked"] else "not checked"
     return (
-        f'<article class="card" id="{e(s["id"])}"><div class="top"><h3 class="nm">{e(s["name"])}</h3>'
-        f'<span class="st {cfg["status"]}">{LABEL[cfg["status"]]}</span></div>'
-        f'<div class="num">{e(cfg["big"])}<small>{e(cfg["label"])}</small></div>'
-        f'<p class="sum">{e(cfg["summary"])}</p>{note}'
-        f'{"<ul class=feat>" + bullets + "</ul>" if bullets else ""}{details}'
-        f'<div class="when">Checked {checked}</div></article>'
+        f'<article class="row" id="{e(s["id"])}">'
+        f'<div class="l"><h3 class="nm">{e(s["name"])}</h3>'
+        f'<div class="num">{e(cfg["big"])}<small>{e(cfg["label"])}</small></div></div>'
+        f'<div class="m"><p class="sum">{e(cfg["summary"])}</p>{note}'
+        f'{"<ul class=feat>" + bullets + "</ul>" if bullets else ""}{details}</div>'
+        f'<div class="r"><span class="st {cfg["status"]}">{LABEL[cfg["status"]]}</span>'
+        f'<div class="when">Checked {checked}</div></div></article>'
     )
 
 
@@ -109,19 +110,22 @@ h1{font-size:clamp(32px,5.6vw,56px);line-height:1.04;letter-spacing:-.03em;margi
 .sub{color:var(--mu);max-width:56ch;margin:0 0 22px;font-size:18px}
 .pulse{display:flex;gap:10px 22px;flex-wrap:wrap;font:13px "DM Mono",monospace;color:var(--mu);margin-bottom:20px}
 .pulse b{color:var(--ac);font-weight:500}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:12px;align-items:start}
-.card{background:var(--sf);border:1px solid var(--ln);border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:10px;min-width:0}
-.top{display:flex;justify-content:space-between;align-items:center;gap:8px}
-.nm{font-weight:700;font-size:20px;margin:0}
+.tbl{background:var(--sf);border:1px solid var(--ln);border-radius:12px;overflow:hidden}
+.row{display:grid;grid-template-columns:200px minmax(0,1fr) 150px;gap:10px 28px;padding:22px 24px;border-top:1px solid var(--ln)}
+.row:first-child{border-top:0}
+.l,.m,.r{min-width:0}
+.r{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+@media(max-width:720px){.row{grid-template-columns:1fr;padding:18px}.r{flex-direction:row;align-items:center;justify-content:space-between}}
+.nm{font-weight:700;font-size:22px;margin:0 0 8px}
 .st{font:11px "DM Mono",monospace;padding:3px 8px;border-radius:99px;border:1px solid currentColor;white-space:nowrap}
 .st.verified{color:var(--ac)}.st.partial{color:var(--wa)}.st.none{color:var(--no)}
-.num{font-size:42px;line-height:1;font-weight:700;letter-spacing:-.03em;margin-top:6px}
+.num{font-size:34px;line-height:1;font-weight:700;letter-spacing:-.03em;margin-top:6px}
 .num small{display:block;font:12px "DM Mono",monospace;letter-spacing:0;color:var(--mu);margin-top:6px;font-weight:400}
-.sum{margin:0;color:var(--ink);font-size:15px}
-.cnote{margin:0;color:var(--wa);font-size:13px}
-ul.feat{list-style:none;margin:0;padding:12px 0 0;border-top:1px dashed var(--ln);display:grid;gap:4px;font-size:14px;color:var(--mu)}
+.sum{margin:0 0 6px;color:var(--ink);font-size:15px}
+.cnote{margin:0 0 6px;color:var(--wa);font-size:13px}
+ul.feat{list-style:none;margin:12px 0 0;padding:12px 0 0;border-top:1px dashed var(--ln);display:grid;gap:4px;font-size:14px;color:var(--mu)}
 ul.feat li::before{content:"+ ";color:var(--ac);font-family:"DM Mono",monospace}
-details{border-top:1px dashed var(--ln);padding-top:10px;font-size:14px}
+details{margin-top:12px;font-size:14px}
 summary{cursor:pointer;color:var(--ac);font:13px "DM Mono",monospace}
 summary:focus-visible,a:focus-visible{outline:2px solid var(--ac);outline-offset:3px}
 ul.src{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:12px}
@@ -129,7 +133,7 @@ ul.src b{display:block;font-weight:600}
 ul.src q{display:block;color:var(--mu);font-size:13px;margin:2px 0;quotes:"\\201C" "\\201D"}
 ul.src a{font:12px "DM Mono",monospace}
 .how{color:var(--mu);font-size:13px;margin:10px 0 0}
-.when{font:11px "DM Mono",monospace;color:var(--mu);margin-top:auto;padding-top:6px}
+.when{font:11px "DM Mono",monospace;color:var(--mu)}
 section{margin-top:44px}
 h2{font-size:26px;letter-spacing:-.02em;margin:0 0 12px}
 .panel{background:var(--sf2);border:1px solid var(--ln);border-radius:12px;padding:20px;max-width:70ch}
@@ -185,7 +189,7 @@ def index(services):
         '<p class="sub">What each AI chat app gives you for $0, with the source and the exact quote behind every line.</p>'
         f'<div class="pulse"><span><b>{len(services)}</b> services</span><span><b>{counts["verified"]}</b> verified</span>'
         f'<span><b>{counts["partial"]}</b> partly stated</span><span><b>{counts["none"]}</b> unverified</span><span>Last check: {last}</span></div>'
-        f'<section id="services" style="margin-top:0"><div class="grid">{"".join(card(s) for s in services)}</div></section>'
+        f'<section id="services" style="margin-top:0"><div class="tbl">{"".join(card(s) for s in services)}</div></section>'
         f"{this_week(services)}"
     )
     return shell("Free Tier Watch", "What the free plans of AI chat apps really include, checked against official pages every week.", body)
