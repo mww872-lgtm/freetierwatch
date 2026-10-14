@@ -28,7 +28,7 @@
     },
     "claude": {
       "ok": true,
-      "chars": 27925,
+      "chars": 27875,
       "thin": false,
       "partial": false,
       "failed_sources": [],
@@ -42,7 +42,7 @@
         {
           "url": "https://claude.com/pricing",
           "ok": true,
-          "chars": 21029,
+          "chars": 20979,
           "error": null
         }
       ],
@@ -50,7 +50,7 @@
     },
     "gemini": {
       "ok": true,
-      "chars": 37161,
+      "chars": 37162,
       "thin": false,
       "partial": false,
       "failed_sources": [],
@@ -64,7 +64,7 @@
         {
           "url": "https://support.google.com/gemini/answer/17004136",
           "ok": true,
-          "chars": 3888,
+          "chars": 3889,
           "error": null
         },
         {

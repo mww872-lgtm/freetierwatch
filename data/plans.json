@@ -11,7 +11,7 @@
       "status": "ok",
       "needs_human_review": true,
       "review_reasons": [
-        "4 item(s) rejected automatically"
+        "2 item(s) rejected automatically"
       ],
       "extracted": {
         "free_plan_exists": "yes",
@@ -19,10 +19,17 @@
         "limits": [
           {
             "topic": "Usage limits",
-            "value": "Resets on a rolling five-hour session window",
+            "value": "Not fixed; depends on conversation length, complexity, model, and features used.",
+            "evidence": "How much you can do depends on the length and complexity of your conversations, the model you choose, and the features you use, so there's no fixed message count.",
+            "source": "https://claude.com/pricing",
+            "context_note": "The context explicitly discusses usage limits for all plans, including the Free plan."
+          },
+          {
+            "topic": "Usage reset",
+            "value": "Rolling five-hour session window.",
             "evidence": "Every plan has usage limits that reset on a rolling five-hour session window, and paid plans add weekly limits on top.",
             "source": "https://claude.com/pricing",
-            "context_note": "The context explicitly states that every plan, including the Free plan, has usage limits."
+            "context_note": "The context states that every plan, including the Free plan, has usage limits that reset on a rolling five-hour window."
           }
         ],
         "features": [
@@ -39,13 +46,7 @@
             "context_note": "The quote is listed directly under the 'Free' plan section of the pricing table."
           },
           {
-            "feature": "Create files",
-            "evidence": "Search the web, create files, and run code",
-            "source": "https://claude.com/pricing",
-            "context_note": "The quote is listed directly under the 'Free' plan section of the pricing table."
-          },
-          {
-            "feature": "Run code",
+            "feature": "Create files and run code",
             "evidence": "Search the web, create files, and run code",
             "source": "https://claude.com/pricing",
             "context_note": "The quote is listed directly under the 'Free' plan section of the pricing table."
@@ -57,43 +58,39 @@
             "context_note": "The quote is listed directly under the 'Free' plan section of the pricing table."
           },
           {
-            "feature": "Connect your apps and tools",
+            "feature": "Connect apps and tools",
             "evidence": "Connect your apps and tools",
             "source": "https://claude.com/pricing",
             "context_note": "The quote is listed directly under the 'Free' plan section of the pricing table."
           },
           {
-            "feature": "Claude Design, Slides, Docs",
+            "feature": "Create Artifacts",
+            "evidence": "Create Artifacts",
+            "source": "https://claude.com/pricing",
+            "context_note": "The quote is listed directly under the 'Free' plan section of the pricing table."
+          },
+          {
+            "feature": "Claude Design, Slides, and Docs",
             "evidence": "Claude Design, Slides, Docs",
             "source": "https://claude.com/pricing",
             "context_note": "The quote is listed directly under the 'Free' plan section of the pricing table."
+          },
+          {
+            "feature": "Voice mode",
+            "evidence": "Voice mode",
+            "source": "https://claude.com/pricing",
+            "context_note": "The feature comparison table explicitly marks 'Voice mode' as 'Yes' for the Free plan."
           }
         ],
-        "notes": "Usage limits are affected by conversation length, complexity, model choice, and features used; there is no fixed message count."
+        "notes": "Usage of all different Claude product surfaces (claude.ai, Claude Code, Claude Desktop) counts towards the same usage limit."
       },
       "rejected_items": [
         {
           "group": "limits",
           "item": {
             "topic": "Projects",
-            "value": "Up to 5",
-            "evidence": "Projects Up to 5"
-          },
-          "reason": "quote not found on the source pages"
-        },
-        {
-          "group": "features",
-          "item": {
-            "feature": "Create Artifacts",
-            "evidence": "Create Artifacts"
-          },
-          "reason": "quote not found on the source pages"
-        },
-        {
-          "group": "features",
-          "item": {
-            "feature": "Voice mode",
-            "evidence": "Voice mode"
+            "value": "Up to 5 projects.",
+            "evidence": "Projects: Up to 5"
           },
           "reason": "quote not found on the source pages"
         },
@@ -119,7 +116,7 @@
       "status": "ok",
       "needs_human_review": true,
       "review_reasons": [
-        "6 item(s) rejected automatically"
+        "3 item(s) rejected automatically"
       ],
       "extracted": {
         "free_plan_exists": "yes",
@@ -130,100 +127,89 @@
             "value": "Standard limits",
             "evidence": "Without an AI plan: Standard limits",
             "source": "https://support.google.com/gemini/answer/16275805",
-            "context_note": "The context explicitly lists 'Without an AI plan' as a category alongside paid subscription tiers."
+            "context_note": "The context explicitly lists 'Without an AI plan' as a category for usage limits."
           },
           {
             "topic": "Context window",
             "value": "32k tokens",
             "evidence": "Without an AI plan: 32k tokens",
             "source": "https://support.google.com/gemini/answer/16275805",
-            "context_note": "The context explicitly lists 'Without an AI plan' as a category with a defined token limit."
-          },
-          {
-            "topic": "Refresh rate",
-            "value": "Every 5 hours",
-            "evidence": "Your limit refreshes every 5 hours until you reach your weekly limit.",
-            "source": "https://support.google.com/gemini/answer/16275805",
-            "context_note": "The context describes general usage limits for Gemini Apps and mentions upgrading from the base experience."
+            "context_note": "The context explicitly lists 'Without an AI plan' as a category for context window capacity."
           }
         ],
         "features": [
           {
-            "feature": "Flash-Lite model access",
+            "feature": "Gemini app",
+            "evidence": "Gemini app: Your personal, proactive and powerful AI Assistant",
+            "source": "https://gemini.google/subscriptions/",
+            "context_note": "The quote appears under the 'Free' plan section which costs $0/month."
+          },
+          {
+            "feature": "Access to Flash-Lite model",
             "evidence": "Access to our Flash-Lite model",
             "source": "https://gemini.google/subscriptions/",
-            "context_note": "The quote appears under the 'Free' plan section of the comparison table."
+            "context_note": "The quote is listed as a feature under the 'Free' plan section."
           },
           {
             "feature": "Image generation and editing",
             "evidence": "Image generation and editing",
             "source": "https://gemini.google/subscriptions/",
-            "context_note": "The quote appears under the 'Free' plan section of the comparison table."
+            "context_note": "The quote is listed as a feature under the 'Free' plan section."
+          },
+          {
+            "feature": "Gems",
+            "evidence": "Gems",
+            "source": "https://gemini.google/subscriptions/",
+            "context_note": "The quote is listed as a feature under the 'Free' plan section."
+          },
+          {
+            "feature": "Google Flow",
+            "evidence": "Google Flow3",
+            "source": "https://gemini.google/subscriptions/",
+            "context_note": "The quote is listed as a feature under the 'Free' plan section."
           },
           {
             "feature": "Gemini Notebook",
             "evidence": "Gemini Notebook: Research and writing assistant",
             "source": "https://gemini.google/subscriptions/",
-            "context_note": "The quote appears under the 'Free' plan section of the comparison table."
+            "context_note": "The quote is listed as a feature under the 'Free' plan section."
           },
           {
             "feature": "Cloud storage",
             "evidence": "15 GB of cloud storage across Gmail, Drive, and Photos",
             "source": "https://gemini.google/subscriptions/",
-            "context_note": "The quote appears under the 'Free' plan section of the comparison table."
+            "context_note": "The quote is listed as a feature under the 'Free' plan section."
           }
         ],
-        "notes": "The free plan is referred to as 'Free' and costs $0/month with a Google Account. Usage limits are compute-based and may be capped during periods of high demand."
+        "notes": "Usage limits refresh every 5 hours until a weekly limit is reached. Features and limits are subject to change based on capacity and demand."
       },
       "rejected_items": [
         {
           "group": "features",
           "item": {
             "feature": "Deep Research",
-            "evidence": "Deep Research"
+            "evidence": "Deep Research",
+            "source": "https://support.google.com/gemini/answer/16275805"
           },
-          "reason": "quote not found on the source pages"
+          "reason": "context check: The context describes 'Deep Research' as a high-usage task but does not specify it is included in the free plan."
         },
         {
           "group": "features",
           "item": {
             "feature": "Gemini Live",
-            "evidence": "Gemini Live"
+            "evidence": "Gemini Live",
+            "source": "https://gemini.google/subscriptions/"
           },
-          "reason": "quote not found on the source pages"
+          "reason": "context check: The context lists features generally but does not specify which are included in the free plan."
         },
         {
           "group": "features",
           "item": {
             "feature": "Canvas",
-            "evidence": "Canvas"
+            "evidence": "Canvas",
+            "source": "https://support.google.com/gemini/answer/16275805"
           },
-          "reason": "quote not found on the source pages"
-        },
-        {
-          "group": "features",
-          "item": {
-            "feature": "Gems",
-            "evidence": "Gems"
-          },
-          "reason": "quote not found on the source pages"
-        },
-        {
-          "group": "features",
-          "item": {
-            "feature": "Google Flow",
-            "evidence": "Google Flow3"
-          },
-          "reason": "quote not found on the source pages"
-        },
-        {
-          "group": "features",
-          "item": {
-            "feature": "Gemini app",
-            "evidence": "Gemini app: Your personal, proactive and powerful AI Assistant",
-            "source": "https://gemini.google/subscriptions/"
-          },
-          "reason": "context check: The quote is a general marketing tagline for the Gemini app, not specific to the free plan."
+          "reason": "context check: The table shows that 'Canvas' is not available under the 'Without a Google AI plan' column."
         }
       ]
     },
@@ -311,7 +297,7 @@
             "value": "not officially stated",
             "evidence": "Copilot features, functionality, and availability may vary by region.",
             "source": "https://support.microsoft.com/topic/understanding-the-different-microsoft-copilot-experiences-cfff4791-694a-4d90-9c9c-1eb3fb28e842",
-            "context_note": "The quote appears within a section explicitly discussing the free version of Microsoft Copilot."
+            "context_note": "The context explicitly lists this tip under the section describing the free version of Microsoft Copilot."
           }
         ],
         "features": [
@@ -319,40 +305,40 @@
             "feature": "Chat with AI for writing, brainstorming, and summarizing",
             "evidence": "Chat with AI for help with writing, brainstorming, summarizing, and more.",
             "source": "https://support.microsoft.com/topic/understanding-the-different-microsoft-copilot-experiences-cfff4791-694a-4d90-9c9c-1eb3fb28e842",
-            "context_note": "The quote is listed as a capability under the 'Microsoft Copilot (free)' heading."
+            "context_note": "The context lists this feature under the 'Microsoft Copilot (free)' section."
           },
           {
             "feature": "Real-time answers based on web search",
             "evidence": "Get real-time answers based on web search.",
             "source": "https://support.microsoft.com/topic/understanding-the-different-microsoft-copilot-experiences-cfff4791-694a-4d90-9c9c-1eb3fb28e842",
-            "context_note": "The quote is listed as a capability under the 'Microsoft Copilot (free)' heading."
-          },
-          {
-            "feature": "Image creation",
-            "evidence": "Microsoft Copilot is your AI companion and understands your questions and requests, provides direct answers, assists with writing, and even creates images.",
-            "source": "https://support.microsoft.com/topic/understanding-the-different-microsoft-copilot-experiences-cfff4791-694a-4d90-9c9c-1eb3fb28e842",
-            "context_note": "The quote describes the product immediately following the mention of Microsoft Copilot being available at no cost."
+            "context_note": "The context lists this feature under the 'Microsoft Copilot (free)' section."
           },
           {
             "feature": "Webpage summarization and insights in Edge",
             "evidence": "Use Copilot in Edge for webpage summarization and insights.",
             "source": "https://support.microsoft.com/topic/understanding-the-different-microsoft-copilot-experiences-cfff4791-694a-4d90-9c9c-1eb3fb28e842",
-            "context_note": "The quote is listed as a capability under the 'Microsoft Copilot (free)' heading."
+            "context_note": "The context lists this feature under the 'Microsoft Copilot (free)' section."
+          },
+          {
+            "feature": "Image creation",
+            "evidence": "Microsoft Copilot is your AI companion and understands your questions and requests, provides direct answers, assists with writing, and even creates images.",
+            "source": "https://support.microsoft.com/topic/understanding-the-different-microsoft-copilot-experiences-cfff4791-694a-4d90-9c9c-1eb3fb28e842",
+            "context_note": "The context introduces this description immediately following the 'Microsoft Copilot (free)' heading."
           },
           {
             "feature": "Chat history (with sign-in)",
             "evidence": "Sign in isn't required, but signing in with your personal account gives you access to chat history, image creation, longer conversations, voice interactions, and other Copilot features.",
             "source": "https://support.microsoft.com/topic/understanding-the-different-microsoft-copilot-experiences-cfff4791-694a-4d90-9c9c-1eb3fb28e842",
-            "context_note": "The quote describes features available to users of the free version of Microsoft Copilot."
+            "context_note": "The context provides this information within the section dedicated to the free version of Microsoft Copilot."
           },
           {
             "feature": "Voice interactions (with sign-in)",
             "evidence": "Sign in isn't required, but signing in with your personal account gives you access to chat history, image creation, longer conversations, voice interactions, and other Copilot features.",
             "source": "https://support.microsoft.com/topic/understanding-the-different-microsoft-copilot-experiences-cfff4791-694a-4d90-9c9c-1eb3fb28e842",
-            "context_note": "The quote describes features available to users of the free version of Microsoft Copilot."
+            "context_note": "The context provides this information within the section dedicated to the free version of Microsoft Copilot."
           }
         ],
-        "notes": "The free version is available at copilot.cloud.microsoft, as a desktop or mobile app, or directly in the Microsoft Edge header."
+        "notes": "The free version is available at copilot.cloud.microsoft, as an app on desktop or mobile, or directly in the Microsoft Edge header."
       },
       "rejected_items": []
     },
