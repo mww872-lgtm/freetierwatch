@@ -266,7 +266,7 @@ About our ads
 
 === SOURCE: https://www.microsoft.com/en-us/microsoft-copilot/for-individuals ===
 Microsoft Copilot Plans for Individuals | Microsoft 365
-This is the Trace Id: f4784e763d115523133aa98fb68188de
+This is the Trace Id: beba2eca7e278028a3e67d72f648a11e
 Skip to main content
 Copilot
 Word
@@ -288,6 +288,7 @@ Customer stories
 Blog
 Copilot vs. competitors
 Tech community
+Frontier program
 AI for Work Roadmap
 Agents
 New user onboarding

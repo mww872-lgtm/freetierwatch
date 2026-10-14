@@ -28,19 +28,11 @@
     },
     "claude": {
       "ok": true,
-      "chars": 27905,
+      "chars": 27925,
       "thin": false,
-      "partial": true,
-      "failed_sources": [
-        "https://support.claude.com/en/articles/8602283-about-free-claude-usage"
-      ],
+      "partial": false,
+      "failed_sources": [],
       "sources": [
-        {
-          "url": "https://support.claude.com/en/articles/8602283-about-free-claude-usage",
-          "ok": false,
-          "chars": 0,
-          "error": "HTTP Error 404: Not Found"
-        },
         {
           "url": "https://support.claude.com/en/articles/11647753-understanding-usage-and-length-limits",
           "ok": true,
@@ -50,7 +42,7 @@
         {
           "url": "https://claude.com/pricing",
           "ok": true,
-          "chars": 21009,
+          "chars": 21029,
           "error": null
         }
       ],
@@ -58,7 +50,7 @@
     },
     "gemini": {
       "ok": true,
-      "chars": 37160,
+      "chars": 37161,
       "thin": false,
       "partial": false,
       "failed_sources": [],
@@ -66,7 +58,7 @@
         {
           "url": "https://support.google.com/gemini/answer/16275805",
           "ok": true,
-          "chars": 11696,
+          "chars": 11697,
           "error": null
         },
         {
@@ -108,7 +100,7 @@
     },
     "copilot": {
       "ok": true,
-      "chars": 32818,
+      "chars": 32835,
       "thin": false,
       "partial": false,
       "failed_sources": [],
@@ -122,7 +114,7 @@
         {
           "url": "https://www.microsoft.com/en-us/microsoft-copilot/for-individuals",
           "ok": true,
-          "chars": 22199,
+          "chars": 22216,
           "error": null
         }
       ],

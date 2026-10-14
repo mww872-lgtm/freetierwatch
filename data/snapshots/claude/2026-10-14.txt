@@ -177,7 +177,8 @@ Claude Cowork is now just Claude.
 Rolling out to Pro and Max, with more plans to follow.
 Read what changed (opens in new tab)
 Pricing
-IndividualTeam & EnterpriseAPI
+IndividualDeveloperTeam & EnterpriseAPI
+Individual
 Free
 Try Claude
 $0
