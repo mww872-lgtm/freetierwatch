@@ -10,7 +10,18 @@ import compare
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 OUT = ROOT / "_site"
 REPO = "https://github.com/mww872-lgtm/freetierwatch"
-ICON = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230a1114'/%3E%3Ccircle cx='16' cy='16' r='7' fill='%233ddbb0'/%3E%3C/svg%3E"
+ICON = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2316181D'/%3E%3Cpath d='M7 11h18M7 15h18M7 21h12' stroke='%23F5F5F2' stroke-width='2.4' fill='none'/%3E%3C/svg%3E"
+
+# Tema: ziyaretci secer (varsayilan acik), secim bu tarayicida hatirlanir. Sayfa cizilmeden once uygulanir (titreme olmasin).
+THEME_HEAD = ("(function(){var d=document.documentElement;d.className+=' js';var t=null;"
+              "try{t=localStorage.getItem('ftw-theme')}catch(x){}"
+              "d.setAttribute('data-theme',t==='dark'?'dark':'light')})();")
+THEME_BODY = ("(function(){var d=document.documentElement,bs=document.querySelectorAll('.tgl button');"
+              "function set(t,save){d.setAttribute('data-theme',t);"
+              "for(var i=0;i<bs.length;i++){bs[i].setAttribute('aria-pressed',String(bs[i].getAttribute('data-t')===t))}"
+              "if(save){try{localStorage.setItem('ftw-theme',t)}catch(x){}}}"
+              "set(d.getAttribute('data-theme')||'light',false);"
+              "for(var i=0;i<bs.length;i++){bs[i].addEventListener('click',function(){set(this.getAttribute('data-t'),true)})}})();")
 LABEL = {"verified": "Verified", "partial": "Partly stated", "none": "Couldn't verify"}
 
 
@@ -214,84 +225,99 @@ def card(s):
 
 
 CSS = """
-:root{--p:#0a1114;--sf:#111c21;--sf2:#16252b;--ln:#223239;--ink:#e5f0ed;--mu:#8ea6a4;--ac:#3ddbb0;--wa:#ffb84d;--no:#ff7a7a;color-scheme:dark}
+:root{--p:#F5F5F2;--ink:#16181D;--mu:#5B6068;--soft:#3A3F47;--ln:#C9CBCF;--dot:#9A9DA3;--sf:#FFFFFF;--lk:#1F3A5F;--ok:#067647;--okbg:#ECFDF3;--no:#B42318;--nobg:#FEF3F2;--wa:#8A5300;--fl:#475467;--flbg:#F2F4F7;color-scheme:light}
+:root[data-theme="dark"]{--p:#14161A;--ink:#ECEDEF;--mu:#A0A5AE;--soft:#C4C8CF;--ln:#3A3E46;--dot:#5A5F69;--sf:#1C1F25;--lk:#8FB0E8;--ok:#5FE39A;--okbg:#123222;--no:#FF9C94;--nobg:#3A1A1A;--wa:#FFB84D;--fl:#B5BAC3;--flbg:#272A31;color-scheme:dark}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{margin:0;background:var(--p);color:var(--ink);font:16px/1.55 "Bricolage Grotesque",system-ui,sans-serif;
+body{margin:0;background:var(--p);color:var(--ink);font:16px/1.55 "IBM Plex Sans",system-ui,sans-serif;
  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
-.in{max-width:1000px;margin:0 auto}
-a{color:var(--ac)}
-header.top{display:flex;flex-wrap:wrap;gap:12px 24px;justify-content:space-between;align-items:center;padding:20px 0}
-.logo{font-weight:700;font-size:19px;display:flex;gap:10px;align-items:center;color:var(--ink);text-decoration:none}
-.logo::before{content:"";width:12px;height:12px;border-radius:50%;background:var(--ac);box-shadow:0 0 0 4px rgba(61,219,176,.18)}
-nav{display:flex;gap:18px;flex-wrap:wrap;font-size:15px}
-nav a{color:var(--mu);text-decoration:none}nav a:hover{color:var(--ink)}
-h1{font-size:clamp(32px,5.6vw,56px);line-height:1.04;letter-spacing:-.03em;margin:30px 0 12px;font-weight:700;max-width:16ch;text-wrap:balance}
-.sub{color:var(--mu);max-width:56ch;margin:0 0 22px;font-size:18px}
-.pulse{display:flex;gap:10px 22px;flex-wrap:wrap;font:13px "DM Mono",monospace;color:var(--mu);margin-bottom:20px}
-.pulse b{color:var(--ac);font-weight:500}
-.tbl{background:var(--sf);border:1px solid var(--ln);border-radius:12px;overflow:hidden}
-.row{display:grid;grid-template-columns:200px minmax(0,1fr) 150px;gap:10px 28px;padding:22px 24px;border-top:1px solid var(--ln)}
-.row:first-child{border-top:0}
+.in{max-width:1120px;margin:0 auto}
+a{color:var(--lk)}
+a:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid var(--lk);outline-offset:3px}
+.mast{padding:12px 0 20px;text-align:center;border-bottom:3px double var(--ink)}
+.tgl{display:none;justify-content:flex-end;align-items:center;gap:2px;padding-bottom:10px;font:500 12px "IBM Plex Mono",monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--dot)}
+html.js .tgl{display:flex}
+.tgl button{background:none;border:0;padding:13px 8px;font:inherit;letter-spacing:inherit;text-transform:inherit;color:var(--mu);cursor:pointer}
+.tgl button[aria-pressed="true"]{color:var(--ink);text-decoration:underline;text-underline-offset:5px}
+.kick{font:12px "IBM Plex Mono",monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--mu)}
+.logo{display:block;margin-top:10px;font:700 clamp(40px,9vw,72px)/1 Fraunces,Georgia,serif;letter-spacing:-.02em;color:var(--ink);text-decoration:none}
+nav{display:flex;flex-wrap:wrap;justify-content:center;gap:4px 28px;padding:6px 0;border-bottom:1px solid var(--ink);font-size:15px;font-weight:500}
+nav a{color:var(--lk);text-decoration:none;padding:8px 2px}nav a:hover{text-decoration:underline}
+.hero{display:flex;flex-wrap:wrap;gap:36px 56px;padding:52px 0 48px;align-items:flex-start}
+.hero>div:first-child{flex:1 1 480px;min-width:0}
+h1{font:500 clamp(32px,5.5vw,48px)/1.1 Fraunces,Georgia,serif;letter-spacing:-.01em;margin:0;text-wrap:balance}
+.sub{color:var(--soft);max-width:56ch;margin:20px 0 0;font-size:18px;line-height:1.6}
+.last{margin:18px 0 0;font:13px "IBM Plex Mono",monospace;color:var(--mu)}
+.stats{flex:1 1 280px;min-width:0}
+.stat{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:12px 0;border-top:1px solid var(--ink)}
+.stat:last-child{border-bottom:1px solid var(--ink)}
+.stat span{font-size:15px;color:var(--mu)}
+.stat b{font:700 34px/1 Fraunces,Georgia,serif}
+section{margin-top:0;padding-bottom:48px}
+.sh{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:6px 16px;border-bottom:3px double var(--ink);padding-bottom:10px}
+.sh h2{font:700 32px/1.2 Fraunces,Georgia,serif;margin:0}
+.sh span{font:13px "IBM Plex Mono",monospace;color:var(--mu)}
+.row{display:grid;grid-template-columns:200px minmax(0,1fr) 160px;gap:14px 28px;padding:24px 0;border-bottom:1px solid var(--ln)}
 .l,.m,.r{min-width:0}
 .r{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
-@media(max-width:720px){.row{grid-template-columns:1fr;padding:18px}.r{flex-direction:row;align-items:center;justify-content:space-between}}
-.nm{font-weight:700;font-size:22px;margin:0 0 8px}
-.st{font:11px "DM Mono",monospace;padding:3px 8px;border-radius:99px;border:1px solid currentColor;white-space:nowrap}
-.st.verified{color:var(--ac)}.st.partial{color:var(--wa)}.st.none{color:var(--no)}
-.num{font-size:34px;line-height:1;font-weight:700;letter-spacing:-.03em;margin-top:6px}
-.num small{display:block;font:12px "DM Mono",monospace;letter-spacing:0;color:var(--mu);margin-top:6px;font-weight:400}
-.sum{margin:0 0 6px;color:var(--ink);font-size:15px}
-.cnote{margin:0 0 6px;color:var(--wa);font-size:13px}
-ul.feat{list-style:none;margin:12px 0 0;padding:12px 0 0;border-top:1px dashed var(--ln);display:grid;gap:4px;font-size:14px;color:var(--mu)}
-ul.feat li::before{content:"+ ";color:var(--ac);font-family:"DM Mono",monospace}
+@media(max-width:720px){.row{grid-template-columns:1fr;padding:20px 0}.r{flex-direction:row;align-items:center;justify-content:space-between}.sh h2{font-size:28px}}
+.nm{font:700 28px/1.1 Fraunces,Georgia,serif;margin:0}
+.st{font:500 11px "IBM Plex Mono",monospace;padding:3px 9px;border-radius:99px;border:1px solid currentColor;white-space:nowrap}
+.st.verified{color:var(--ok)}.st.partial{color:var(--wa)}.st.none{color:var(--no)}
+.num{font:600 22px/1 "IBM Plex Mono",monospace;letter-spacing:-.02em;margin-top:14px;padding-top:14px;border-top:1px dotted var(--dot);color:var(--ink)}
+.num small{display:block;font:12px/1.4 "IBM Plex Mono",monospace;letter-spacing:0;color:var(--mu);margin-top:8px;font-weight:400}
+.sum{margin:0 0 6px;color:var(--ink);font-size:16px}
+.cnote{margin:0 0 6px;color:var(--wa);font-size:14px}
+ul.feat{list-style:none;margin:12px 0 0;padding:0;font-size:15px;color:var(--mu)}
+ul.feat li{padding:6px 0;border-bottom:1px dotted var(--dot)}
+ul.feat li:last-child{border-bottom:0}
 details{margin-top:12px;font-size:14px}
-summary{cursor:pointer;color:var(--ac);font:13px "DM Mono",monospace}
-summary:focus-visible,a:focus-visible{outline:2px solid var(--ac);outline-offset:3px}
-ul.src{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:12px}
+summary{cursor:pointer;color:var(--lk);font:13px "IBM Plex Mono",monospace}
+ul.src{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:14px}
 ul.src b{display:block;font-weight:600}
-ul.src q{display:block;color:var(--mu);font-size:13px;margin:2px 0;quotes:"\\201C" "\\201D"}
-ul.src a{font:12px "DM Mono",monospace}
+ul.src q{display:block;color:var(--mu);font-size:13px;margin:2px 0;font-style:italic;quotes:"\\201C" "\\201D"}
+ul.src a{font:12px "IBM Plex Mono",monospace}
 .how{color:var(--mu);font-size:13px;margin:10px 0 0}
-.when{font:11px "DM Mono",monospace;color:var(--mu)}
-section{margin-top:44px}
-h2{font-size:26px;letter-spacing:-.02em;margin:0 0 12px}
-.panel{background:var(--sf2);border:1px solid var(--ln);border-radius:12px;padding:20px;max-width:70ch}
+.when{font:11px "IBM Plex Mono",monospace;color:var(--mu)}
+h2{font:700 26px/1.2 Fraunces,Georgia,serif;letter-spacing:-.01em;margin:0 0 12px}
+.panel{background:var(--sf);border:1px solid var(--ink);padding:24px 28px}
+.sh+.panel{margin-top:18px}
 .panel p{margin:0 0 8px}.panel p:last-child{margin:0}
-footer{margin:56px 0 40px;padding-top:20px;border-top:1px solid var(--ln);color:var(--mu);font-size:14px;max-width:70ch}
-.page h1{font-size:clamp(30px,5vw,44px);max-width:22ch}
+.panel ul{margin:8px 0 0;padding-left:20px}
+footer{margin:16px 0 40px;padding-top:20px;padding-right:max(0px,calc(100% - 70ch));border-top:3px double var(--ink);color:var(--mu);font-size:14px}
+.page h1{font-size:clamp(30px,5vw,44px);max-width:22ch;margin:44px 0 14px}
 .page h2{margin-top:34px}
 .page p,.page li{max-width:66ch;color:var(--ink)}
 .page li{margin:6px 0}
 .kind{display:grid;gap:10px;margin:14px 0}
-.kind div{background:var(--sf);border:1px solid var(--ln);border-radius:10px;padding:12px 14px}
+.kind div{background:var(--sf);border:1px solid var(--ln);padding:12px 14px}
 .chg{margin-top:12px}
-.chg>summary{list-style:none;display:inline-flex;align-items:center;gap:8px;padding:5px 10px;border-radius:99px;font:12px "DM Mono",monospace;border:1px solid currentColor}
+.chg>summary{list-style:none;display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:99px;font:600 13px "IBM Plex Sans",sans-serif}
 .chg>summary::-webkit-details-marker{display:none}
 .chg>summary svg{flex:none}
-.pill.down{color:var(--no);background:rgba(255,122,122,.08)}
-.pill.up{color:var(--ac);background:rgba(61,219,176,.08)}
-.pill.mixed,.pill.shape{color:var(--mu);background:rgba(142,166,164,.08)}
-.chgbox{margin-top:12px;padding:16px 18px;background:var(--sf2);border:1px solid var(--ln);border-radius:12px}
-.chgh{font:12px "DM Mono",monospace;letter-spacing:.06em;text-transform:uppercase;color:var(--mu);margin-bottom:6px}
+.pill.down{color:var(--no);background:var(--nobg)}
+.pill.up{color:var(--ok);background:var(--okbg)}
+.pill.mixed,.pill.shape{color:var(--fl);background:var(--flbg)}
+.chgbox{margin-top:12px;padding:16px 20px;background:var(--sf);border:1px solid var(--ink)}
+.chgh{font:12px "IBM Plex Mono",monospace;letter-spacing:.06em;text-transform:uppercase;color:var(--mu);margin-bottom:6px}
 ul.chgl{list-style:none;margin:0;padding:0}
 ul.chgl>li{padding:12px 0;border-top:1px solid var(--ln)}
 .cr{display:flex;flex-wrap:wrap;gap:6px 16px;justify-content:space-between;align-items:baseline}
 .cr b{font-weight:600}
-.cv{display:inline-flex;align-items:center;gap:10px;flex-wrap:wrap;font:14px "DM Mono",monospace}
+.cv{display:inline-flex;align-items:center;gap:10px;flex-wrap:wrap;font:14px "IBM Plex Mono",monospace}
 .cv .ov{color:var(--mu)}
 li.down .nv,li.removed .nv{color:var(--no)}
-li.up .nv,li.added .nv{color:var(--ac)}
+li.up .nv,li.added .nv{color:var(--ok)}
 li.down svg,li.removed svg{color:var(--no)}
-li.up svg,li.added svg{color:var(--ac)}
-li.shape svg{color:var(--mu)}
+li.up svg,li.added svg{color:var(--ok)}
+li.shape svg{color:var(--fl)}
 .cq{display:grid;gap:4px;margin-top:6px;font-size:13px;color:var(--mu)}
-.cq q{quotes:"\\201C" "\\201D"}
-.cq a{font:12px "DM Mono",monospace}
+.cq q{font-style:italic;quotes:"\\201C" "\\201D"}
+.cq a{font:12px "IBM Plex Mono",monospace}
 """
 
 FONTS = ('<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" '
-         'href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=DM+Mono:wght@400;500&display=swap">')
+         'href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">')
 
 
 def shell(title, desc, body, page=False):
@@ -301,14 +327,17 @@ def shell(title, desc, body, page=False):
         '<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">'
         f"<title>{e(title)}</title><meta name=\"description\" content=\"{e(desc)}\">"
         f'<meta property="og:title" content="{e(title)}"><meta property="og:description" content="{e(desc)}"><meta property="og:type" content="website"><meta name="twitter:card" content="summary">'
-        f'<link rel="icon" href="{ICON}">{FONTS}<style>{CSS}</style></head>'
-        f'<body><div class="in{" page" if page else ""}"><header class="top"><a class="logo" href="index.html">Free Tier Watch</a>'
-        f'<nav><a href="index.html#services">Services</a><a href="index.html#this-week">This week</a>'
+        f'<link rel="icon" href="{ICON}">{FONTS}<script>{THEME_HEAD}</script><style>{CSS}</style></head>'
+        f'<body><div class="in{" page" if page else ""}"><header><div class="mast">'
+        '<div class="tgl" role="group" aria-label="Color theme"><button type="button" data-t="light" aria-pressed="true">Light</button>'
+        '<span aria-hidden="true">/</span><button type="button" data-t="dark" aria-pressed="false">Dark</button></div>'
+        '<div class="kick">Independent · Weekly · Sourced</div><a class="logo" href="index.html">Free Tier Watch</a></div>'
+        f'<nav aria-label="Main"><a href="index.html#services">The ledger</a><a href="index.html#this-week">This week</a>'
         f'<a href="how-we-check.html">How we check</a><a href="{err}" rel="noopener">Report an error</a></nav></header>'
         f"{body}"
         '<footer>Free Tier Watch is independent. We are not affiliated with any company listed here and we run no ads or sponsors. '
         "Plans change often and mistakes can happen, so always confirm on the official page before you rely on a limit. "
-        f'Found something wrong? <a href="{err}" rel="noopener">Tell us</a>.</footer></div></body></html>'
+        f'Found something wrong? <a href="{err}" rel="noopener">Tell us</a>.</footer></div><script>{THEME_BODY}</script></body></html>'
     )
 
 
@@ -335,7 +364,10 @@ def this_week(services):
             for s in moved
         )
         lst = f'<p>Changes in the free plans since the last check:</p><ul>{items_html}</ul>'
-    return f'<section id="this-week"><h2>This week</h2><div class="panel">{"<p>" + e(txt) + "</p>" if txt else ""}{lst}</div></section>'
+    dates = [s["checked"] for s in services if s["checked"]]
+    stamp = f'Week of {pretty_date(max(dates))}' if dates else ""
+    return (f'<section id="this-week"><div class="sh"><h2>This week</h2><span>{e(stamp)}</span></div>'
+            f'<div class="panel">{"<p>" + e(txt) + "</p>" if txt else ""}{lst}</div></section>')
 
 
 def index(services):
@@ -343,11 +375,15 @@ def index(services):
     dates = [s["checked"] for s in services if s["checked"]]
     last = pretty_date(max(dates)) if dates else "not yet"
     body = (
-        '<h1>The free plans, checked weekly.</h1>'
+        '<div class="hero"><div><h1>What does each free AI plan really give you this week?</h1>'
         '<p class="sub">What each AI chat app gives you for $0, with the source and the exact quote behind every line.</p>'
-        f'<div class="pulse"><span><b>{len(services)}</b> services</span><span><b>{counts["verified"]}</b> verified</span>'
-        f'<span><b>{counts["partial"]}</b> partly stated</span><span><b>{counts["none"]}</b> unverified</span><span>Last check: {last}</span></div>'
-        f'<section id="services" style="margin-top:0"><div class="tbl">{"".join(card(s) for s in services)}</div></section>'
+        f'<p class="last">Last check: {e(last)}</p></div>'
+        f'<div class="stats"><div class="stat"><span>Services followed</span><b>{len(services)}</b></div>'
+        f'<div class="stat"><span>Verified</span><b>{counts["verified"]}</b></div>'
+        f'<div class="stat"><span>Partly stated</span><b>{counts["partial"]}</b></div>'
+        f'<div class="stat"><span>Couldn\'t verify</span><b>{counts["none"]}</b></div></div></div>'
+        f'<section id="services"><div class="sh"><h2>The ledger</h2><span>Free chat plans only</span></div>'
+        f'{"".join(card(s) for s in services)}</section>'
         f"{this_week(services)}"
     )
     return shell("Free Tier Watch", "What the free plans of AI chat apps really include, checked against official pages every week.", body)
