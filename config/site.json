@@ -24,7 +24,7 @@
     "gemini": {
       "big": "32k",
       "label": "tokens of context",
-      "summary": "Flash-Lite model. The usage limit refreshes every 5 hours.",
+      "summary": "Flash-Lite model with image generation and editing, plus 15 GB of cloud storage shared across Gmail, Drive and Photos.",
       "status": "partial",
       "note": "Two official pages describe some features (Deep Research, Gemini Live, Canvas) differently, so we list only what is clear."
     },

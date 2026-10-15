@@ -2,6 +2,7 @@
 import json
 import pathlib
 import datetime
+import re
 from html import escape as e
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
@@ -30,6 +31,39 @@ def host(url):
     return url.split("//", 1)[-1].split("/", 1)[0].replace("www.", "")
 
 
+def clean_quote(text):
+    """Resmi sayfadan gelen sondaki dipnot numarasini ('Google Flow3') gosterimden siler."""
+    return re.sub(r"(?<=[A-Za-z])\d{1,2}$", "", str(text or "")).strip()
+
+
+NUMWORDS = {"one": "1", "two": "2", "three": "3", "four": "4", "five": "5", "six": "6",
+            "seven": "7", "eight": "8", "nine": "9", "ten": "10"}
+
+
+def numbers_in(text):
+    words = re.sub(r"[a-z]+", lambda m: NUMWORDS.get(m.group(0), m.group(0)), str(text).lower())
+    return set(re.findall(r"\d[\d.,]*\d|\d", words))
+
+
+def check_claims(services):
+    """Ozet, buyuk rakam ve etiketteki her sayi, altindaki alintilarda gecmiyorsa siteyi uretme."""
+    problems = []
+    for s in services:
+        if s["cfg"]["status"] == "none":
+            continue
+        quotes = " ".join(
+            str(x.get("evidence", "")) + " " + str(x.get("value", ""))
+            for x in s["limits"] + s["features"]
+        )
+        have = numbers_in(quotes)
+        said = numbers_in(" ".join([s["cfg"]["summary"], s["cfg"]["big"], s["cfg"]["label"]]))
+        missing = sorted(said - have)
+        if missing:
+            problems.append(f"{s['name']}: {', '.join(missing)} sayisi hicbir alintida gecmiyor")
+    if problems:
+        raise SystemExit("HATA: ozette kaynaksiz iddia var:\n  " + "\n  ".join(problems))
+
+
 def collect_services():
     plans = load(ROOT / "data" / "plans.json", {"services": {}}).get("services", {})
     site = load(ROOT / "config" / "site.json")
@@ -45,8 +79,8 @@ def collect_services():
             "id": sid,
             "name": src.get("name") or sid.title(),
             "cfg": cfg,
-            "features": [f for f in ext.get("features", []) if f.get("feature") not in hide.get(sid, [])],
-            "limits": [l for l in ext.get("limits", []) if l.get("topic") not in hide.get(sid, [])],
+            "features": [{**f, "evidence": clean_quote(f.get("evidence"))} for f in ext.get("features", []) if f.get("feature") not in hide.get(sid, [])],
+            "limits": [{**l, "evidence": clean_quote(l.get("evidence"))} for l in ext.get("limits", []) if l.get("topic") not in hide.get(sid, [])],
             "checked": src.get("last_checked"),
             "sources": src.get("sources", []),
             "manual": bool(manual),
@@ -229,6 +263,7 @@ def method():
 
 def main():
     services = collect_services()
+    check_claims(services)
     OUT.mkdir(exist_ok=True)
     (OUT / "index.html").write_text(index(services), encoding="utf-8")
     (OUT / "how-we-check.html").write_text(method(), encoding="utf-8")
