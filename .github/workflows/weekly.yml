@@ -16,6 +16,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - name: Gecen haftanin verisini arsivle
+        run: python site/archive.py
       - name: Sayfalari topla
         run: python collector/collect.py
       - name: Farki bul

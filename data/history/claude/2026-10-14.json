@@ -1,0 +1,61 @@
+{
+ "date": "2026-10-14",
+ "status": "verified",
+ "manual": false,
+ "limits": [
+  {
+   "topic": "Usage limits",
+   "value": "Not fixed; depends on conversation length, complexity, model, and features used.",
+   "evidence": "How much you can do depends on the length and complexity of your conversations, the model you choose, and the features you use, so there's no fixed message count.",
+   "source": "https://claude.com/pricing"
+  },
+  {
+   "topic": "Usage reset",
+   "value": "Rolling five-hour session window.",
+   "evidence": "Every plan has usage limits that reset on a rolling five-hour session window, and paid plans add weekly limits on top.",
+   "source": "https://claude.com/pricing"
+  }
+ ],
+ "features": [
+  {
+   "feature": "Chat on web, desktop, and mobile",
+   "evidence": "Chat on web, desktop, and mobile",
+   "source": "https://claude.com/pricing"
+  },
+  {
+   "feature": "Search the web",
+   "evidence": "Search the web, create files, and run code",
+   "source": "https://claude.com/pricing"
+  },
+  {
+   "feature": "Create files and run code",
+   "evidence": "Search the web, create files, and run code",
+   "source": "https://claude.com/pricing"
+  },
+  {
+   "feature": "Memory across conversations",
+   "evidence": "Memory across conversations",
+   "source": "https://claude.com/pricing"
+  },
+  {
+   "feature": "Connect apps and tools",
+   "evidence": "Connect your apps and tools",
+   "source": "https://claude.com/pricing"
+  },
+  {
+   "feature": "Create Artifacts",
+   "evidence": "Create Artifacts",
+   "source": "https://claude.com/pricing"
+  },
+  {
+   "feature": "Claude Design, Slides, and Docs",
+   "evidence": "Claude Design, Slides, Docs",
+   "source": "https://claude.com/pricing"
+  },
+  {
+   "feature": "Voice mode",
+   "evidence": "Voice mode",
+   "source": "https://claude.com/pricing"
+  }
+ ]
+}

@@ -5,6 +5,8 @@ import datetime
 import re
 from html import escape as e
 
+import compare
+
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 OUT = ROOT / "_site"
 REPO = "https://github.com/mww872-lgtm/freetierwatch"
@@ -64,6 +66,17 @@ def check_claims(services):
         raise SystemExit("HATA: ozette kaynaksiz iddia var:\n  " + "\n  ".join(problems))
 
 
+def previous_history(sid, checked):
+    """Bu servisin, su anki kontrolden onceki en yeni arsiv kaydi (yoksa None)."""
+    folder = ROOT / "data" / "history" / sid
+    best = None
+    if folder.exists() and checked:
+        for p in sorted(folder.glob("*.json")):
+            if p.stem < checked:
+                best = p
+    return load(best) if best else None
+
+
 def collect_services():
     plans = load(ROOT / "data" / "plans.json", {"services": {}}).get("services", {})
     site = load(ROOT / "config" / "site.json")
@@ -85,11 +98,82 @@ def collect_services():
             "sources": src.get("sources", []),
             "manual": bool(manual),
         })
+    for s in result:
+        s["changes"], s["prev"] = [], None
+        old = previous_history(s["id"], s["checked"])
+        if old and old.get("status") != "none" and s["cfg"]["status"] != "none":
+            h = hide.get(s["id"], [])
+            s["changes"] = compare.compare(
+                compare.items(old.get("limits"), old.get("features"), h),
+                compare.items(s["limits"], s["features"], h),
+            )
+            s["prev"] = old.get("date")
     return result
 
 
 def limit_line(l):
     return f"{l['topic']}: {l['value']}"
+
+
+SVG = '<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">%s</svg>'
+ICON_OF = {
+    "down": SVG % '<path d="M7 2v10M3 8l4 4 4-4"/>',
+    "up": SVG % '<path d="M7 12V2M3 6l4-4 4 4"/>',
+    "shape": SVG % '<path d="M2 5h10M9 2l3 3-3 3M12 9H2M5 12l-3-3 3-3"/>',
+}
+ICON_OF["mixed"] = ICON_OF["shape"]
+ICON_OF["removed"] = ICON_OF["down"]
+ICON_OF["added"] = ICON_OF["up"]
+
+
+def reference_week(prev, cur):
+    """Aralik 10 gunden kisaysa 'last week', degilse tarihi yazar (yanlis 'gecen hafta' demeyelim)."""
+    try:
+        gap = (datetime.date.fromisoformat(cur) - datetime.date.fromisoformat(prev)).days
+    except (TypeError, ValueError):
+        return "the last check"
+    return "last week" if gap <= 10 else f"the {pretty_date(prev)} check"
+
+
+def pill_text(kind, ref):
+    return {"down": f"Less generous than {ref}", "up": f"More generous than {ref}",
+            "mixed": f"Mixed changes since {ref}", "shape": f"Limit works differently than {ref}"}[kind]
+
+
+def quote_span(item, date):
+    link = f' <a href="{e(item["source"])}" rel="noopener">{e(host(item["source"]))}</a>' if item.get("source") else ""
+    return f'<span>{e(pretty_date(date))}: <q>{e(item["quote"])}</q>{link}</span>'
+
+
+def change_row(c, prev, cur):
+    d, o, n = c["dir"], c["old"], c["new"]
+    if d == "added":
+        old_t, new_t = "not listed", (n["value"] if n["limit"] else "listed")
+    elif d == "removed":
+        old_t, new_t = (o["value"] if o["limit"] else "listed"), "no longer listed"
+    else:
+        old_t, new_t = o["value"], n["value"]
+    quotes = ""
+    if o:
+        quotes += quote_span(o, prev)
+    if n:
+        quotes += quote_span(n, cur)
+    return (f'<li class="{d}"><div class="cr"><b>{e(c["label"])}</b>'
+            f'<span class="cv"><span class="ov">{e(str(old_t))}</span>{ICON_OF[d]}<span class="nv">{e(str(new_t))}</span></span></div>'
+            f'<div class="cq">{quotes}</div></li>')
+
+
+def change_block(s):
+    ch = s.get("changes") or []
+    if not ch:
+        return ""
+    kind = compare.overall(ch)
+    ref = reference_week(s["prev"], s["checked"])
+    rows = "".join(change_row(c, s["prev"], s["checked"]) for c in ch)
+    return (f'<details class="chg"><summary class="pill {kind}">{ICON_OF[kind]}<span>{e(pill_text(kind, ref))}</span></summary>'
+            f'<div class="chgbox"><div class="chgh">What changed · {e(pretty_date(s["prev"]))} to {e(pretty_date(s["checked"]))}</div>'
+            f'<ul class="chgl">{rows}</ul>'
+            '<p class="how">Only items that changed are listed, each with the official quote from both checks.</p></div></details>')
 
 
 def card(s):
@@ -122,7 +206,7 @@ def card(s):
         f'<article class="row" id="{e(s["id"])}">'
         f'<div class="l"><h3 class="nm">{e(s["name"])}</h3>'
         f'<div class="num">{e(cfg["big"])}<small>{e(cfg["label"])}</small></div></div>'
-        f'<div class="m"><p class="sum">{e(cfg["summary"])}</p>{note}'
+        f'<div class="m"><p class="sum">{e(cfg["summary"])}</p>{note}{change_block(s)}'
         f'{"<ul class=feat>" + bullets + "</ul>" if bullets else ""}{details}</div>'
         f'<div class="r"><span class="st {cfg["status"]}">{LABEL[cfg["status"]]}</span>'
         f'<div class="when">Checked {checked}</div></div></article>'
@@ -181,6 +265,29 @@ footer{margin:56px 0 40px;padding-top:20px;border-top:1px solid var(--ln);color:
 .page li{margin:6px 0}
 .kind{display:grid;gap:10px;margin:14px 0}
 .kind div{background:var(--sf);border:1px solid var(--ln);border-radius:10px;padding:12px 14px}
+.chg{margin-top:12px}
+.chg>summary{list-style:none;display:inline-flex;align-items:center;gap:8px;padding:5px 10px;border-radius:99px;font:12px "DM Mono",monospace;border:1px solid currentColor}
+.chg>summary::-webkit-details-marker{display:none}
+.chg>summary svg{flex:none}
+.pill.down{color:var(--no);background:rgba(255,122,122,.08)}
+.pill.up{color:var(--ac);background:rgba(61,219,176,.08)}
+.pill.mixed,.pill.shape{color:var(--mu);background:rgba(142,166,164,.08)}
+.chgbox{margin-top:12px;padding:16px 18px;background:var(--sf2);border:1px solid var(--ln);border-radius:12px}
+.chgh{font:12px "DM Mono",monospace;letter-spacing:.06em;text-transform:uppercase;color:var(--mu);margin-bottom:6px}
+ul.chgl{list-style:none;margin:0;padding:0}
+ul.chgl>li{padding:12px 0;border-top:1px solid var(--ln)}
+.cr{display:flex;flex-wrap:wrap;gap:6px 16px;justify-content:space-between;align-items:baseline}
+.cr b{font-weight:600}
+.cv{display:inline-flex;align-items:center;gap:10px;flex-wrap:wrap;font:14px "DM Mono",monospace}
+.cv .ov{color:var(--mu)}
+li.down .nv,li.removed .nv{color:var(--no)}
+li.up .nv,li.added .nv{color:var(--ac)}
+li.down svg,li.removed svg{color:var(--no)}
+li.up svg,li.added svg{color:var(--ac)}
+li.shape svg{color:var(--mu)}
+.cq{display:grid;gap:4px;margin-top:6px;font-size:13px;color:var(--mu)}
+.cq q{quotes:"\\201C" "\\201D"}
+.cq a{font:12px "DM Mono",monospace}
 """
 
 FONTS = ('<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" '
@@ -213,9 +320,22 @@ def this_week(services):
     if changed:
         lst = ", ".join(names.get(c, c.title()) for c in changed)
         txt = f"Pages changed since the last check: {lst}. We compare the new text with the old one and update the cards above after review."
+    elif any(s.get("changes") for s in services):
+        txt = ""
+    elif any(s.get("prev") for s in services):
+        txt = "No changes in the free plans since the last check."
     else:
         txt = "This is our first full check. From next Monday this section lists what changed on the free plans."
-    return f'<section id="this-week"><h2>This week</h2><div class="panel"><p>{e(txt)}</p></div></section>'
+    moved = [s for s in services if s.get("changes")]
+    lst = ""
+    if moved:
+        items_html = "".join(
+            f'<li><a href="#{e(s["id"])}">{e(s["name"])}</a>: '
+            f'{e(pill_text(compare.overall(s["changes"]), reference_week(s["prev"], s["checked"])))}</li>'
+            for s in moved
+        )
+        lst = f'<p>Changes in the free plans since the last check:</p><ul>{items_html}</ul>'
+    return f'<section id="this-week"><h2>This week</h2><div class="panel">{"<p>" + e(txt) + "</p>" if txt else ""}{lst}</div></section>'
 
 
 def index(services):
@@ -264,6 +384,10 @@ def method():
 def main():
     services = collect_services()
     check_claims(services)
+    for s in services:
+        for c in s["changes"]:
+            print(f"DEGISIKLIK [{s['id']}] {c['dir']}: {c['label']}: "
+                  f"{(c['old'] or {}).get('value')} -> {(c['new'] or {}).get('value')}")
     OUT.mkdir(exist_ok=True)
     (OUT / "index.html").write_text(index(services), encoding="utf-8")
     (OUT / "how-we-check.html").write_text(method(), encoding="utf-8")

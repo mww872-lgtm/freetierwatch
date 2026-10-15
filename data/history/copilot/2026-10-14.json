@@ -1,0 +1,45 @@
+{
+ "date": "2026-10-14",
+ "status": "partial",
+ "manual": false,
+ "limits": [
+  {
+   "topic": "General usage",
+   "value": "not officially stated",
+   "evidence": "Copilot features, functionality, and availability may vary by region.",
+   "source": "https://support.microsoft.com/topic/understanding-the-different-microsoft-copilot-experiences-cfff4791-694a-4d90-9c9c-1eb3fb28e842"
+  }
+ ],
+ "features": [
+  {
+   "feature": "Chat with AI for writing, brainstorming, and summarizing",
+   "evidence": "Chat with AI for help with writing, brainstorming, summarizing, and more.",
+   "source": "https://support.microsoft.com/topic/understanding-the-different-microsoft-copilot-experiences-cfff4791-694a-4d90-9c9c-1eb3fb28e842"
+  },
+  {
+   "feature": "Real-time answers based on web search",
+   "evidence": "Get real-time answers based on web search.",
+   "source": "https://support.microsoft.com/topic/understanding-the-different-microsoft-copilot-experiences-cfff4791-694a-4d90-9c9c-1eb3fb28e842"
+  },
+  {
+   "feature": "Webpage summarization and insights in Edge",
+   "evidence": "Use Copilot in Edge for webpage summarization and insights.",
+   "source": "https://support.microsoft.com/topic/understanding-the-different-microsoft-copilot-experiences-cfff4791-694a-4d90-9c9c-1eb3fb28e842"
+  },
+  {
+   "feature": "Image creation",
+   "evidence": "Microsoft Copilot is your AI companion and understands your questions and requests, provides direct answers, assists with writing, and even creates images.",
+   "source": "https://support.microsoft.com/topic/understanding-the-different-microsoft-copilot-experiences-cfff4791-694a-4d90-9c9c-1eb3fb28e842"
+  },
+  {
+   "feature": "Chat history (with sign-in)",
+   "evidence": "Sign in isn't required, but signing in with your personal account gives you access to chat history, image creation, longer conversations, voice interactions, and other Copilot features.",
+   "source": "https://support.microsoft.com/topic/understanding-the-different-microsoft-copilot-experiences-cfff4791-694a-4d90-9c9c-1eb3fb28e842"
+  },
+  {
+   "feature": "Voice interactions (with sign-in)",
+   "evidence": "Sign in isn't required, but signing in with your personal account gives you access to chat history, image creation, longer conversations, voice interactions, and other Copilot features.",
+   "source": "https://support.microsoft.com/topic/understanding-the-different-microsoft-copilot-experiences-cfff4791-694a-4d90-9c9c-1eb3fb28e842"
+  }
+ ]
+}

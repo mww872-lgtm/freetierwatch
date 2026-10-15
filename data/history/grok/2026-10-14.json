@@ -1,0 +1,33 @@
+{
+ "date": "2026-10-14",
+ "status": "partial",
+ "manual": false,
+ "limits": [],
+ "features": [
+  {
+   "feature": "Chat",
+   "evidence": "Chat — ask questions, brainstorm, write, and work through problems in a natural back-and-forth.",
+   "source": "https://docs.x.ai/grok/overview"
+  },
+  {
+   "feature": "Image and video generation",
+   "evidence": "Create images and video with Grok Imagine.",
+   "source": "https://docs.x.ai/grok/overview"
+  },
+  {
+   "feature": "Voice conversations",
+   "evidence": "Talk to Grok hands-free with voice.",
+   "source": "https://docs.x.ai/grok/overview"
+  },
+  {
+   "feature": "File analysis",
+   "evidence": "Upload files — PDFs, images, spreadsheets, code, audio, and more — for analysis, extraction, and summarization.",
+   "source": "https://docs.x.ai/grok/overview"
+  },
+  {
+   "feature": "Connectors",
+   "evidence": "Connect your tools so Grok can reach your email, files, and calendar right inside a chat.",
+   "source": "https://docs.x.ai/grok/overview"
+  }
+ ]
+}
