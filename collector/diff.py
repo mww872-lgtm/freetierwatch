@@ -4,10 +4,12 @@ sonucu data/changes.json dosyasina yazar.
 Durumlar: first (ilk kayit), unchanged, changed, error."""
 import difflib
 import json
+import os
 import pathlib
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-DATA = ROOT / "data"
+# Haftalik veri (plans, manual, history, snapshots...) ozel depoda tutulur; FTW_DATA_DIR o klasoru gosterir.
+DATA = pathlib.Path(os.environ["FTW_DATA_DIR"]) if os.environ.get("FTW_DATA_DIR") else ROOT / "data"
 MAX_LINES = 200
 
 

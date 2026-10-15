@@ -5,14 +5,25 @@ on:
     - cron: "0 6 * * 1"   # her Pazartesi 06:00 UTC
   workflow_dispatch:       # elle de calistirilabilir
 
+# Bu is acik depoya hicbir sey yazmaz: haftalik veri tamamen ozel depoya gider.
 permissions:
-  contents: write
+  contents: read
+
+env:
+  # Haftalik veri (ham sayfalar, gecmis kontroller, cikarilan planlar) ozel depoda tutulur.
+  FTW_DATA_DIR: ${{ github.workspace }}/private
 
 jobs:
   run:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Ozel veri deposunu al
+        uses: actions/checkout@v4
+        with:
+          repository: mww872-lgtm/freetierwatch-archive
+          token: ${{ secrets.ARCHIVE_TOKEN }}
+          path: private
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
@@ -26,10 +37,11 @@ jobs:
         run: python reader/read.py
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-      - name: Sonuclari depoya kaydet
+      - name: Sonuclari ozel depoya kaydet
         run: |
+          cd private
           git config user.name "freetierwatch-bot"
           git config user.email "bot@users.noreply.github.com"
-          git add data
+          git add -A
           git diff --cached --quiet || git commit -m "Weekly data update"
           git push

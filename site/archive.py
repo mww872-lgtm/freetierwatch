@@ -6,7 +6,7 @@ import pathlib
 
 import build
 
-HIST = build.ROOT / "data" / "history"
+HIST = build.DATA / "history"
 
 
 def main():

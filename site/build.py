@@ -1,5 +1,6 @@
 """Free Tier Watch sitesini uretir: data/plans.json + data/manual/*.json + config/site.json -> _site/"""
 import json
+import os
 import pathlib
 import datetime
 import re
@@ -8,6 +9,8 @@ from html import escape as e
 import compare
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
+# Haftalik veri (plans, manual, history, snapshots...) ozel depoda tutulur; FTW_DATA_DIR o klasoru gosterir.
+DATA = pathlib.Path(os.environ["FTW_DATA_DIR"]) if os.environ.get("FTW_DATA_DIR") else ROOT / "data"
 OUT = ROOT / "_site"
 REPO = "https://github.com/mww872-lgtm/freetierwatch"
 ICON = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2316181D'/%3E%3Cpath d='M7 11h18M7 15h18M7 21h12' stroke='%23F5F5F2' stroke-width='2.4' fill='none'/%3E%3C/svg%3E"
@@ -79,7 +82,7 @@ def check_claims(services):
 
 def previous_history(sid, checked):
     """Bu servisin, su anki kontrolden onceki en yeni arsiv kaydi (yoksa None)."""
-    folder = ROOT / "data" / "history" / sid
+    folder = DATA / "history" / sid
     best = None
     if folder.exists() and checked:
         for p in sorted(folder.glob("*.json")):
@@ -89,13 +92,13 @@ def previous_history(sid, checked):
 
 
 def collect_services():
-    plans = load(ROOT / "data" / "plans.json", {"services": {}}).get("services", {})
+    plans = load(DATA / "plans.json", {"services": {}}).get("services", {})
     site = load(ROOT / "config" / "site.json")
     hide = site.get("hide", {})
     result = []
     for sid in site["order"]:
         cfg = site["services"][sid]
-        manual = load(ROOT / "data" / "manual" / f"{sid}.json")
+        manual = load(DATA / "manual" / f"{sid}.json")
         auto = plans.get(sid)
         src = manual or auto or {}
         ext = (src.get("extracted") or {}) if cfg["status"] != "none" else {}
@@ -337,12 +340,13 @@ def shell(title, desc, body, page=False):
         f"{body}"
         '<footer>Free Tier Watch is independent. We are not affiliated with any company listed here and we run no ads or sponsors. '
         "Plans change often and mistakes can happen, so always confirm on the official page before you rely on a limit. "
+        'Our summaries and data may be quoted with credit to Free Tier Watch (CC BY 4.0). '
         f'Found something wrong? <a href="{err}" rel="noopener">Tell us</a>.</footer></div><script>{THEME_BODY}</script></body></html>'
     )
 
 
 def this_week(services):
-    changes = load(ROOT / "data" / "changes.json", {}) or {}
+    changes = load(DATA / "changes.json", {}) or {}
     items = changes.get("services", changes)
     changed = [k for k, v in items.items() if isinstance(v, dict) and v.get("status") == "changed"] if isinstance(items, dict) else []
     names = {s["id"]: s["name"] for s in services}
@@ -412,7 +416,7 @@ def method():
 <ul><li>No ads or sponsors for now. If that ever changes, it will be said here first.</li>
 <li>What the companies say and what we tried ourselves are always shown separately.</li>
 <li>Mistakes can happen. Use "Report an error" at the top and we will look at it.</li></ul>
-<p>The data and the code of this site are public: <a href="%s" rel="noopener">%s</a></p>
+<p>The code of this site is public: <a href="%s" rel="noopener">%s</a>. The data shown on each page is published with it (see <a href="data.json">data.json</a>). Our summaries and compiled data are free to quote under <a href="https://creativecommons.org/licenses/by/4.0/" rel="noopener">CC BY 4.0</a>; please credit Free Tier Watch. Text quoted from official pages belongs to its owners.</p>
 """ % (REPO, REPO.replace("https://", ""))
     return shell("How we check - Free Tier Watch", "How Free Tier Watch collects and verifies free plan information.", body, page=True)
 

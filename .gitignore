@@ -1,2 +1,5 @@
 _site/
 __pycache__/
+# Haftalik veri ozel depoda; acik depoya girmesin
+private/
+data/

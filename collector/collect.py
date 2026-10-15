@@ -6,6 +6,7 @@ Sadece Python'un kendi kutuphanelerini kullanir (kurulum gerekmez)."""
 import datetime
 import http.client
 import json
+import os
 import pathlib
 import re
 import time
@@ -14,7 +15,8 @@ import urllib.request
 from html.parser import HTMLParser
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-DATA = ROOT / "data"
+# Haftalik veri (plans, manual, history, snapshots...) ozel depoda tutulur; FTW_DATA_DIR o klasoru gosterir.
+DATA = pathlib.Path(os.environ["FTW_DATA_DIR"]) if os.environ.get("FTW_DATA_DIR") else ROOT / "data"
 USER_AGENT = "FreeTierWatchBot/0.1 (+https://freetierwatch.com; weekly public pricing-page check)"
 PAUSE_SECONDS = 2  # sitelere nazik davran: istekler arasi bekleme
 
