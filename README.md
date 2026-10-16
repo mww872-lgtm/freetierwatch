@@ -20,4 +20,4 @@ Independent weekly tracker of what the **free plans** of popular AI chat service
 
 ## Report an error
 
-Found a wrong or outdated limit? [Open an issue](https://github.com/mww872-lgtm/freetierwatch/issues/new) with the service name and the link to the official page.
+Found a wrong or outdated limit? Email [freetierwatch@gmail.com](mailto:freetierwatch@gmail.com) with the service name and the link to the official page. You can also [open an issue](https://github.com/mww872-lgtm/freetierwatch/issues/new).

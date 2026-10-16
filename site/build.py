@@ -13,6 +13,7 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 DATA = pathlib.Path(os.environ["FTW_DATA_DIR"]) if os.environ.get("FTW_DATA_DIR") else ROOT / "data"
 OUT = ROOT / "_site"
 REPO = "https://github.com/mww872-lgtm/freetierwatch"
+CONTACT = "freetierwatch@gmail.com"
 SITE = "https://freetierwatch.com"  # sitenin gercek adresi: canonical, paylasim onizlemesi ve sitemap bundan uretilir
 OG_IMAGE = "og.png"
 ICON = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2316181D'/%3E%3Cpath d='M7 11h18M7 15h18M7 21h12' stroke='%23F5F5F2' stroke-width='2.4' fill='none'/%3E%3C/svg%3E"
@@ -340,7 +341,7 @@ FONTS = ('<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="
 
 
 def shell(title, desc, body, path="", issue="", page=False):
-    err = f"{REPO}/issues/new?title=Error%20report%3A%20&body=Which%20service%3F%0AWhat%20is%20wrong%3F%0ALink%20to%20the%20official%20page%3A%20"
+    err = f"mailto:{CONTACT}?subject=Error%20report%3A%20&body=Which%20service%3F%0AWhat%20is%20wrong%3F%0ALink%20to%20the%20official%20page%3A%20"
     url = SITE + "/" + path
     img = f"{SITE}/{OG_IMAGE}"
     meta = (
@@ -367,12 +368,12 @@ def shell(title, desc, body, path="", issue="", page=False):
         '<span aria-hidden="true">/</span><button type="button" data-t="dark" aria-pressed="false">Dark</button></div></div>'
         '<div class="kick">Independent · Weekly · Sourced</div><a class="logo" href="./">Free Tier Watch</a></div>'
         f'<nav aria-label="Main"><a href="./#services">The ledger</a><a href="./#this-week">This week</a>'
-        f'<a href="how-we-check.html">How we check</a><a href="{err}" rel="noopener">Report an error</a></nav></header>'
+        f'<a href="how-we-check.html">How we check</a><a href="{err}">Report an error</a></nav></header>'
         f"{body}"
         '<footer>Free Tier Watch is independent. We are not affiliated with any company listed here and we run no ads or sponsors. '
         "Plans change often and mistakes can happen, so always confirm on the official page before you rely on a limit. "
-        'Our summaries and data may be quoted with credit to Free Tier Watch (CC BY 4.0). '
-        f'Found something wrong? <a href="{err}" rel="noopener">Tell us</a>.</footer></div><script>{THEME_BODY}</script></body></html>'
+        'Our summaries and data may be quoted with credit to Free Tier Watch (freetierwatch.com, CC BY 4.0). '
+        f'Found something wrong? <a href="{err}">Tell us</a>.</footer></div><script>{THEME_BODY}</script></body></html>'
     )
 
 
@@ -465,7 +466,7 @@ def method(issue=""):
 <h2>Our promises</h2>
 <ul><li>What the companies say and what we tried ourselves are always shown separately.</li>
 <li>Mistakes can happen. Use "Report an error" at the top and we will look at it.</li></ul>
-<p>The code of this site is public: <a href="%s" rel="noopener">%s</a>. The data shown on each page is published with it (see <a href="data.json">data.json</a>). Our summaries and compiled data are free to quote under <a href="https://creativecommons.org/licenses/by/4.0/" rel="noopener">CC BY 4.0</a>; please credit Free Tier Watch. Text quoted from official pages belongs to its owners.</p>
+<p>The code of this site is public: <a href="%s" rel="noopener">%s</a>. The limits shown on each page are also available on this site as <a href="data.json">data.json</a>. Our summaries and compiled data are free to quote under <a href="https://creativecommons.org/licenses/by/4.0/" rel="noopener">CC BY 4.0</a>; please credit Free Tier Watch (freetierwatch.com). Text quoted from official pages belongs to its owners.</p>
 """ % (REPO, REPO.replace("https://", ""))
     return shell("How we check free AI plan limits | Free Tier Watch",
                  "How Free Tier Watch collects free plan limits from official pages, checks every quote and shows what it could not verify.",
