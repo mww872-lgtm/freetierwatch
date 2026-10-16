@@ -368,12 +368,12 @@ def shell(title, desc, body, path="", issue="", page=False):
         '<span aria-hidden="true">/</span><button type="button" data-t="dark" aria-pressed="false">Dark</button></div></div>'
         '<div class="kick">Independent · Weekly · Sourced</div><a class="logo" href="./">Free Tier Watch</a></div>'
         f'<nav aria-label="Main"><a href="./#services">The ledger</a><a href="./#this-week">This week</a>'
-        f'<a href="how-we-check.html">How we check</a><a href="{err}">Report an error</a></nav></header>'
+        f'<a href="how-we-check.html">How we check</a></nav></header>'
         f"{body}"
         '<footer>Free Tier Watch is independent. We are not affiliated with any company listed here and we run no ads or sponsors. '
         "Plans change often and mistakes can happen, so always confirm on the official page before you rely on a limit. "
         'Our summaries and data may be quoted with credit to Free Tier Watch (freetierwatch.com, CC BY 4.0). '
-        f'Found something wrong? <a href="{err}">Tell us</a>.</footer></div><script>{THEME_BODY}</script></body></html>'
+        f'Found something wrong? <a href="{err}">Tell us</a> or write to {CONTACT}.</footer></div><script>{THEME_BODY}</script></body></html>'
     )
 
 
@@ -465,9 +465,9 @@ def method(issue=""):
 <div><span class="st none">Couldn't verify</span><p>We found no reliable official source, so we make no claims.</p></div></div>
 <h2>Our promises</h2>
 <ul><li>What the companies say and what we tried ourselves are always shown separately.</li>
-<li>Mistakes can happen. Use "Report an error" at the top and we will look at it.</li></ul>
+<li>Mistakes can happen. If you spot one, write to %s and we will look at it.</li></ul>
 <p>The code of this site is public: <a href="%s" rel="noopener">%s</a>. The limits shown on each page are also available on this site as <a href="data.json">data.json</a>. Our summaries and compiled data are free to quote under <a href="https://creativecommons.org/licenses/by/4.0/" rel="noopener">CC BY 4.0</a>; please credit Free Tier Watch (freetierwatch.com). Text quoted from official pages belongs to its owners.</p>
-""" % (REPO, REPO.replace("https://", ""))
+""" % (CONTACT, REPO, REPO.replace("https://", ""))
     return shell("How we check free AI plan limits | Free Tier Watch",
                  "How Free Tier Watch collects free plan limits from official pages, checks every quote and shows what it could not verify.",
                  body, path="how-we-check.html", issue=issue, page=True)
