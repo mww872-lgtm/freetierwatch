@@ -358,7 +358,9 @@ def shell(title, desc, body, path="", issue="", page=False):
         '<!doctype html><html lang="en"><head><meta charset="utf-8">'
         '<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">'
         f"<title>{e(title)}</title><meta name=\"description\" content=\"{e(desc)}\">{meta}"
-        f'<link rel="icon" href="{ICON}">{FONTS}<script>{THEME_HEAD}</script><style>{CSS}</style></head>'
+        '<link rel="icon" href="favicon.ico" sizes="48x48"><link rel="icon" type="image/png" href="favicon-192.png" sizes="192x192">'
+        '<link rel="apple-touch-icon" href="apple-touch-icon.png">'
+        f'{FONTS}<script>{THEME_HEAD}</script><style>{CSS}</style></head>'
         f'<body><div class="in{" page" if page else ""}"><header><div class="mast">'
         f'<div class="bar">{issue_html}'
         '<div class="tgl" role="group" aria-label="Color theme"><button type="button" data-t="light" aria-pressed="true">Light</button>'
@@ -499,9 +501,8 @@ def main():
     (OUT / "sitemap.xml").write_text(sitemap(services), encoding="utf-8")
     (OUT / "robots.txt").write_text(f"User-agent: *\nAllow: /\n\nSitemap: {SITE}/sitemap.xml\n", encoding="utf-8")
     (OUT / "CNAME").write_text("freetierwatch.com\n", encoding="utf-8")
-    img = ROOT / "site" / "static" / OG_IMAGE
-    if img.exists():
-        (OUT / OG_IMAGE).write_bytes(img.read_bytes())
+    for f in (ROOT / "site" / "static").glob("*"):  # paylasim gorseli ve site simgeleri
+        (OUT / f.name).write_bytes(f.read_bytes())
     print("ok:", sorted(p.name for p in OUT.iterdir()), "|", issue or "no issue label")
 
 
