@@ -89,6 +89,39 @@ def compare(old, new):
     return changes
 
 
+def norm_text(text):
+    """Karsilastirma icin metni sadelestirir: kucuk harf, sadece harf ve rakam, tek bosluk."""
+    return " " + re.sub(r"[^a-z0-9]+", " ", str(text or "").lower()).strip() + " "
+
+
+def on_page(quote, page):
+    """Alinti, sayfa metninde (bosluk/noktalama farkina bakmadan) geciyor mu?"""
+    q = str(quote or "").strip()
+    if not q:
+        return False
+    loose = re.sub(r"(?<=[A-Za-z])\d{1,2}$", "", q)  # sondaki dipnot numarasi
+    return any(c.strip() and c in page for c in {norm_text(q), norm_text(loose)})
+
+
+def confirm(changes, old_page, new_page):
+    """Sadece resmi sayfada gercekten degisen maddeleri tutar.
+
+    Okuyucu ayni maddeye her calismada farkli baslik verebilir ya da sayfada zaten olan bir satiri
+    bu sefer cikarabilir; bunlar sahte 'kisildi/artti' oku uretmesin. Kural: eklenen maddenin alintisi
+    ESKI sayfada, kalkan maddenin alintisi YENI sayfada zaten varsa degisiklik sayilmaz.
+    Sayfa metni yoksa (elle okunan servisler) bir sey elenmez."""
+    if old_page is None or new_page is None:
+        return changes, []
+    kept, dropped = [], []
+    for c in changes:
+        if c["dir"] == "removed":
+            real = not on_page(c["old"]["quote"], new_page)
+        else:  # added, up, down, shape: yeni alinti eski sayfada yoksa gercek
+            real = not on_page(c["new"]["quote"], old_page)
+        (kept if real else dropped).append(c)
+    return kept, dropped
+
+
 def overall(changes):
     """'down' | 'up' | 'mixed' | 'shape' | None"""
     if not changes:

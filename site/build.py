@@ -13,6 +13,8 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 DATA = pathlib.Path(os.environ["FTW_DATA_DIR"]) if os.environ.get("FTW_DATA_DIR") else ROOT / "data"
 OUT = ROOT / "_site"
 REPO = "https://github.com/mww872-lgtm/freetierwatch"
+SITE = "https://freetierwatch.com"  # sitenin gercek adresi: canonical, paylasim onizlemesi ve sitemap bundan uretilir
+OG_IMAGE = "og.png"
 ICON = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2316181D'/%3E%3Cpath d='M7 11h18M7 15h18M7 21h12' stroke='%23F5F5F2' stroke-width='2.4' fill='none'/%3E%3C/svg%3E"
 
 # Tema: ziyaretci secer (varsayilan acik), secim bu tarayicida hatirlanir. Sayfa cizilmeden once uygulanir (titreme olmasin).
@@ -91,6 +93,16 @@ def previous_history(sid, checked):
     return load(best) if best else None
 
 
+def page_text(sid, date):
+    """O gun kaydedilen resmi sayfa metni (yoksa None), karsilastirma icin sadelestirilmis."""
+    if not date:
+        return None
+    try:
+        return compare.norm_text((DATA / "snapshots" / sid / f"{date}.txt").read_text(encoding="utf-8", errors="ignore"))
+    except OSError:
+        return None
+
+
 def collect_services():
     plans = load(DATA / "plans.json", {"services": {}}).get("services", {})
     site = load(ROOT / "config" / "site.json")
@@ -113,14 +125,16 @@ def collect_services():
             "manual": bool(manual),
         })
     for s in result:
-        s["changes"], s["prev"] = [], None
+        s["changes"], s["dropped"], s["prev"] = [], [], None
         old = previous_history(s["id"], s["checked"])
         if old and old.get("status") != "none" and s["cfg"]["status"] != "none":
             h = hide.get(s["id"], [])
-            s["changes"] = compare.compare(
+            found = compare.compare(
                 compare.items(old.get("limits"), old.get("features"), h),
                 compare.items(s["limits"], s["features"], h),
             )
+            s["changes"], s["dropped"] = compare.confirm(
+                found, page_text(s["id"], old.get("date")), page_text(s["id"], s["checked"]))
             s["prev"] = old.get("date")
     return result
 
@@ -238,7 +252,9 @@ body{margin:0;background:var(--p);color:var(--ink);font:16px/1.55 "IBM Plex Sans
 a{color:var(--lk)}
 a:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid var(--lk);outline-offset:3px}
 .mast{padding:12px 0 20px;text-align:center;border-bottom:3px double var(--ink)}
-.tgl{display:none;justify-content:flex-end;align-items:center;gap:2px;padding-bottom:10px;font:500 12px "IBM Plex Mono",monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--dot)}
+.bar{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-bottom:10px}
+.issue{font:500 12px "IBM Plex Mono",monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--mu);white-space:nowrap}
+.tgl{display:none;justify-content:flex-end;align-items:center;gap:2px;margin-left:auto;font:500 12px "IBM Plex Mono",monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--dot)}
 html.js .tgl{display:flex}
 .tgl button{background:none;border:0;padding:13px 8px;font:inherit;letter-spacing:inherit;text-transform:inherit;color:var(--mu);cursor:pointer}
 .tgl button[aria-pressed="true"]{color:var(--ink);text-decoration:underline;text-underline-offset:5px}
@@ -323,19 +339,32 @@ FONTS = ('<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="
          'href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">')
 
 
-def shell(title, desc, body, page=False):
+def shell(title, desc, body, path="", issue="", page=False):
     err = f"{REPO}/issues/new?title=Error%20report%3A%20&body=Which%20service%3F%0AWhat%20is%20wrong%3F%0ALink%20to%20the%20official%20page%3A%20"
+    url = SITE + "/" + path
+    img = f"{SITE}/{OG_IMAGE}"
+    meta = (
+        f'<link rel="canonical" href="{e(url)}">'
+        f'<meta property="og:site_name" content="Free Tier Watch"><meta property="og:type" content="website">'
+        f'<meta property="og:url" content="{e(url)}"><meta property="og:title" content="{e(title)}">'
+        f'<meta property="og:description" content="{e(desc)}"><meta property="og:image" content="{img}">'
+        f'<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">'
+        f'<meta property="og:image:alt" content="Free Tier Watch: what free AI plans really include">'
+        f'<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="{e(title)}">'
+        f'<meta name="twitter:description" content="{e(desc)}"><meta name="twitter:image" content="{img}">'
+    )
+    issue_html = f'<span class="issue">{e(issue)}</span>' if issue else ""
     return (
         '<!doctype html><html lang="en"><head><meta charset="utf-8">'
         '<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">'
-        f"<title>{e(title)}</title><meta name=\"description\" content=\"{e(desc)}\">"
-        f'<meta property="og:title" content="{e(title)}"><meta property="og:description" content="{e(desc)}"><meta property="og:type" content="website"><meta name="twitter:card" content="summary">'
+        f"<title>{e(title)}</title><meta name=\"description\" content=\"{e(desc)}\">{meta}"
         f'<link rel="icon" href="{ICON}">{FONTS}<script>{THEME_HEAD}</script><style>{CSS}</style></head>'
         f'<body><div class="in{" page" if page else ""}"><header><div class="mast">'
+        f'<div class="bar">{issue_html}'
         '<div class="tgl" role="group" aria-label="Color theme"><button type="button" data-t="light" aria-pressed="true">Light</button>'
-        '<span aria-hidden="true">/</span><button type="button" data-t="dark" aria-pressed="false">Dark</button></div>'
-        '<div class="kick">Independent · Weekly · Sourced</div><a class="logo" href="index.html">Free Tier Watch</a></div>'
-        f'<nav aria-label="Main"><a href="index.html#services">The ledger</a><a href="index.html#this-week">This week</a>'
+        '<span aria-hidden="true">/</span><button type="button" data-t="dark" aria-pressed="false">Dark</button></div></div>'
+        '<div class="kick">Independent · Weekly · Sourced</div><a class="logo" href="./">Free Tier Watch</a></div>'
+        f'<nav aria-label="Main"><a href="./#services">The ledger</a><a href="./#this-week">This week</a>'
         f'<a href="how-we-check.html">How we check</a><a href="{err}" rel="noopener">Report an error</a></nav></header>'
         f"{body}"
         '<footer>Free Tier Watch is independent. We are not affiliated with any company listed here and we run no ads or sponsors. '
@@ -343,6 +372,26 @@ def shell(title, desc, body, page=False):
         'Our summaries and data may be quoted with credit to Free Tier Watch (CC BY 4.0). '
         f'Found something wrong? <a href="{err}" rel="noopener">Tell us</a>.</footer></div><script>{THEME_BODY}</script></body></html>'
     )
+
+
+def issue_label(services):
+    """'Issue No. 3 · Oct 26': haftalik sayi, son kontrol tarihinden hesaplanir (uydurma yok)."""
+    dates = [s["checked"] for s in services if s["checked"]]
+    site = load(ROOT / "config" / "site.json", {}) or {}
+    try:
+        last = datetime.date.fromisoformat(max(dates))
+        first = datetime.date.fromisoformat(site["first_issue_week"])
+    except (ValueError, KeyError):
+        return ""
+    monday = last - datetime.timedelta(days=last.weekday())
+    n = (monday - first).days // 7 + 1
+    if n < 1:
+        return ""
+    return f"Issue No. {n} \u00b7 {last.strftime('%b')} {last.day}"
+
+
+def human_list(names):
+    return names[0] if len(names) == 1 else ", ".join(names[:-1]) + " and " + names[-1]
 
 
 def this_week(services):
@@ -374,7 +423,7 @@ def this_week(services):
             f'<div class="panel">{"<p>" + e(txt) + "</p>" if txt else ""}{lst}</div></section>')
 
 
-def index(services):
+def index(services, issue=""):
     counts = {k: sum(1 for s in services if s["cfg"]["status"] == k) for k in LABEL}
     dates = [s["checked"] for s in services if s["checked"]]
     last = pretty_date(max(dates)) if dates else "not yet"
@@ -390,10 +439,14 @@ def index(services):
         f'{"".join(card(s) for s in services)}</section>'
         f"{this_week(services)}"
     )
-    return shell("Free Tier Watch", "What the free plans of AI chat apps really include, checked against official pages every week.", body)
+    covered = [s["name"] for s in services if s["cfg"]["status"] != "none"]
+    desc = (f"What free AI plans really include: limits and features for {human_list(covered)}, "
+            "with the official source and exact quote for each line.") if covered else \
+        "What free AI plans really include, checked against official pages every week."
+    return shell("Free AI plan limits, checked weekly | Free Tier Watch", desc, body, path="", issue=issue)
 
 
-def method():
+def method(issue=""):
     body = """
 <h1>How we check</h1>
 <p>Free Tier Watch exists to answer one question: what do you actually get on the free plan of an AI chat app? We try to be the referee, so the rules below are strict on purpose.</p>
@@ -413,12 +466,23 @@ def method():
 <div><span class="st partial">Partly stated</span><p>Some information is missing or two official pages disagree. We show only what is clear.</p></div>
 <div><span class="st none">Couldn't verify</span><p>We found no reliable official source, so we make no claims.</p></div></div>
 <h2>Our promises</h2>
-<ul><li>No ads or sponsors for now. If that ever changes, it will be said here first.</li>
-<li>What the companies say and what we tried ourselves are always shown separately.</li>
+<ul><li>What the companies say and what we tried ourselves are always shown separately.</li>
 <li>Mistakes can happen. Use "Report an error" at the top and we will look at it.</li></ul>
 <p>The code of this site is public: <a href="%s" rel="noopener">%s</a>. The data shown on each page is published with it (see <a href="data.json">data.json</a>). Our summaries and compiled data are free to quote under <a href="https://creativecommons.org/licenses/by/4.0/" rel="noopener">CC BY 4.0</a>; please credit Free Tier Watch. Text quoted from official pages belongs to its owners.</p>
 """ % (REPO, REPO.replace("https://", ""))
-    return shell("How we check - Free Tier Watch", "How Free Tier Watch collects and verifies free plan information.", body, page=True)
+    return shell("How we check free AI plan limits | Free Tier Watch",
+                 "How Free Tier Watch collects free plan limits from official pages, checks every quote and shows what it could not verify.",
+                 body, path="how-we-check.html", issue=issue, page=True)
+
+
+def sitemap(services):
+    """Sadece gercek sayfalar. Ana sayfanin lastmod'u en son gercek kontrol tarihidir; yontem sayfasinda
+    veriye bagli tarih olmadigi icin lastmod yazilmaz (uydurma tarih yok)."""
+    dates = [s["checked"] for s in services if s["checked"]]
+    last = f"<lastmod>{max(dates)}</lastmod>" if dates else ""
+    return ('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+            f"<url><loc>{SITE}/</loc>{last}</url>\n"
+            f"<url><loc>{SITE}/how-we-check.html</loc></url>\n</urlset>\n")
 
 
 def main():
@@ -428,13 +492,22 @@ def main():
         for c in s["changes"]:
             print(f"DEGISIKLIK [{s['id']}] {c['dir']}: {c['label']}: "
                   f"{(c['old'] or {}).get('value')} -> {(c['new'] or {}).get('value')}")
+        for c in s["dropped"]:
+            print(f"ELENDI (resmi sayfada ayni, sahte degisiklik) [{s['id']}] {c['dir']}: {c['label']}")
+    issue = issue_label(services)
     OUT.mkdir(exist_ok=True)
-    (OUT / "index.html").write_text(index(services), encoding="utf-8")
-    (OUT / "how-we-check.html").write_text(method(), encoding="utf-8")
+    (OUT / "index.html").write_text(index(services, issue), encoding="utf-8")
+    (OUT / "how-we-check.html").write_text(method(issue), encoding="utf-8")
     public = [{"id": s["id"], "name": s["name"], "status": s["cfg"]["status"], "checked": s["checked"],
                "limits": s["limits"], "features": s["features"]} for s in services]
     (OUT / "data.json").write_text(json.dumps(public, ensure_ascii=False, indent=1), encoding="utf-8")
-    print("ok:", [p.name for p in OUT.iterdir()])
+    (OUT / "sitemap.xml").write_text(sitemap(services), encoding="utf-8")
+    (OUT / "robots.txt").write_text(f"User-agent: *\nAllow: /\n\nSitemap: {SITE}/sitemap.xml\n", encoding="utf-8")
+    (OUT / "CNAME").write_text("freetierwatch.com\n", encoding="utf-8")
+    img = ROOT / "site" / "static" / OG_IMAGE
+    if img.exists():
+        (OUT / OG_IMAGE).write_bytes(img.read_bytes())
+    print("ok:", sorted(p.name for p in OUT.iterdir()), "|", issue or "no issue label")
 
 
 if __name__ == "__main__":
