@@ -395,14 +395,9 @@ def human_list(names):
 
 
 def this_week(services):
-    changes = load(DATA / "changes.json", {}) or {}
-    items = changes.get("services", changes)
-    changed = [k for k, v in items.items() if isinstance(v, dict) and v.get("status") == "changed"] if isinstance(items, dict) else []
-    names = {s["id"]: s["name"] for s in services}
-    if changed:
-        lst = ", ".join(names.get(c, c.title()) for c in changed)
-        txt = f"Pages changed since the last check: {lst}. We compare the new text with the old one and update the cards above after review."
-    elif any(s.get("changes") for s in services):
+    # Sadece ucretsiz planlarda gercekten degisen maddeler sayilir; resmi sayfadaki menu/kimlik gibi
+    # onemsiz metin farklari "degisti" diye gosterilmez.
+    if any(s.get("changes") for s in services):
         txt = ""
     elif any(s.get("prev") for s in services):
         txt = "No changes in the free plans since the last check."
