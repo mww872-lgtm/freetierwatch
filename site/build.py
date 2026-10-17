@@ -18,16 +18,24 @@ SITE = "https://freetierwatch.com"  # sitenin gercek adresi: canonical, paylasim
 OG_IMAGE = "og.png"
 ICON = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2316181D'/%3E%3Cpath d='M7 11h18M7 15h18M7 21h12' stroke='%23F5F5F2' stroke-width='2.4' fill='none'/%3E%3C/svg%3E"
 
-# Tema: ziyaretci secer (varsayilan acik), secim bu tarayicida hatirlanir. Sayfa cizilmeden once uygulanir (titreme olmasin).
+
+VENDOR = {"chatgpt": "OpenAI", "claude": "Anthropic", "gemini": "Google", "grok": "xAI",
+          "copilot": "Microsoft", "perplexity": "Perplexity", "deepseek": "DeepSeek"}
+
+# Tema: varsayilan KOYU; ziyaretci Light secerse bu tarayicida hatirlanir. Sayfa cizilmeden once uygulanir (titreme olmasin).
 THEME_HEAD = ("(function(){var d=document.documentElement;d.className+=' js';var t=null;"
               "try{t=localStorage.getItem('ftw-theme')}catch(x){}"
-              "d.setAttribute('data-theme',t==='dark'?'dark':'light')})();")
-THEME_BODY = ("(function(){var d=document.documentElement,bs=document.querySelectorAll('.tgl button');"
-              "function set(t,save){d.setAttribute('data-theme',t);"
-              "for(var i=0;i<bs.length;i++){bs[i].setAttribute('aria-pressed',String(bs[i].getAttribute('data-t')===t))}"
+              "d.setAttribute('data-theme',t==='light'?'light':'dark')})();")
+THEME_BODY = ("(function(){var d=document.documentElement,b=document.getElementById('theme');"
+              "function set(t,save){d.setAttribute('data-theme',t);if(b){b.textContent=t==='dark'?'Light':'Dark';b.setAttribute('aria-pressed',String(t==='dark'))}"
               "if(save){try{localStorage.setItem('ftw-theme',t)}catch(x){}}}"
-              "set(d.getAttribute('data-theme')||'light',false);"
-              "for(var i=0;i<bs.length;i++){bs[i].addEventListener('click',function(){set(this.getAttribute('data-t'),true)})}})();")
+              "set(d.getAttribute('data-theme')||'dark',false);"
+              "if(b){b.addEventListener('click',function(){set(d.getAttribute('data-theme')==='dark'?'light':'dark',true)})}"
+              "var ds=document.querySelectorAll('dialog');"
+              "document.addEventListener('click',function(ev){var o=ev.target.closest('[data-open]');"
+              "if(o){var m=document.getElementById('d-'+o.getAttribute('data-open'));if(m){if(m.showModal){m.showModal()}else{m.setAttribute('open','')}}return}"
+              "var c=ev.target.closest('[data-close]');if(c){var p=c.closest('dialog');if(p){p.close()}return}"
+              "if(ev.target.tagName==='DIALOG'){ev.target.close()}})})();")
 LABEL = {"verified": "Verified", "partial": "Partly stated", "none": "Couldn't verify"}
 
 
@@ -192,155 +200,189 @@ def change_row(c, prev, cur):
             f'<div class="cq">{quotes}</div></li>')
 
 
-def change_block(s):
+CHG_TEXT = {"down": ("▼", "tighter"), "up": ("▲", "more generous"),
+            "mixed": ("◆", "mixed"), "shape": ("⇄", "works differently")}
+
+
+def shown_items(s):
+    """Kartta ve pencerede gosterilen satirlar: (baslik, deger, alinti, kaynak)."""
+    out = []
+    for l in s["limits"]:
+        if str(l.get("value", "")).lower().startswith("not officially"):
+            continue
+        out.append((l["topic"], l.get("value", ""), l["evidence"], l["source"]))
+    for f in s["features"]:
+        out.append((f["feature"], "", f["evidence"], f["source"]))
+    return out
+
+
+def dialog(s):
+    cfg = s["cfg"]
+    items = shown_items(s)
     ch = s.get("changes") or []
-    if not ch:
-        return ""
-    kind = compare.overall(ch)
-    ref = reference_week(s["prev"], s["checked"])
-    rows = "".join(change_row(c, s["prev"], s["checked"]) for c in ch)
-    return (f'<details class="chg"><summary class="pill {kind}">{ICON_OF[kind]}<span>{e(pill_text(kind, ref))}</span></summary>'
-            f'<div class="chgbox"><div class="chgh">What changed · {e(pretty_date(s["prev"]))} to {e(pretty_date(s["checked"]))}</div>'
-            f'<ul class="chgl">{rows}</ul>'
-            '<p class="how">Only items that changed are listed, each with the official quote from both checks.</p></div></details>')
+    parts = [f'<div class="dhead"><h2>{e(s["name"])}</h2><button class="x" type="button" data-close aria-label="Close">×</button></div>',
+             f'<p class="meta">{e(VENDOR.get(s["id"], ""))} · {LABEL[cfg["status"]]} · checked {e(pretty_date(s["checked"]) if s["checked"] else "not checked")}</p>']
+    if ch:
+        kind = compare.overall(ch)
+        ref = reference_week(s["prev"], s["checked"])
+        rows = "".join(change_row(c, s["prev"], s["checked"]) for c in ch)
+        parts.append(f'<div class="chgbox"><div class="chgh">{e(pill_text(kind, ref))} · {e(pretty_date(s["prev"]))} to {e(pretty_date(s["checked"]))}</div>'
+                     f'<ul class="chgl">{rows}</ul><p class="how">Only items that changed are listed, each with the official quote from both checks.</p></div>')
+    if items:
+        for title, value, quote, src in items:
+            v = f' <span>· {e(str(value))}</span>' if value else ""
+            parts.append(f'<div class="it"><h4>{e(title)}{v}</h4><blockquote>“{e(quote)}”</blockquote>'
+                         f'<a href="{e(src)}" rel="noopener">{e(host(src))}</a></div>')
+        how = "Read by hand from the official page." if s["manual"] else "Read automatically, quotes checked against the page."
+        parts.append(f'<p class="how">{how}</p>')
+    else:
+        parts.append('<p>The only official page we found has too little information about a free plan. We do not guess.</p>')
+    return f'<dialog id="d-{e(s["id"])}" aria-label="{e(s["name"])} sources"><div class="dbody">{"".join(parts)}</div></dialog>'
 
 
 def card(s):
     cfg = s["cfg"]
-    lines = []
-    for l in s["limits"]:
-        if str(l.get("value", "")).lower().startswith("not officially"):
-            continue
-        lines.append(limit_line(l))
-    lines += [f["feature"] for f in s["features"]]
-    shown, more = lines[:3], lines[3:]
-    bullets = "".join(f"<li>{e(x)}</li>" for x in shown)
-    detail_rows = ""
-    for l in s["limits"]:
-        if str(l.get("value", "")).lower().startswith("not officially"):
-            continue
-        detail_rows += f'<li><b>{e(limit_line(l))}</b><q>{e(l["evidence"])}</q><a href="{e(l["source"])}" rel="noopener">{e(host(l["source"]))}</a></li>'
-    for f in s["features"]:
-        detail_rows += f'<li><b>{e(f["feature"])}</b><q>{e(f["evidence"])}</q><a href="{e(f["source"])}" rel="noopener">{e(host(f["source"]))}</a></li>'
-    note = f'<p class="cnote">{e(cfg["note"])}</p>' if cfg.get("note") else ""
-    how = "Read by hand from the official page." if s["manual"] else "Read automatically, quotes checked against the page."
-    details = ""
-    if detail_rows:
-        extra = f" (+{len(more)} more)" if more else ""
-        details = f'<details><summary>Sources and quotes{extra}</summary><ul class="src">{detail_rows}</ul><p class="how">{how}</p></details>'
-    elif s["id"] == "deepseek":
-        details = '<details><summary>Why no data?</summary><p class="how">The only official page we found has too little information about a free plan. We do not guess.</p></details>'
-    checked = pretty_date(s["checked"]) if s["checked"] else "not checked"
+    items = shown_items(s)
+    ch = s.get("changes") or []
+    if ch:
+        kind = compare.overall(ch)
+        sym, word = CHG_TEXT[kind]
+        label = pill_text(kind, reference_week(s["prev"], s["checked"]))
+        chg = (f'<button class="chg {kind}" type="button" data-open="{e(s["id"])}" aria-label="{e(label)}. Show what changed">'
+               f'<i>{sym}</i>{word}</button>')
+    else:
+        chg = '<div class="chg"><i>–</i>no change</div>' if s.get("prev") else '<div class="chg"><i>–</i>first check</div>'
+    note = f'<p class="note">{e(cfg["note"])}</p>' if cfg.get("note") else ""
+    n = len(items)
+    btn = (f'<span class="full">Quotes and sources ({n})</span><span class="short">Quotes ({n})</span>' if n else "Why no data?")
+    checked = pretty_date(s["checked"]).rsplit(",", 1)[0] if s["checked"] else "not checked"
     return (
-        f'<article class="row" id="{e(s["id"])}">'
-        f'<div class="l"><h3 class="nm">{e(s["name"])}</h3>'
-        f'<div class="num">{e(cfg["big"])}<small>{e(cfg["label"])}</small></div></div>'
-        f'<div class="m"><p class="sum">{e(cfg["summary"])}</p>{note}{change_block(s)}'
-        f'{"<ul class=feat>" + bullets + "</ul>" if bullets else ""}{details}</div>'
-        f'<div class="r"><span class="st {cfg["status"]}">{LABEL[cfg["status"]]}</span>'
-        f'<div class="when">Checked {checked}</div></div></article>'
+        f'<article class="card" id="{e(s["id"])}" style="--acc:var(--v-{e(s["id"])})">'
+        f'<div class="card-head"><div><h2 class="name"><span class="dot"></span>{e(s["name"])}</h2>'
+        f'<p class="vendor">{e(VENDOR.get(s["id"], ""))}</p></div><span class="chip {cfg["status"]}">{LABEL[cfg["status"]]}</span></div>'
+        f'<div class="fig{" none" if cfg["status"] == "none" else ""}"><div class="fig-t"><b>{e(cfg["big"])}</b><em>{e(cfg["label"])}</em></div>{chg}</div>'
+        f'<p class="sum">{e(cfg["summary"])}</p>{note}'
+        f'<div class="srcrow"><button type="button" data-open="{e(s["id"])}">{btn}</button><span>Checked {e(checked)}</span></div></article>'
     )
 
 
-CSS = """
-:root{--p:#F5F5F2;--ink:#16181D;--mu:#5B6068;--soft:#3A3F47;--ln:#C9CBCF;--dot:#9A9DA3;--sf:#FFFFFF;--lk:#1F3A5F;--ok:#067647;--okbg:#ECFDF3;--no:#B42318;--nobg:#FEF3F2;--wa:#8A5300;--fl:#475467;--flbg:#F2F4F7;color-scheme:light}
-:root[data-theme="dark"]{--p:#14161A;--ink:#ECEDEF;--mu:#A0A5AE;--soft:#C4C8CF;--ln:#3A3E46;--dot:#5A5F69;--sf:#1C1F25;--lk:#8FB0E8;--ok:#5FE39A;--okbg:#123222;--no:#FF9C94;--nobg:#3A1A1A;--wa:#FFB84D;--fl:#B5BAC3;--flbg:#272A31;color-scheme:dark}
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{margin:0;background:var(--p);color:var(--ink);font:16px/1.55 "IBM Plex Sans",system-ui,sans-serif;
- padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
-.in{max-width:1120px;margin:0 auto}
-a{color:var(--lk)}
-a:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid var(--lk);outline-offset:3px}
-.mast{padding:12px 0 20px;text-align:center;border-bottom:3px double var(--ink)}
-.bar{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-bottom:10px}
-.issue{font:500 12px "IBM Plex Mono",monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--mu);white-space:nowrap}
-.tgl{display:none;justify-content:flex-end;align-items:center;gap:2px;margin-left:auto;font:500 12px "IBM Plex Mono",monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--dot)}
-html.js .tgl{display:flex}
-.tgl button{background:none;border:0;padding:13px 8px;font:inherit;letter-spacing:inherit;text-transform:inherit;color:var(--mu);cursor:pointer}
-.tgl button[aria-pressed="true"]{color:var(--ink);text-decoration:underline;text-underline-offset:5px}
-.kick{font:12px "IBM Plex Mono",monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--mu)}
-.logo{display:block;margin-top:10px;font:700 clamp(40px,9vw,72px)/1 Fraunces,Georgia,serif;letter-spacing:-.02em;color:var(--ink);text-decoration:none}
-nav{display:flex;flex-wrap:wrap;justify-content:center;gap:4px 28px;padding:6px 0;border-bottom:1px solid var(--ink);font-size:15px;font-weight:500}
-nav a{color:var(--lk);text-decoration:none;padding:8px 2px}nav a:hover{text-decoration:underline}
-.hero{display:flex;flex-wrap:wrap;gap:36px 56px;padding:52px 0 48px;align-items:flex-start}
-.hero>div:first-child{flex:1 1 480px;min-width:0}
-h1{font:500 clamp(32px,5.5vw,48px)/1.1 Fraunces,Georgia,serif;letter-spacing:-.01em;margin:0;text-wrap:balance}
-.sub{color:var(--soft);max-width:56ch;margin:20px 0 0;font-size:18px;line-height:1.6}
-.last{margin:18px 0 0;font:13px "IBM Plex Mono",monospace;color:var(--mu)}
-.stats{flex:1 1 280px;min-width:0}
-.stat{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:12px 0;border-top:1px solid var(--ink)}
-.stat:last-child{border-bottom:1px solid var(--ink)}
-.stat span{font-size:15px;color:var(--mu)}
-.stat b{font:700 34px/1 Fraunces,Georgia,serif}
-section{margin-top:0;padding-bottom:48px}
-.sh{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:6px 16px;border-bottom:3px double var(--ink);padding-bottom:10px}
-.sh h2{font:700 32px/1.2 Fraunces,Georgia,serif;margin:0}
-.sh span{font:13px "IBM Plex Mono",monospace;color:var(--mu)}
-.row{display:grid;grid-template-columns:200px minmax(0,1fr) 160px;gap:14px 28px;padding:24px 0;border-bottom:1px solid var(--ln)}
-.l,.m,.r{min-width:0}
-.r{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
-@media(max-width:720px){.row{grid-template-columns:1fr;padding:20px 0}.r{flex-direction:row;align-items:center;justify-content:space-between}.sh h2{font-size:28px}}
-.nm{font:700 28px/1.1 Fraunces,Georgia,serif;margin:0}
-.st{font:500 11px "IBM Plex Mono",monospace;padding:3px 9px;border-radius:99px;border:1px solid currentColor;white-space:nowrap}
-.st.verified{color:var(--ok)}.st.partial{color:var(--wa)}.st.none{color:var(--no)}
-.num{font:600 22px/1 "IBM Plex Mono",monospace;letter-spacing:-.02em;margin-top:14px;padding-top:14px;border-top:1px dotted var(--dot);color:var(--ink)}
-.num small{display:block;font:12px/1.4 "IBM Plex Mono",monospace;letter-spacing:0;color:var(--mu);margin-top:8px;font-weight:400}
-.sum{margin:0 0 6px;color:var(--ink);font-size:16px}
-.cnote{margin:0 0 6px;color:var(--wa);font-size:14px}
-ul.feat{list-style:none;margin:12px 0 0;padding:0;font-size:15px;color:var(--mu)}
-ul.feat li{padding:6px 0;border-bottom:1px dotted var(--dot)}
-ul.feat li:last-child{border-bottom:0}
-details{margin-top:12px;font-size:14px}
-summary{cursor:pointer;color:var(--lk);font:13px "IBM Plex Mono",monospace}
-ul.src{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:14px}
-ul.src b{display:block;font-weight:600}
-ul.src q{display:block;color:var(--mu);font-size:13px;margin:2px 0;font-style:italic;quotes:"\\201C" "\\201D"}
-ul.src a{font:12px "IBM Plex Mono",monospace}
-.how{color:var(--mu);font-size:13px;margin:10px 0 0}
-.when{font:11px "IBM Plex Mono",monospace;color:var(--mu)}
-h2{font:700 26px/1.2 Fraunces,Georgia,serif;letter-spacing:-.01em;margin:0 0 12px}
-.panel{background:var(--sf);border:1px solid var(--ink);padding:24px 28px}
-.sh+.panel{margin-top:18px}
-.panel p{margin:0 0 8px}.panel p:last-child{margin:0}
-.panel ul{margin:8px 0 0;padding-left:20px}
-footer{margin:16px 0 40px;padding-top:20px;padding-right:max(0px,calc(100% - 70ch));border-top:3px double var(--ink);color:var(--mu);font-size:14px}
-.page h1{font-size:clamp(30px,5vw,44px);max-width:22ch;margin:44px 0 14px}
-.page h2{margin-top:34px}
-.page p,.page li{max-width:66ch;color:var(--ink)}
-.page li{margin:6px 0}
-.kind{display:grid;gap:10px;margin:14px 0}
-.kind div{background:var(--sf);border:1px solid var(--ln);padding:12px 14px}
-.chg{margin-top:12px}
-.chg>summary{list-style:none;display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:99px;font:600 13px "IBM Plex Sans",sans-serif}
-.chg>summary::-webkit-details-marker{display:none}
-.chg>summary svg{flex:none}
-.pill.down{color:var(--no);background:var(--nobg)}
-.pill.up{color:var(--ok);background:var(--okbg)}
-.pill.mixed,.pill.shape{color:var(--fl);background:var(--flbg)}
-.chgbox{margin-top:12px;padding:16px 20px;background:var(--sf);border:1px solid var(--ink)}
-.chgh{font:12px "IBM Plex Mono",monospace;letter-spacing:.06em;text-transform:uppercase;color:var(--mu);margin-bottom:6px}
+def guide():
+    rows = [("var(--ok)", "Verified", "Official page states the limits clearly."),
+            ("var(--part)", "Partly stated", "Some limits are published, others are not."),
+            ("var(--bad)", "Couldn't verify", "Not enough on the official page, so we make no claims."),
+            ("var(--faint)", "▲ ▼ –", "Change since last week. Colors describe what it means for readers, not what a company intended.")]
+    lis = "".join(f'<li><span class="sw" style="background:{c}"></span><b>{e(t)}</b> {e(d)}</li>' for c, t, d in rows)
+    return f'<aside class="card guide"><h3>How to read this</h3><ul>{lis}</ul></aside>'
+
+
+CSS = r"""
+:root{--bg:#edf0f6;--surface:#fff;--surface2:#f5f7fb;--ink:#0e1a30;--mute:#586784;--faint:#8b97ae;--line:#d6dce9;--accent:#2a4bff;--ok:#0c8f63;--part:#a86a0a;--bad:#cc3b3b;--up:#0c8f63;--down:#cc3b3b;
+--v-chatgpt:#2f7bff;--v-claude:#e0782a;--v-gemini:#8a63e8;--v-grok:#14a89a;--v-copilot:#d6478f;--v-perplexity:#1f9bb0;--v-deepseek:#6b7aa6;
+--f-display:"Bricolage Grotesque","DM Sans",system-ui,sans-serif;--f-body:"DM Sans",system-ui,sans-serif;--f-mono:"JetBrains Mono",ui-monospace,Menlo,monospace;color-scheme:light}
+:root[data-theme="dark"]{--bg:#0a1120;--surface:#121b2e;--surface2:#0e1627;--ink:#e6edfd;--mute:#96a4c0;--faint:#667693;--line:#243250;--accent:#86a2ff;--ok:#5fe0b0;--part:#f0bd5a;--bad:#ff8c86;--up:#5fe0b0;--down:#ff8c86;
+--v-chatgpt:#6aa2ff;--v-claude:#f0a35e;--v-gemini:#b79af2;--v-grok:#4fd6c8;--v-copilot:#f08cbd;--v-perplexity:#5fd0e3;--v-deepseek:#97a6cf;color-scheme:dark}
+*{box-sizing:border-box}html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 var(--f-body)}
+a{color:inherit}:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.app{min-height:100%;display:grid;grid-template-rows:auto auto minmax(0,1fr) auto;gap:14px;padding:14px max(20px,env(safe-area-inset-right,0px)) 14px max(20px,env(safe-area-inset-left,0px));max-width:1480px;margin:0 auto}
+.top{display:flex;align-items:center;gap:12px;flex-wrap:wrap;min-width:0}
+.brand{display:flex;align-items:center;gap:9px;text-decoration:none;font:700 18px var(--f-display);letter-spacing:-.01em}
+.logo{width:22px;height:22px;color:var(--accent)}
+.tag{color:var(--mute);font-size:13px}
+.pill{appearance:none;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:3px 12px;font:500 12px var(--f-body);color:var(--mute);cursor:pointer;text-decoration:none}
+.pill:hover{color:var(--ink);border-color:var(--mute)}
+.right{margin-left:auto;display:flex;align-items:center;gap:10px}
+.stamp{font:12px var(--f-mono);color:var(--mute);white-space:nowrap}
+.hero{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap}
+h1{margin:0;font:700 clamp(26px,3.4vw,44px)/1.02 var(--f-display);letter-spacing:-.03em;text-wrap:balance;max-width:20ch}
+.hero-side{display:flex;flex-direction:column;align-items:flex-end;gap:7px;max-width:100%}
+.counts{display:flex;gap:8px;flex-wrap:wrap}
+.count{display:flex;align-items:baseline;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:6px 12px}
+.count b{font:600 19px var(--f-mono);font-variant-numeric:tabular-nums}.count span{font-size:12px;color:var(--mute)}
+.count.ok b{color:var(--ok)}.count.part b{color:var(--part)}.count.bad b{color:var(--bad)}
+.week{margin:0;font-size:12.5px;color:var(--mute);text-align:right}.week b{color:var(--ink);font-weight:600}.week a{color:var(--accent);text-underline-offset:3px}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-rows:1fr;gap:12px;min-height:0}
+.card{container-type:inline-size;--acc:var(--accent);background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 15px 11px;display:flex;flex-direction:column;min-width:0}
+.card-head{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.name{display:flex;align-items:center;gap:9px;margin:0;font:700 clamp(19px,1.8vw,24px)/1 var(--f-display);letter-spacing:-.02em}
+.dot{width:11px;height:11px;border-radius:50%;background:var(--acc);flex:none}
+.vendor{margin:4px 0 0 20px;font:12px var(--f-mono);color:var(--mute)}
+.chip{font:600 11px var(--f-mono);padding:3px 9px;border:1px solid currentColor;border-radius:999px;white-space:nowrap}
+.chip.verified{color:var(--ok)}.chip.partial{color:var(--part)}.chip.none{color:var(--bad)}
+.fig{margin:11px 0 8px;padding:9px 12px;background:var(--surface2);border-radius:10px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.fig-t{min-width:0}
+.fig b{display:block;font:600 clamp(24px,2.5vw,34px)/1 var(--f-mono);letter-spacing:-.04em;color:var(--acc);font-variant-numeric:tabular-nums}
+.fig em{display:block;font-style:normal;font-size:12px;color:var(--mute);margin-top:5px}
+.fig.none b{color:var(--faint)}
+.chg{flex:none;text-align:center;font:600 11px var(--f-mono);color:var(--faint);line-height:1.2;background:none;border:0;padding:0}
+.chg i{display:block;font:600 22px/1 var(--f-mono);font-style:normal;margin-bottom:2px}
+button.chg{cursor:pointer;border-radius:8px;padding:4px 6px}button.chg:hover{background:var(--surface)}
+.chg.up{color:var(--up)}.chg.down{color:var(--down)}.chg.mixed,.chg.shape{color:var(--mute)}
+.sum{margin:0;font-size:13px;color:var(--ink);flex:1}
+.note{margin:6px 0 0;font-size:11.5px;color:var(--mute);font-style:italic}
+.srcrow{display:flex;justify-content:space-between;align-items:center;gap:8px;border-top:1px solid var(--line);padding-top:8px;margin-top:9px;font:11.5px var(--f-mono);color:var(--mute)}
+.srcrow button{appearance:none;background:none;border:0;padding:0;font:inherit;color:var(--accent);cursor:pointer;text-underline-offset:3px}
+.srcrow button:hover{text-decoration:underline}
+.srcrow button,.srcrow span{white-space:nowrap}.srcrow .short{display:none}
+@container (max-width:300px){.name{font-size:18px}.chip{font-size:10px;padding:2px 7px}.fig{padding:8px 10px}.fig b{font-size:25px}.fig em{font-size:11px}.chg{font-size:10px}.chg i{font-size:18px}.sum{font-size:12.5px}.srcrow{font-size:10.5px}.srcrow .full{display:none}.srcrow .short{display:inline}}
+.card.guide{background:transparent;border-style:dashed}
+.guide h3{margin:0 0 8px;font:600 11px var(--f-mono);letter-spacing:.07em;text-transform:uppercase;color:var(--accent)}
+.guide ul{margin:0;padding:0;list-style:none;display:grid;gap:8px;font-size:12.5px;color:var(--mute)}
+.guide li b{color:var(--ink)}
+.guide .sw{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px}
+footer{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px 28px;border-top:1px solid var(--line);padding-top:12px;font-size:11.5px;color:var(--mute)}
+footer h5{margin:0 0 4px;font:600 10.5px var(--f-mono);letter-spacing:.07em;text-transform:uppercase;color:var(--faint)}
+footer p{margin:0}footer a{color:var(--ink);text-underline-offset:3px}
+dialog{padding:0;border:1px solid var(--line);border-radius:16px;background:var(--surface);color:var(--ink);width:min(820px,calc(100% - 32px));max-height:90vh;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,.28)}
+dialog::backdrop{background:rgba(6,12,24,.55);backdrop-filter:blur(3px)}
+.dbody{padding:22px 14px 24px 24px;max-height:90vh;overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--line) transparent;scrollbar-gutter:stable;--acc:var(--accent)}
+.dbody::-webkit-scrollbar{width:8px}.dbody::-webkit-scrollbar-track{background:transparent;margin:14px 0}.dbody::-webkit-scrollbar-thumb{background:var(--line);border-radius:8px}.dbody::-webkit-scrollbar-thumb:hover{background:var(--faint)}
+.dhead{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;margin-bottom:6px}
+.dhead h2{margin:0;font:700 24px/1.1 var(--f-display);letter-spacing:-.02em}
+.x{appearance:none;border:1px solid var(--line);background:var(--surface2);color:var(--ink);width:32px;height:32px;border-radius:8px;font:500 18px/1 var(--f-body);cursor:pointer;flex:none}
+.meta{font:12px var(--f-mono);color:var(--mute);margin:0 0 14px}
+.it{border-top:1px solid var(--line);padding:11px 0}
+.it h4{margin:0 0 3px;font:600 14px var(--f-body)}.it h4 span{font-weight:400;color:var(--mute)}
+.it blockquote{margin:6px 0 4px;padding:6px 10px;border-left:3px solid var(--accent);background:var(--surface2);border-radius:0 8px 8px 0;font-size:13px}
+.it a{font:11.5px var(--f-mono);color:var(--accent);text-underline-offset:3px;overflow-wrap:anywhere}
+.how{color:var(--mute);font-size:12.5px;margin:10px 0 0}
+.chgbox{margin:0 0 10px;padding:14px 16px;background:var(--surface2);border:1px solid var(--line);border-radius:12px}
+.chgh{font:12px var(--f-mono);letter-spacing:.04em;text-transform:uppercase;color:var(--mute);margin-bottom:6px}
 ul.chgl{list-style:none;margin:0;padding:0}
-ul.chgl>li{padding:12px 0;border-top:1px solid var(--ln)}
+ul.chgl>li{padding:10px 0;border-top:1px solid var(--line)}ul.chgl>li:first-child{border-top:0}
 .cr{display:flex;flex-wrap:wrap;gap:6px 16px;justify-content:space-between;align-items:baseline}
 .cr b{font-weight:600}
-.cv{display:inline-flex;align-items:center;gap:10px;flex-wrap:wrap;font:14px "IBM Plex Mono",monospace}
-.cv .ov{color:var(--mu)}
-li.down .nv,li.removed .nv{color:var(--no)}
-li.up .nv,li.added .nv{color:var(--ok)}
-li.down svg,li.removed svg{color:var(--no)}
-li.up svg,li.added svg{color:var(--ok)}
-li.shape svg{color:var(--fl)}
-.cq{display:grid;gap:4px;margin-top:6px;font-size:13px;color:var(--mu)}
-.cq q{font-style:italic;quotes:"\\201C" "\\201D"}
-.cq a{font:12px "IBM Plex Mono",monospace}
+.cv{display:inline-flex;align-items:center;gap:10px;flex-wrap:wrap;font:13px var(--f-mono)}
+.cv .ov{color:var(--mute)}
+li.down .nv,li.removed .nv{color:var(--down)}li.up .nv,li.added .nv{color:var(--up)}
+li.down svg,li.removed svg{color:var(--down)}li.up svg,li.added svg{color:var(--up)}
+.cq{display:grid;gap:4px;margin-top:6px;font-size:12.5px;color:var(--mute)}
+.cq q{font-style:italic}.cq a{font:12px var(--f-mono);color:var(--accent)}
+.page main{max-width:760px;width:100%;margin:0 auto;padding:10px 0 20px}
+.page h1{font-size:clamp(28px,4.4vw,42px);max-width:22ch;margin:26px 0 14px}
+.page h2{font:700 21px/1.2 var(--f-display);letter-spacing:-.01em;margin:30px 0 10px}
+.page p,.page li{max-width:66ch;font-size:15px;line-height:1.65}
+.page li{margin:6px 0}.page ul{padding-left:20px}
+.page a{color:var(--accent);text-underline-offset:3px}
+.kind{display:grid;gap:10px;margin:14px 0}
+.kind div{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.kind p{margin:8px 0 0}
+.st{font:500 11px var(--f-mono);padding:3px 9px;border-radius:99px;border:1px solid currentColor;white-space:nowrap}
+.st.verified{color:var(--ok)}.st.partial{color:var(--part)}.st.none{color:var(--bad)}
+@media (max-width:1100px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:900px){footer{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:640px){.grid{grid-template-columns:1fr}.tag{display:none}.hero-side{align-items:flex-start}.week{text-align:left}}
+@media (max-width:520px){footer{grid-template-columns:1fr}}
 """
 
-FONTS = ('<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" '
-         'href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">')
+FONTS = ('<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'
+         '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap">')
+
+LOGO = ('<svg class="logo" viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="1.5" fill="none" stroke="currentColor" stroke-width="2"/>'
+        '<path d="M9 8h6M9 12h6M9 16h3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>')
 
 
-def shell(title, desc, body, path="", issue="", page=False):
+def shell(title, desc, body, path="", issue="", page=False, dialogs=""):
     err = f"mailto:{CONTACT}?subject=Error%20report%3A%20&body=Which%20service%3F%0AWhat%20is%20wrong%3F%0ALink%20to%20the%20official%20page%3A%20"
     url = SITE + "/" + path
     img = f"{SITE}/{OG_IMAGE}"
@@ -354,26 +396,28 @@ def shell(title, desc, body, path="", issue="", page=False):
         f'<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="{e(title)}">'
         f'<meta name="twitter:description" content="{e(desc)}"><meta name="twitter:image" content="{img}">'
     )
-    issue_html = f'<span class="issue">{e(issue)}</span>' if issue else ""
+    stamp = f'<span class="stamp">{e(issue)}</span>' if issue else ""
+    how_link = '<a class="pill" href="how-we-check.html">How we check</a>'
+    foot = (
+        '<footer>'
+        '<div><h5>Independent</h5><p>Free Tier Watch is independent. We are not affiliated with any company listed here and we run no ads or sponsors.</p></div>'
+        '<div><h5>Check before you rely</h5><p>Plans change often and mistakes can happen, so always confirm on the official page before you rely on a limit.</p></div>'
+        '<div><h5>Reuse</h5><p>Our summaries and data may be quoted with credit to Free Tier Watch (freetierwatch.com, CC BY 4.0).</p></div>'
+        f'<div><h5>Found a mistake?</h5><p><a href="{err}">Tell us</a> or write to {CONTACT}.</p></div>'
+        '</footer>'
+    )
     return (
-        '<!doctype html><html lang="en"><head><meta charset="utf-8">'
+        '<!doctype html><html lang="en" data-theme="dark"><head><meta charset="utf-8">'
         '<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">'
         f"<title>{e(title)}</title><meta name=\"description\" content=\"{e(desc)}\">{meta}"
         '<link rel="icon" href="favicon.ico" sizes="48x48"><link rel="icon" type="image/png" href="favicon-192.png" sizes="192x192">'
         '<link rel="apple-touch-icon" href="apple-touch-icon.png">'
         f'{FONTS}<script>{THEME_HEAD}</script><style>{CSS}</style></head>'
-        f'<body><div class="in{" page" if page else ""}"><header><div class="mast">'
-        f'<div class="bar">{issue_html}'
-        '<div class="tgl" role="group" aria-label="Color theme"><button type="button" data-t="light" aria-pressed="true">Light</button>'
-        '<span aria-hidden="true">/</span><button type="button" data-t="dark" aria-pressed="false">Dark</button></div></div>'
-        '<div class="kick">Independent · Weekly · Sourced</div><a class="logo" href="./">Free Tier Watch</a></div>'
-        f'<nav aria-label="Main"><a href="./#services">The ledger</a><a href="./#this-week">This week</a>'
-        f'<a href="how-we-check.html">How we check</a></nav></header>'
-        f"{body}"
-        '<footer>Free Tier Watch is independent. We are not affiliated with any company listed here and we run no ads or sponsors. '
-        "Plans change often and mistakes can happen, so always confirm on the official page before you rely on a limit. "
-        'Our summaries and data may be quoted with credit to Free Tier Watch (freetierwatch.com, CC BY 4.0). '
-        f'Found something wrong? <a href="{err}">Tell us</a> or write to {CONTACT}.</footer></div><script>{THEME_BODY}</script></body></html>'
+        f'<body class="{"page" if page else ""}"><div class="app">'
+        f'<header class="top"><a class="brand" href="./">{LOGO}<span>Free Tier Watch</span></a>'
+        f'<span class="tag">Free AI plan limits, checked weekly</span>{how_link}'
+        f'<div class="right">{stamp}<button class="pill" id="theme" type="button" aria-pressed="true">Light</button></div></header>'
+        f'{body}{foot}</div>{dialogs}<script>{THEME_BODY}</script></body></html>'
     )
 
 
@@ -398,54 +442,37 @@ def human_list(names):
 
 
 def this_week(services):
-    # Sadece ucretsiz planlarda gercekten degisen maddeler sayilir; resmi sayfadaki menu/kimlik gibi
-    # onemsiz metin farklari "degisti" diye gosterilmez.
-    if any(s.get("changes") for s in services):
-        txt = ""
-    elif any(s.get("prev") for s in services):
-        txt = "No changes in the free plans since the last check."
-    else:
-        txt = "This is our first full check. From next Monday this section lists what changed on the free plans."
+    """Tek satirlik 'This week' ozeti. Sadece gercek (dogrulanmis) degisiklikler sayilir."""
     moved = [s for s in services if s.get("changes")]
-    lst = ""
     if moved:
-        items_html = "".join(
-            f'<li><a href="#{e(s["id"])}">{e(s["name"])}</a>: '
-            f'{e(pill_text(compare.overall(s["changes"]), reference_week(s["prev"], s["checked"])))}</li>'
-            for s in moved
-        )
-        lst = f'<p>Changes in the free plans since the last check:</p><ul>{items_html}</ul>'
-    dates = [s["checked"] for s in services if s["checked"]]
-    stamp = f'Week of {pretty_date(max(dates))}' if dates else ""
-    return (f'<section id="this-week"><div class="sh"><h2>This week</h2><span>{e(stamp)}</span></div>'
-            f'<div class="panel">{"<p>" + e(txt) + "</p>" if txt else ""}{lst}</div></section>')
+        links = ", ".join(
+            f'<a href="#{e(s["id"])}">{e(s["name"])}</a> ({e(pill_text(compare.overall(s["changes"]), reference_week(s["prev"], s["checked"])).split(" than ")[0].split(" since ")[0].lower())})'
+            for s in moved)
+        return f'<p class="week"><b>This week:</b> changes in the free plans: {links}.</p>'
+    if any(s.get("prev") for s in services):
+        return '<p class="week"><b>This week:</b> No changes in the free plans since the last check.</p>'
+    return '<p class="week"><b>This week:</b> This is our first full check. From next Monday this line lists what changed on the free plans.</p>'
 
 
 def index(services, issue=""):
     counts = {k: sum(1 for s in services if s["cfg"]["status"] == k) for k in LABEL}
-    dates = [s["checked"] for s in services if s["checked"]]
-    last = pretty_date(max(dates)) if dates else "not yet"
+    cnt = "".join(f'<div class="count {c}"><b>{counts[k]}</b><span>{LABEL[k]}</span></div>'
+                  for c, k in (("ok", "verified"), ("part", "partial"), ("bad", "none")))
     body = (
-        '<div class="hero"><div><h1>What does each free AI plan really give you this week?</h1>'
-        '<p class="sub">What each AI chat app gives you for $0, with the source and the exact quote behind every line.</p>'
-        f'<p class="last">Last check: {e(last)}</p></div>'
-        f'<div class="stats"><div class="stat"><span>Services followed</span><b>{len(services)}</b></div>'
-        f'<div class="stat"><span>Verified</span><b>{counts["verified"]}</b></div>'
-        f'<div class="stat"><span>Partly stated</span><b>{counts["partial"]}</b></div>'
-        f'<div class="stat"><span>Couldn\'t verify</span><b>{counts["none"]}</b></div></div></div>'
-        f'<section id="services"><div class="sh"><h2>The ledger</h2><span>Free chat plans only</span></div>'
-        f'{"".join(card(s) for s in services)}</section>'
-        f"{this_week(services)}"
+        '<section class="hero"><h1>What free AI plans actually give you.</h1>'
+        f'<div class="hero-side"><div class="counts" aria-label="Status summary">{cnt}</div>{this_week(services)}</div></section>'
+        f'<main class="grid">{"".join(card(s) for s in services)}{guide()}</main>'
     )
     covered = [s["name"] for s in services if s["cfg"]["status"] != "none"]
     desc = (f"What free AI plans really include: limits and features for {human_list(covered)}, "
             "with the official source and exact quote for each line.") if covered else \
         "What free AI plans really include, checked against official pages every week."
-    return shell("Free AI plan limits, checked weekly | Free Tier Watch", desc, body, path="", issue=issue)
+    return shell("Free AI plan limits, checked weekly | Free Tier Watch", desc, body, path="", issue=issue,
+                 dialogs="".join(dialog(s) for s in services))
 
 
 def method(issue=""):
-    body = """
+    body = """<main>
 <h1>How we check</h1>
 <p>Free Tier Watch exists to answer one question: what do you actually get on the free plan of an AI chat app? We try to be the referee, so the rules below are strict on purpose.</p>
 <h2>What we cover</h2>
@@ -467,6 +494,7 @@ def method(issue=""):
 <ul><li>What the companies say and what we tried ourselves are always shown separately.</li>
 <li>Mistakes can happen. If you spot one, write to %s and we will look at it.</li></ul>
 <p>The code of this site is public: <a href="%s" rel="noopener">%s</a>. The limits shown on each page are also available on this site as <a href="data.json">data.json</a>. Our summaries and compiled data are free to quote under <a href="https://creativecommons.org/licenses/by/4.0/" rel="noopener">CC BY 4.0</a>; please credit Free Tier Watch (freetierwatch.com). Text quoted from official pages belongs to its owners.</p>
+</main>
 """ % (CONTACT, REPO, REPO.replace("https://", ""))
     return shell("How we check free AI plan limits | Free Tier Watch",
                  "How Free Tier Watch collects free plan limits from official pages, checks every quote and shows what it could not verify.",
